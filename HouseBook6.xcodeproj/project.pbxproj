@@ -274,21 +274,13 @@
 		86C4F0EF27F2D42500E1AB43 /* HouseBook6 */ = {
 			isa = PBXGroup;
 			children = (
+				AB7D890D28C09F41007B2CCB /* Models */,
 				42320A73284A46C200C2A890 /* HouseBook6.entitlements */,
 				86CBC20C27FAEEBB007F192A /* Views */,
 				86CBC20927FABD3C007F192A /* Extensions */,
 				86C4F15127F2EDA700E1AB43 /* Controllers */,
 				86C4F0F027F2D42500E1AB43 /* AppDelegate.swift */,
 				86C4F0F227F2D42500E1AB43 /* SceneDelegate.swift */,
-				86C4F12027F2D7FC00E1AB43 /* User.swift */,
-				86C4F16727F6855100E1AB43 /* ChatRoom.swift */,
-				86C4F16927F6F3EA00E1AB43 /* Message.swift */,
-				42D7330628220BFB0033B7FA /* SuperCategory.swift */,
-				86647B572824AC8400491483 /* SubCategory.swift */,
-				42848BA1283751A90036B5CB /* CostMothSuperCategory.swift */,
-				4289B3D6282E299500B7B8BD /* Income.swift */,
-				42B5E5AD28323B42000E5DC2 /* FixedCost.swift */,
-				42AC4BB3283CB81D00C716BA /* DaySubCategory.swift */,
 				86C4F15227F2EDEB00E1AB43 /* Storyboards */,
 				86C4F0F927F2D42600E1AB43 /* Assets.xcassets */,
 				86C4F0FB27F2D42600E1AB43 /* LaunchScreen.storyboard */,
@@ -434,6 +426,22 @@
 				86CBC21927FD8EC2007F192A /* InputButton.swift */,
 			);
 			path = Input;
+			sourceTree = "<group>";
+		};
+		AB7D890D28C09F41007B2CCB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F12027F2D7FC00E1AB43 /* User.swift */,
+				86C4F16727F6855100E1AB43 /* ChatRoom.swift */,
+				86C4F16927F6F3EA00E1AB43 /* Message.swift */,
+				42D7330628220BFB0033B7FA /* SuperCategory.swift */,
+				86647B572824AC8400491483 /* SubCategory.swift */,
+				42848BA1283751A90036B5CB /* CostMothSuperCategory.swift */,
+				4289B3D6282E299500B7B8BD /* Income.swift */,
+				42B5E5AD28323B42000E5DC2 /* FixedCost.swift */,
+				42AC4BB3283CB81D00C716BA /* DaySubCategory.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		CCC0327432F8C52DB3967CAA /* Pods */ = {
