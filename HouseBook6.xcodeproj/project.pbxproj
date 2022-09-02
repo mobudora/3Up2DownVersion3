@@ -123,12 +123,12 @@
 
 /* Begin PBXFileReference section */
 		42320A73284A46C200C2A890 /* HouseBook6.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HouseBook6.entitlements; sourceTree = "<group>"; };
-		427938482846036600DAF41B /* DetailRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailRecommendViewController.swift; path = HouseBook6/Storyboards/DetailRecommendViewController.swift; sourceTree = SOURCE_ROOT; };
+		427938482846036600DAF41B /* DetailRecommendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailRecommendViewController.swift; path = HouseBook6/Controllers/Detail/InternalLink/DetailRecommendViewController.swift; sourceTree = SOURCE_ROOT; };
 		4279384A2846038700DAF41B /* DetailRecommend.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailRecommend.storyboard; sourceTree = "<group>"; };
 		4279384C2846075D00DAF41B /* DetailFuture.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailFuture.storyboard; sourceTree = "<group>"; };
 		4279384E284607A000DAF41B /* DetailFutureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFutureViewController.swift; sourceTree = "<group>"; };
 		4283F0EB2846918F00855069 /* AddMemoFriends.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddMemoFriends.storyboard; sourceTree = "<group>"; };
-		4283F0ED284691B700855069 /* AddMemoFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddMemoFriendsViewController.swift; path = HouseBook6/Controllers/AddMemoFriendsViewController.swift; sourceTree = SOURCE_ROOT; };
+		4283F0ED284691B700855069 /* AddMemoFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddMemoFriendsViewController.swift; path = HouseBook6/Controllers/ChatNote/AddMemoFriendsViewController.swift; sourceTree = SOURCE_ROOT; };
 		4283F0EF28470ACF00855069 /* AddFriends.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = AddFriends.storyboard; sourceTree = "<group>"; };
 		4283F0F128470AFD00855069 /* AddFriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendsViewController.swift; sourceTree = "<group>"; };
 		4283F0F328470E8200855069 /* WhitchAddFriends.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = WhitchAddFriends.storyboard; sourceTree = "<group>"; };
@@ -148,7 +148,7 @@
 		42A23DE42845DCF40088754D /* DetailAboutAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAboutAppViewController.swift; sourceTree = "<group>"; };
 		42A23DE62845DD260088754D /* DetailAboutApp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailAboutApp.storyboard; sourceTree = "<group>"; };
 		42A23DE82845E5EA0088754D /* DetailHowToUse.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailHowToUse.storyboard; sourceTree = "<group>"; };
-		42A23DEA2845E6080088754D /* DetailHowToUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailHowToUseViewController.swift; path = HouseBook6/Storyboards/DetailHowToUseViewController.swift; sourceTree = SOURCE_ROOT; };
+		42A23DEA2845E6080088754D /* DetailHowToUseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetailHowToUseViewController.swift; path = HouseBook6/Controllers/Detail/InternalLink/DetailHowToUseViewController.swift; sourceTree = SOURCE_ROOT; };
 		42AAC2F22817E16E004B967C /* DateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateManager.swift; sourceTree = "<group>"; };
 		42AAC2F4281964FA004B967C /* PassIncomeAndFixedCollectionCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassIncomeAndFixedCollectionCellProtocol.swift; sourceTree = "<group>"; };
 		42AC4BB3283CB81D00C716BA /* DaySubCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySubCategory.swift; sourceTree = "<group>"; };
@@ -274,16 +274,15 @@
 		86C4F0EF27F2D42500E1AB43 /* HouseBook6 */ = {
 			isa = PBXGroup;
 			children = (
-				AB7D890D28C09F41007B2CCB /* Models */,
+				86C4F0F027F2D42500E1AB43 /* AppDelegate.swift */,
+				86C4F0F227F2D42500E1AB43 /* SceneDelegate.swift */,
 				42320A73284A46C200C2A890 /* HouseBook6.entitlements */,
+				AB7D890D28C09F41007B2CCB /* Models */,
 				86CBC20C27FAEEBB007F192A /* Views */,
 				86CBC20927FABD3C007F192A /* Extensions */,
 				86C4F15127F2EDA700E1AB43 /* Controllers */,
-				86C4F0F027F2D42500E1AB43 /* AppDelegate.swift */,
-				86C4F0F227F2D42500E1AB43 /* SceneDelegate.swift */,
 				86C4F15227F2EDEB00E1AB43 /* Storyboards */,
 				86C4F0F927F2D42600E1AB43 /* Assets.xcassets */,
-				86C4F0FB27F2D42600E1AB43 /* LaunchScreen.storyboard */,
 				86C4F0FE27F2D42600E1AB43 /* Info.plist */,
 				86C4F14B27F2DF7D00E1AB43 /* GoogleService-Info.plist */,
 			);
@@ -293,40 +292,13 @@
 		86C4F15127F2EDA700E1AB43 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				86C4F13827F2DA4800E1AB43 /* TopViewController.swift */,
-				86C4F13A27F2DA6F00E1AB43 /* FirstLoginViewController.swift */,
-				86C4F13E27F2DAA800E1AB43 /* WelcomeLoginViewController.swift */,
-				86C4F13C27F2DA8900E1AB43 /* AlreadyLoginViewController.swift */,
-				86C4F14027F2DAB600E1AB43 /* PasswordViewController.swift */,
-				86C4F13627F2DA1B00E1AB43 /* HomeViewController.swift */,
-				428456A32835DC5E00FF7EF8 /* AddCollectionViewController.swift */,
-				86C4F14427F2DADF00E1AB43 /* CalendarViewController.swift */,
-				42AAC2F22817E16E004B967C /* DateManager.swift */,
-				429FB7E328128A2F00067EE7 /* dateDiaryCollectionViewCell.swift */,
-				429FB7E428128A2F00067EE7 /* dateDiaryCollectionViewCell.xib */,
-				42C48CC8283B52C00007617C /* DateContentCollectionViewCell.swift */,
-				42C48CC9283B52C00007617C /* DateContentCollectionViewCell.xib */,
-				42C48CC4283B49EF0007617C /* DateCategoryAndSumMoneyTableViewCell.swift */,
-				42C48CC5283B49EF0007617C /* DateCategoryAndSumMoneyTableViewCell.xib */,
-				42C48CC0283B49640007617C /* CategoryMoneyTableViewCell.swift */,
-				42C48CC1283B49640007617C /* CategoryMoneyTableViewCell.xib */,
-				86CBC21227FD262B007F192A /* InputViewController.swift */,
-				86F819A827FEC5BA00FCF325 /* InputCalculatorSemiModalViewController.swift */,
-				8670CC1D28016A3600A66426 /* InputCategorySemiModalViewController.swift */,
-				8670CC2328027D5D00A66426 /* InputSubCategorySemiModalViewController.swift */,
-				86C4F14827F2DAFA00E1AB43 /* NoteViewController.swift */,
-				86C4F16327F5E68200E1AB43 /* UserListViewController.swift */,
-				86C4F15527F2F12E00E1AB43 /* ChatRoomViewController.swift */,
-				4283F0F528470EA600855069 /* WhitchAddFriendsViewController.swift */,
-				4283F0ED284691B700855069 /* AddMemoFriendsViewController.swift */,
-				4283F0F128470AFD00855069 /* AddFriendsViewController.swift */,
-				86C4F14227F2DAD100E1AB43 /* DetailSettingViewController.swift */,
-				86E642FA2845A4B30025A8D8 /* DetailTextViewController.swift */,
-				4283F0FB28474C9500855069 /* DetailAccountViewController.swift */,
-				42A23DE42845DCF40088754D /* DetailAboutAppViewController.swift */,
-				42A23DEA2845E6080088754D /* DetailHowToUseViewController.swift */,
-				427938482846036600DAF41B /* DetailRecommendViewController.swift */,
-				4279384E284607A000DAF41B /* DetailFutureViewController.swift */,
+				AB7D890E28C0A117007B2CCB /* Login */,
+				AB7D890F28C0A124007B2CCB /* Home */,
+				AB7D891328C0A150007B2CCB /* AddTargetCollectionSemiModal */,
+				AB7D891028C0A12B007B2CCB /* Calendar */,
+				AB7D891128C0A13B007B2CCB /* ChatNote */,
+				AB7D891428C0A16C007B2CCB /* InputSemiModal */,
+				AB7D891228C0A149007B2CCB /* Detail */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -334,48 +306,14 @@
 		86C4F15227F2EDEB00E1AB43 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				86C4F0F627F2D42500E1AB43 /* Main.storyboard */,
-				86C4F10627F2D4F200E1AB43 /* Top.storyboard */,
-				86C4F10A27F2D55700E1AB43 /* FirstLogin.storyboard */,
-				86C4F10C27F2D57C00E1AB43 /* WelcomeLogin.storyboard */,
-				86C4F10E27F2D59200E1AB43 /* AlreadyLogin.storyboard */,
-				86C4F11027F2D5B400E1AB43 /* Password.storyboard */,
-				86C4F11227F2D5CB00E1AB43 /* Home.storyboard */,
-				86C4F14D27F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.swift */,
-				86C4F14E27F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.xib */,
-				86C4F12227F2D87000E1AB43 /* incomeTableViewCell.swift */,
-				86C4F12327F2D87000E1AB43 /* incomeTableViewCell.xib */,
-				86C4F12627F2D8B000E1AB43 /* incomePlusMinusTableViewCell.swift */,
-				86C4F12727F2D8B000E1AB43 /* incomePlusMinusTableViewCell.xib */,
-				86C4F12A27F2D92900E1AB43 /* livingExpensesCollectionViewCell.swift */,
-				86C4F12B27F2D92900E1AB43 /* livingExpensesCollectionViewCell.xib */,
-				428456A12835DC3300FF7EF8 /* AddCollectionSemiModal.storyboard */,
-				86C4F11427F2D5F100E1AB43 /* DetailSetting.storyboard */,
-				86C4F12E27F2D98100E1AB43 /* DetailSettingTableViewCell.swift */,
-				86C4F12F27F2D98100E1AB43 /* DetailSettingTableViewCell.xib */,
-				86C4F13227F2D9C800E1AB43 /* ContactTableViewCell.swift */,
-				86C4F13327F2D9C800E1AB43 /* ContactTableViewCell.xib */,
-				86E642FC2845A4CA0025A8D8 /* DetailText.storyboard */,
-				4283F0F928474C7C00855069 /* DetailAccount.storyboard */,
-				42A23DE62845DD260088754D /* DetailAboutApp.storyboard */,
-				42A23DE82845E5EA0088754D /* DetailHowToUse.storyboard */,
-				4279384A2846038700DAF41B /* DetailRecommend.storyboard */,
-				4279384C2846075D00DAF41B /* DetailFuture.storyboard */,
-				86C4F11627F2D62E00E1AB43 /* Calendar.storyboard */,
-				86CBC21727FD4D50007F192A /* Input.storyboard */,
-				8670CC252802957C00A66426 /* InputCalculatorSemiModal.storyboard */,
-				8670CC1B28016A0700A66426 /* InputCategorySemiModal.storyboard */,
-				8670CC2128027D2100A66426 /* InputSubCategorySemiModal.storyboard */,
-				86C4F10427F2D49600E1AB43 /* Note.storyboard */,
-				86C4F15F27F5E56300E1AB43 /* UserList.storyboard */,
-				86C4F15327F2F0D200E1AB43 /* ChatRoom.storyboard */,
-				4283F0F328470E8200855069 /* WhitchAddFriends.storyboard */,
-				4283F0EB2846918F00855069 /* AddMemoFriends.storyboard */,
-				4283F0EF28470ACF00855069 /* AddFriends.storyboard */,
-				86C4F15727F2F4DA00E1AB43 /* partnerTableViewCell.swift */,
-				86C4F15827F2F4DA00E1AB43 /* partnerTableViewCell.xib */,
-				86C4F15B27F31D3800E1AB43 /* ChatInputAccessory.xib */,
-				86C4F15D27F31E4200E1AB43 /* ChatInputAccessoryView.swift */,
+				86C4F0FB27F2D42600E1AB43 /* LaunchScreen.storyboard */,
+				AB7D891828C0B23B007B2CCB /* Login */,
+				AB7D891E28C1A356007B2CCB /* Home */,
+				AB7D891C28C0B273007B2CCB /* AddTargetCollectionSemiModal */,
+				AB7D891928C0B241007B2CCB /* Calendar */,
+				AB7D891A28C0B24B007B2CCB /* ChatNote */,
+				AB7D891D28C1A33D007B2CCB /* InputSemiModal */,
+				AB7D891B28C0B25F007B2CCB /* Detail */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -384,18 +322,10 @@
 			isa = PBXGroup;
 			children = (
 				86C4F11E27F2D7CC00E1AB43 /* UIColor-Extension.swift */,
-				86CBC20A27FABD64007F192A /* UIView-Extension.swift */,
-				86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */,
-				8670CC1F28016BD900A66426 /* PassCategoryProtocol.swift */,
-				42AAC2F4281964FA004B967C /* PassIncomeAndFixedCollectionCellProtocol.swift */,
-				42D73304282162B20033B7FA /* PassHomeViewFromInputViewProtocol.swift */,
-				86647B59282FE02200491483 /* PlusMinusProtocol.swift */,
-				86647B5B283136ED00491483 /* PlusMinusCollectionReloadProtocol.swift */,
-				42AF6E8228337B7900E5E6AE /* IncomeAndFixedToHomeProtocol.swift */,
-				4284569C2834978D00FF7EF8 /* HomeMonthToIncomeAndFixedProtocol.swift */,
-				4284569E2834F7FB00FF7EF8 /* HomeCollectionUpDateProtocol.swift */,
-				428BF916283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift */,
-				4283F0F7284736DA00855069 /* UserListTableViewReloadProtocol.swift */,
+				AB7D893228C1BD72007B2CCB /* AddTargetCollectionSemiModal */,
+				AB7D893028C1BD55007B2CCB /* Home */,
+				AB7D892F28C1BD4C007B2CCB /* ChatNote */,
+				AB7D892E28C1BCE6007B2CCB /* Calendar */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -404,7 +334,7 @@
 			isa = PBXGroup;
 			children = (
 				86CBC20D27FAEEC9007F192A /* Calendar */,
-				86CBC21427FD26E1007F192A /* Input */,
+				AB7D892D28C1BCC2007B2CCB /* InputSemiModal */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -412,28 +342,305 @@
 		86CBC20D27FAEEC9007F192A /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				86CBC20E27FAF098007F192A /* CalendarLabel.swift */,
-				86CBC21027FAF3AA007F192A /* CalendarImageView.swift */,
-				8670CC282803C50C00A66426 /* CalendarStackView.swift */,
+				86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */,
+				8670CC1F28016BD900A66426 /* PassCategoryProtocol.swift */,
+				AB7D892C28C1BC8F007B2CCB /* SelfMadeCalendar */,
 			);
 			path = Calendar;
-			sourceTree = "<group>";
-		};
-		86CBC21427FD26E1007F192A /* Input */ = {
-			isa = PBXGroup;
-			children = (
-				86CBC21527FD2714007F192A /* InputLabel.swift */,
-				86CBC21927FD8EC2007F192A /* InputButton.swift */,
-			);
-			path = Input;
 			sourceTree = "<group>";
 		};
 		AB7D890D28C09F41007B2CCB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AB7D892928C1BC2F007B2CCB /* Login */,
+				AB7D892828C1BC13007B2CCB /* Calendar */,
+				AB7D892A28C1BC3B007B2CCB /* ChatNote */,
+				AB7D892B28C1BC57007B2CCB /* Category */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		AB7D890E28C0A117007B2CCB /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F13827F2DA4800E1AB43 /* TopViewController.swift */,
+				86C4F13A27F2DA6F00E1AB43 /* FirstLoginViewController.swift */,
+				86C4F13E27F2DAA800E1AB43 /* WelcomeLoginViewController.swift */,
+				86C4F13C27F2DA8900E1AB43 /* AlreadyLoginViewController.swift */,
+				86C4F14027F2DAB600E1AB43 /* PasswordViewController.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		AB7D890F28C0A124007B2CCB /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F13627F2DA1B00E1AB43 /* HomeViewController.swift */,
+				86C4F14D27F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.swift */,
+				86C4F12227F2D87000E1AB43 /* incomeTableViewCell.swift */,
+				86C4F12627F2D8B000E1AB43 /* incomePlusMinusTableViewCell.swift */,
+				86C4F12A27F2D92900E1AB43 /* livingExpensesCollectionViewCell.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		AB7D891028C0A12B007B2CCB /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				AB7D891628C0B1CE007B2CCB /* LibraryCalendar */,
+				AB7D891528C0B1C1007B2CCB /* SelfMadeCalendar */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		AB7D891128C0A13B007B2CCB /* ChatNote */ = {
+			isa = PBXGroup;
+			children = (
+				AB7D891728C0B1F8007B2CCB /* ChatRoom */,
+				86C4F14827F2DAFA00E1AB43 /* NoteViewController.swift */,
+				86C4F16327F5E68200E1AB43 /* UserListViewController.swift */,
+				4283F0F528470EA600855069 /* WhitchAddFriendsViewController.swift */,
+				4283F0ED284691B700855069 /* AddMemoFriendsViewController.swift */,
+				4283F0F128470AFD00855069 /* AddFriendsViewController.swift */,
+			);
+			path = ChatNote;
+			sourceTree = "<group>";
+		};
+		AB7D891228C0A149007B2CCB /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F14227F2DAD100E1AB43 /* DetailSettingViewController.swift */,
+				AB7D892328C1BADB007B2CCB /* InternalLink */,
+				AB7D891F28C1A49C007B2CCB /* ExternalLink */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		AB7D891328C0A150007B2CCB /* AddTargetCollectionSemiModal */ = {
+			isa = PBXGroup;
+			children = (
+				428456A32835DC5E00FF7EF8 /* AddCollectionViewController.swift */,
+			);
+			path = AddTargetCollectionSemiModal;
+			sourceTree = "<group>";
+		};
+		AB7D891428C0A16C007B2CCB /* InputSemiModal */ = {
+			isa = PBXGroup;
+			children = (
+				86CBC21227FD262B007F192A /* InputViewController.swift */,
+				86F819A827FEC5BA00FCF325 /* InputCalculatorSemiModalViewController.swift */,
+				8670CC1D28016A3600A66426 /* InputCategorySemiModalViewController.swift */,
+				8670CC2328027D5D00A66426 /* InputSubCategorySemiModalViewController.swift */,
+			);
+			path = InputSemiModal;
+			sourceTree = "<group>";
+		};
+		AB7D891528C0B1C1007B2CCB /* SelfMadeCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				429FB7E328128A2F00067EE7 /* dateDiaryCollectionViewCell.swift */,
+				42C48CC8283B52C00007617C /* DateContentCollectionViewCell.swift */,
+				42C48CC4283B49EF0007617C /* DateCategoryAndSumMoneyTableViewCell.swift */,
+				42C48CC0283B49640007617C /* CategoryMoneyTableViewCell.swift */,
+			);
+			path = SelfMadeCalendar;
+			sourceTree = "<group>";
+		};
+		AB7D891628C0B1CE007B2CCB /* LibraryCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F14427F2DADF00E1AB43 /* CalendarViewController.swift */,
+			);
+			path = LibraryCalendar;
+			sourceTree = "<group>";
+		};
+		AB7D891728C0B1F8007B2CCB /* ChatRoom */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F15527F2F12E00E1AB43 /* ChatRoomViewController.swift */,
+				86C4F15727F2F4DA00E1AB43 /* partnerTableViewCell.swift */,
+				86C4F15D27F31E4200E1AB43 /* ChatInputAccessoryView.swift */,
+			);
+			path = ChatRoom;
+			sourceTree = "<group>";
+		};
+		AB7D891828C0B23B007B2CCB /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F10627F2D4F200E1AB43 /* Top.storyboard */,
+				86C4F10A27F2D55700E1AB43 /* FirstLogin.storyboard */,
+				86C4F10C27F2D57C00E1AB43 /* WelcomeLogin.storyboard */,
+				86C4F10E27F2D59200E1AB43 /* AlreadyLogin.storyboard */,
+				86C4F11027F2D5B400E1AB43 /* Password.storyboard */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		AB7D891928C0B241007B2CCB /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				AB7D892628C1BBD0007B2CCB /* LibraryCalendar */,
+				AB7D892728C1BBD9007B2CCB /* SelfMadeCalendar */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		AB7D891A28C0B24B007B2CCB /* ChatNote */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F10427F2D49600E1AB43 /* Note.storyboard */,
+				86C4F15F27F5E56300E1AB43 /* UserList.storyboard */,
+				4283F0F328470E8200855069 /* WhitchAddFriends.storyboard */,
+				4283F0EB2846918F00855069 /* AddMemoFriends.storyboard */,
+				4283F0EF28470ACF00855069 /* AddFriends.storyboard */,
+				AB7D892128C1BA0D007B2CCB /* ChatRoom */,
+			);
+			path = ChatNote;
+			sourceTree = "<group>";
+		};
+		AB7D891B28C0B25F007B2CCB /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F11427F2D5F100E1AB43 /* DetailSetting.storyboard */,
+				AB7D892528C1BB07007B2CCB /* ExternalLink */,
+				AB7D892428C1BAFE007B2CCB /* InternalLink */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		AB7D891C28C0B273007B2CCB /* AddTargetCollectionSemiModal */ = {
+			isa = PBXGroup;
+			children = (
+				428456A12835DC3300FF7EF8 /* AddCollectionSemiModal.storyboard */,
+			);
+			path = AddTargetCollectionSemiModal;
+			sourceTree = "<group>";
+		};
+		AB7D891D28C1A33D007B2CCB /* InputSemiModal */ = {
+			isa = PBXGroup;
+			children = (
+				86CBC21727FD4D50007F192A /* Input.storyboard */,
+				8670CC252802957C00A66426 /* InputCalculatorSemiModal.storyboard */,
+				8670CC1B28016A0700A66426 /* InputCategorySemiModal.storyboard */,
+				8670CC2128027D2100A66426 /* InputSubCategorySemiModal.storyboard */,
+			);
+			path = InputSemiModal;
+			sourceTree = "<group>";
+		};
+		AB7D891E28C1A356007B2CCB /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F0F627F2D42500E1AB43 /* Main.storyboard */,
+				86C4F11227F2D5CB00E1AB43 /* Home.storyboard */,
+				86C4F14E27F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.xib */,
+				86C4F12327F2D87000E1AB43 /* incomeTableViewCell.xib */,
+				86C4F12727F2D8B000E1AB43 /* incomePlusMinusTableViewCell.xib */,
+				86C4F12B27F2D92900E1AB43 /* livingExpensesCollectionViewCell.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		AB7D891F28C1A49C007B2CCB /* ExternalLink */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F13227F2D9C800E1AB43 /* ContactTableViewCell.swift */,
+			);
+			path = ExternalLink;
+			sourceTree = "<group>";
+		};
+		AB7D892128C1BA0D007B2CCB /* ChatRoom */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F15327F2F0D200E1AB43 /* ChatRoom.storyboard */,
+				86C4F15827F2F4DA00E1AB43 /* partnerTableViewCell.xib */,
+				86C4F15B27F31D3800E1AB43 /* ChatInputAccessory.xib */,
+			);
+			path = ChatRoom;
+			sourceTree = "<group>";
+		};
+		AB7D892328C1BADB007B2CCB /* InternalLink */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F12E27F2D98100E1AB43 /* DetailSettingTableViewCell.swift */,
+				42A23DE42845DCF40088754D /* DetailAboutAppViewController.swift */,
+				4283F0FB28474C9500855069 /* DetailAccountViewController.swift */,
+				4279384E284607A000DAF41B /* DetailFutureViewController.swift */,
+				42A23DEA2845E6080088754D /* DetailHowToUseViewController.swift */,
+				427938482846036600DAF41B /* DetailRecommendViewController.swift */,
+				86E642FA2845A4B30025A8D8 /* DetailTextViewController.swift */,
+			);
+			path = InternalLink;
+			sourceTree = "<group>";
+		};
+		AB7D892428C1BAFE007B2CCB /* InternalLink */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F12F27F2D98100E1AB43 /* DetailSettingTableViewCell.xib */,
+				86E642FC2845A4CA0025A8D8 /* DetailText.storyboard */,
+				4283F0F928474C7C00855069 /* DetailAccount.storyboard */,
+				42A23DE62845DD260088754D /* DetailAboutApp.storyboard */,
+				42A23DE82845E5EA0088754D /* DetailHowToUse.storyboard */,
+				4279384A2846038700DAF41B /* DetailRecommend.storyboard */,
+				4279384C2846075D00DAF41B /* DetailFuture.storyboard */,
+			);
+			path = InternalLink;
+			sourceTree = "<group>";
+		};
+		AB7D892528C1BB07007B2CCB /* ExternalLink */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F13327F2D9C800E1AB43 /* ContactTableViewCell.xib */,
+			);
+			path = ExternalLink;
+			sourceTree = "<group>";
+		};
+		AB7D892628C1BBD0007B2CCB /* LibraryCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				86C4F11627F2D62E00E1AB43 /* Calendar.storyboard */,
+			);
+			path = LibraryCalendar;
+			sourceTree = "<group>";
+		};
+		AB7D892728C1BBD9007B2CCB /* SelfMadeCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				429FB7E428128A2F00067EE7 /* dateDiaryCollectionViewCell.xib */,
+				42C48CC9283B52C00007617C /* DateContentCollectionViewCell.xib */,
+				42C48CC5283B49EF0007617C /* DateCategoryAndSumMoneyTableViewCell.xib */,
+				42C48CC1283B49640007617C /* CategoryMoneyTableViewCell.xib */,
+			);
+			path = SelfMadeCalendar;
+			sourceTree = "<group>";
+		};
+		AB7D892828C1BC13007B2CCB /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				42AAC2F22817E16E004B967C /* DateManager.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		AB7D892928C1BC2F007B2CCB /* Login */ = {
+			isa = PBXGroup;
+			children = (
 				86C4F12027F2D7FC00E1AB43 /* User.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		AB7D892A28C1BC3B007B2CCB /* ChatNote */ = {
+			isa = PBXGroup;
+			children = (
 				86C4F16727F6855100E1AB43 /* ChatRoom.swift */,
 				86C4F16927F6F3EA00E1AB43 /* Message.swift */,
+			);
+			path = ChatNote;
+			sourceTree = "<group>";
+		};
+		AB7D892B28C1BC57007B2CCB /* Category */ = {
+			isa = PBXGroup;
+			children = (
 				42D7330628220BFB0033B7FA /* SuperCategory.swift */,
 				86647B572824AC8400491483 /* SubCategory.swift */,
 				42848BA1283751A90036B5CB /* CostMothSuperCategory.swift */,
@@ -441,7 +648,72 @@
 				42B5E5AD28323B42000E5DC2 /* FixedCost.swift */,
 				42AC4BB3283CB81D00C716BA /* DaySubCategory.swift */,
 			);
-			path = Models;
+			path = Category;
+			sourceTree = "<group>";
+		};
+		AB7D892C28C1BC8F007B2CCB /* SelfMadeCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				86CBC20E27FAF098007F192A /* CalendarLabel.swift */,
+				86CBC21027FAF3AA007F192A /* CalendarImageView.swift */,
+				8670CC282803C50C00A66426 /* CalendarStackView.swift */,
+			);
+			path = SelfMadeCalendar;
+			sourceTree = "<group>";
+		};
+		AB7D892D28C1BCC2007B2CCB /* InputSemiModal */ = {
+			isa = PBXGroup;
+			children = (
+				86CBC21527FD2714007F192A /* InputLabel.swift */,
+				86CBC21927FD8EC2007F192A /* InputButton.swift */,
+			);
+			path = InputSemiModal;
+			sourceTree = "<group>";
+		};
+		AB7D892E28C1BCE6007B2CCB /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				AB7D893328C1BEB7007B2CCB /* SelfMadeCalendar */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		AB7D892F28C1BD4C007B2CCB /* ChatNote */ = {
+			isa = PBXGroup;
+			children = (
+				4283F0F7284736DA00855069 /* UserListTableViewReloadProtocol.swift */,
+			);
+			path = ChatNote;
+			sourceTree = "<group>";
+		};
+		AB7D893028C1BD55007B2CCB /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				42AAC2F4281964FA004B967C /* PassIncomeAndFixedCollectionCellProtocol.swift */,
+				42AF6E8228337B7900E5E6AE /* IncomeAndFixedToHomeProtocol.swift */,
+				4284569C2834978D00FF7EF8 /* HomeMonthToIncomeAndFixedProtocol.swift */,
+				4284569E2834F7FB00FF7EF8 /* HomeCollectionUpDateProtocol.swift */,
+				42D73304282162B20033B7FA /* PassHomeViewFromInputViewProtocol.swift */,
+				86647B59282FE02200491483 /* PlusMinusProtocol.swift */,
+				86647B5B283136ED00491483 /* PlusMinusCollectionReloadProtocol.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		AB7D893228C1BD72007B2CCB /* AddTargetCollectionSemiModal */ = {
+			isa = PBXGroup;
+			children = (
+				428BF916283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift */,
+			);
+			path = AddTargetCollectionSemiModal;
+			sourceTree = "<group>";
+		};
+		AB7D893328C1BEB7007B2CCB /* SelfMadeCalendar */ = {
+			isa = PBXGroup;
+			children = (
+				86CBC20A27FABD64007F192A /* UIView-Extension.swift */,
+			);
+			path = SelfMadeCalendar;
 			sourceTree = "<group>";
 		};
 		CCC0327432F8C52DB3967CAA /* Pods */ = {
