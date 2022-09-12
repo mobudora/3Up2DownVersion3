@@ -119,6 +119,7 @@
 		86F819A927FEC5BA00FCF325 /* InputCalculatorSemiModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F819A827FEC5BA00FCF325 /* InputCalculatorSemiModalViewController.swift */; };
 		86F819B528000FFE00FCF325 /* PassCaluculatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */; };
 		AB4085F4653B2543FAD20AE0 /* Pods_HouseBook6.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5072B8E5C17244648DEE6F3 /* Pods_HouseBook6.framework */; };
+		AB7D893728C1EBBF007B2CCB /* TopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7D893628C1EBBF007B2CCB /* TopViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -234,6 +235,7 @@
 		86E642FC2845A4CA0025A8D8 /* DetailText.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailText.storyboard; sourceTree = "<group>"; };
 		86F819A827FEC5BA00FCF325 /* InputCalculatorSemiModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCalculatorSemiModalViewController.swift; sourceTree = "<group>"; };
 		86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassCaluculatorProtocol.swift; sourceTree = "<group>"; };
+		AB7D893628C1EBBF007B2CCB /* TopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopViewModel.swift; sourceTree = "<group>"; };
 		CAFF069EF96C52C2004E8D11 /* Pods-HouseBook6.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HouseBook6.release.xcconfig"; path = "Target Support Files/Pods-HouseBook6/Pods-HouseBook6.release.xcconfig"; sourceTree = "<group>"; };
 		D5072B8E5C17244648DEE6F3 /* Pods_HouseBook6.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HouseBook6.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -342,8 +344,6 @@
 		86CBC20D27FAEEC9007F192A /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
-				86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */,
-				8670CC1F28016BD900A66426 /* PassCategoryProtocol.swift */,
 				AB7D892C28C1BC8F007B2CCB /* SelfMadeCalendar */,
 			);
 			path = Calendar;
@@ -364,6 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				86C4F13827F2DA4800E1AB43 /* TopViewController.swift */,
+				AB7D893628C1EBBF007B2CCB /* TopViewModel.swift */,
 				86C4F13A27F2DA6F00E1AB43 /* FirstLoginViewController.swift */,
 				86C4F13E27F2DAA800E1AB43 /* WelcomeLoginViewController.swift */,
 				86C4F13C27F2DA8900E1AB43 /* AlreadyLoginViewController.swift */,
@@ -689,6 +690,8 @@
 		AB7D893028C1BD55007B2CCB /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */,
+				8670CC1F28016BD900A66426 /* PassCategoryProtocol.swift */,
 				42AAC2F4281964FA004B967C /* PassIncomeAndFixedCollectionCellProtocol.swift */,
 				42AF6E8228337B7900E5E6AE /* IncomeAndFixedToHomeProtocol.swift */,
 				4284569C2834978D00FF7EF8 /* HomeMonthToIncomeAndFixedProtocol.swift */,
@@ -934,6 +937,7 @@
 				4283F0F628470EA600855069 /* WhitchAddFriendsViewController.swift in Sources */,
 				86CBC21627FD2714007F192A /* InputLabel.swift in Sources */,
 				86C4F0F327F2D42500E1AB43 /* SceneDelegate.swift in Sources */,
+				AB7D893728C1EBBF007B2CCB /* TopViewModel.swift in Sources */,
 				42AC4BB4283CB81D00C716BA /* DaySubCategory.swift in Sources */,
 				86C4F15627F2F12E00E1AB43 /* ChatRoomViewController.swift in Sources */,
 				86C4F12827F2D8B000E1AB43 /* incomePlusMinusTableViewCell.swift in Sources */,

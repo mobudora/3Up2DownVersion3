@@ -15,31 +15,31 @@ class TopViewController: UIViewController {
     
     let userDefaluts = UserDefaults.standard
     let colors =  Colors()
+    let topViewModel = TopViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         UIAlertAction()
         goFirstLoginButtonSetUp()
         goAlreadyLoginButtonSetUp()
-        
     }
     
     @IBAction func unwind( _ seg: UIStoryboardSegue) {
     }
     
     @IBAction func goFirstLoginButton(_ sender: Any) {
-        goFirstLoginStoryBoard()
+        topViewModel.goFirstLoginStoryBoard()
     }
     
     @IBAction func goAlreadyLoginButton(_ sender: Any) {
         goAlreadyLoginStoryBoard()
     }
     
-    private func goFirstLoginStoryBoard() {
-        let storyboard = UIStoryboard(name: "FirstLogin", bundle: nil)
-        let nextView = storyboard.instantiateViewController(withIdentifier: "FirstLoginViewController") as! FirstViewController
-        self.navigationController?.pushViewController(nextView, animated: true)
-    }
+//    private func goFirstLoginStoryBoard() {
+//        let storyboard = UIStoryboard(name: "FirstLogin", bundle: nil)
+//        let nextView = storyboard.instantiateViewController(withIdentifier: "FirstLoginViewController") as! FirstViewController
+//        self.navigationController?.pushViewController(nextView, animated: true)
+//    }
     
     private func goAlreadyLoginStoryBoard() {
         let storyboard = UIStoryboard(name: "AlreadyLogin", bundle: nil)
