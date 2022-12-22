@@ -15,10 +15,7 @@ class DateContentCollectionViewCell: UICollectionViewCell {
     var recieveSubCategoryNamePerDay: [[String]]?
     var recieveSubMoneyPerDay: [[Int]]?
     var recieveSubCategoryArray: [String]?
-
-    //日付を受け取る変数
-    var recieveCellDay: Int!
-
+    
     //コレクションCellから月を受け取る変数
     var currentCellMonth: String!
 
@@ -53,7 +50,8 @@ extension DateContentCollectionViewCell: UITableViewDelegate, UITableViewDataSou
         if section == 0 {
             return 1
         } else {
-            print("recieveSubCategoryNamePerDay:\(recieveSubCategoryNamePerDay)")
+            //MARK: print文
+            //print("recieveSubCategoryNamePerDay:\(recieveSubCategoryNamePerDay)")
             //予めサブカテゴリー名前をコレクションViewControllerの数と合わせているため、親のコレクションViewControllerの数をrecieveIndexPathで表している
             return recieveSubCategoryNamePerDay?[recieveIndexPath].count ?? 0
         }
@@ -67,7 +65,8 @@ extension DateContentCollectionViewCell: UITableViewDelegate, UITableViewDataSou
             if self.recieveSuperCategoryNamePerDay == [] {
                 cell.sumCategoryImageView.image = UIImage(systemName: "questionmark.square")
             } else {
-                print("recieveSuperCategoryNamePerDay: \(recieveSuperCategoryNamePerDay)")
+                //MARK: print文
+//                print("recieveSuperCategoryNamePerDay: \(recieveSuperCategoryNamePerDay)")
                 cell.sumCategoryImageView.image = SuperCategoryIcon.CostIcon[(self.recieveSuperCategoryNamePerDay?[recieveIndexPath])!] ?? UIImage(systemName: "questionmark.square")
             }
             guard let sumSubMoney = recieveSubMoneyPerDay?[recieveIndexPath].reduce(0, +) else { return cell }
@@ -76,9 +75,11 @@ extension DateContentCollectionViewCell: UITableViewDelegate, UITableViewDataSou
         default:
             print("カテゴリー内更新します")
             let cell = tableView.dequeueReusableCell(withIdentifier: "cotegoryMoneyCell", for: indexPath) as! CategoryMoneyTableViewCell
-            print("recieveSubCategoryNamePerDay:\(recieveSubCategoryNamePerDay)")
+            //MARK: print文
+            //print("recieveSubCategoryNamePerDay:\(recieveSubCategoryNamePerDay)")
             cell.subCategoryNameLabel.text = recieveSubCategoryNamePerDay?[recieveIndexPath][indexPath.row]
-            print("recieveSubMoneyPerDay:\(recieveSubMoneyPerDay)")
+            //MARK: print文
+            //print("recieveSubMoneyPerDay:\(recieveSubMoneyPerDay)")
             guard let stringSubMoney = recieveSubMoneyPerDay?[recieveIndexPath][indexPath.row] else { return cell }
             cell.subCategoryMoneyLabel.text = String(stringSubMoney)
             return cell

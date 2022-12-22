@@ -15,9 +15,6 @@ class dateDiaryCollectionViewCell: UICollectionViewCell {
     var recieveSubMoney: [[Int]]?
     var recieveSubCategoryArray: [String]?
 
-    //日付を受け取る変数
-    var recieveCellDay: Int!
-
     //delegateを受け取る変数
     var recieveDelegate: CalendarViewController?
 
@@ -31,20 +28,28 @@ class dateDiaryCollectionViewCell: UICollectionViewCell {
     //カテゴリーの数
     var categoryCount: Int = 1
     
+    //日付と曜日が書かれている一番上のLabel
     @IBOutlet weak var tableH1Label: UILabel!
+    //内容・金額の横並びのStackView
     @IBOutlet weak var tableH2HorizontalStackView: UIStackView!
-
+    //内容・金額の詳細が書かれているCollectionView
     @IBOutlet weak var dateCategoryCollectionView: UICollectionView!
-    //その日の合計
+    //その日の合計Button
     @IBOutlet weak var dateCostSumAmountButton: UIButton!
     @IBAction func dateCostSUmAmountButtonAction(_ sender: Any) {
         var sumSubCategoryMoney: [Int] = []
+        //nill回避の[[0]]
         for subCategoryMoney in recieveSubMoney ?? [[0]] {
+            //recieveSubMoneyはサブカテゴリーの合計金額を親カテゴリー毎に持っている？
+            //例：親[食費]サブ[合計金額],親[服飾]サブ[合計金額]
+            //合計金額を初期値0としてsumSubCategoryMoney配列に追加している
             sumSubCategoryMoney.append(subCategoryMoney.reduce(0, +))
         }
+        //追加された合計金額の配列を全て足して、sumSubCategoryMoneyPerDayに代入
         let sumSubCategoryMoneyPerDay = sumSubCategoryMoney.reduce(0, +)
         dateCostSumAmountLabel.text = String(sumSubCategoryMoneyPerDay)
     }
+    //その日の支出合計Label
     @IBOutlet weak var dateCostSumAmountLabel: UILabel!
 
     override func awakeFromNib() {
@@ -76,7 +81,6 @@ extension dateDiaryCollectionViewCell: UICollectionViewDelegate, UICollectionVie
         cell.recieveSuperCategoryNamePerDay = recieveSuperCategoryName
         cell.recieveSubCategoryNamePerDay = recieveSubCategoryName
         cell.recieveSubMoneyPerDay = recieveSubMoney
-        cell.recieveCellDay = recieveCellDay
         //tablevoewの個数を渡す
         cell.recieveSubCategoryArray = recieveSubCategoryArray
         //月を渡す

@@ -126,6 +126,7 @@ class DateManager: NSObject {
     //コレクションCell用に月を取得する関数
     func getCurrentCellMonth(index: Int) -> String {
         let currentDay = calendar.date(byAdding: .day, value: index, to: biginDay)
+        //currentDayを元に現在の月を返す
         return "\(calendar.component(.month, from: currentDay!))"
     }
 }
