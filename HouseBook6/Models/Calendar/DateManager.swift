@@ -129,5 +129,11 @@ class DateManager: NSObject {
         //currentDayを元に現在の月を返す
         return "\(calendar.component(.month, from: currentDay!))"
     }
+    //コレクションCell用に年を取得する関数
+    func getCurrentCellYear(index: Int) -> String {
+        let currentDay = calendar.date(byAdding: .day, value: index, to: biginDay)
+        //currentDayを元に現在の年を返す
+        return "\(calendar.component(.year, from: currentDay!))"
+    }
 }
 

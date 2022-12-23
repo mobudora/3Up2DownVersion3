@@ -28,7 +28,7 @@ struct IncomeFromFirestore {
     let prizeIncomeSubCategoryArrayFromFirestore: [String]!
 
     //ここで受け取った情報を上記の変数に代入する
-    init(dic: [String: Any], month: String){
+    init(dic: [String: Any], month: Int){
         self.salaryMoneyFromFirestore = dic["\(month)給料SumMoney"] as! Int?
         self.salaryIncomeSubCategoryArrayFromFirestore = dic["\(month)給料配列"] as! [String]?
         self.sideBusinessMoneyFromFirestore = dic["\(month)副業SumMoney"] as! Int?

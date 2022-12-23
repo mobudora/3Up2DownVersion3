@@ -15,8 +15,8 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
     let db = Firestore.firestore()
 
     //今のホーム画面のタイトル月
-    var currentHomeTitleMonth: String?
-    var currentHomeTitleYear: String?
+    var currentHomeTitleMonth: Int?
+    var currentHomeTitleYear: Int?
 
     let calendarViewController = CalendarViewController.calendarViewControllerInstance
 
@@ -98,8 +98,8 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
         calendarViewController.currentMonth.dateFormat = "MM"
         calendarViewController.currentYear.dateFormat = "yyyy"
 
-        currentHomeTitleMonth = calendarViewController.currentMonth.string(from: calendarViewController.currentDate)
-        currentHomeTitleYear = calendarViewController.currentYear.string(from: calendarViewController.currentDate)
+        currentHomeTitleMonth = Int(calendarViewController.currentMonth.string(from: calendarViewController.currentDate)) ?? 0
+        currentHomeTitleYear = Int(calendarViewController.currentYear.string(from: calendarViewController.currentDate)) ?? 0
 
         print("最初のTableViewのデータ取得行います。")
         getIncomeCollectionDataFromFirestore()
@@ -131,9 +131,9 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
                 // コレクション内のドキュメントを取得
                 guard let data = snapshot?.data() else { return }
                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                let incomeSuperCategory = IncomeFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? "0")
+                let incomeSuperCategory = IncomeFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? 0)
                 //受け取った固定費コレクション用に固定費親カテゴリー情報の整理
-                let fixedCostSuperCategory = FixedCostFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? "0")
+                let fixedCostSuperCategory = FixedCostFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? 0)
                 
                 //初期化
                 self.incomeCollectionCellTitle = []

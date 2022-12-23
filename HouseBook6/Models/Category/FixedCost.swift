@@ -76,7 +76,7 @@ struct FixedCostFromFirestore {
     let petFixedCostSubCategoryArrayFromFirestore: [String]!
     
     //ここで受け取った情報を上記の変数に代入する
-    init(dic: [String: Any], month: String){
+    init(dic: [String: Any], month: Int){
         self.foodMoneyFromFirestore = dic["\(month)食費固定費SumMoney"] as! Int?
         self.foodFixedCostSubCategoryArrayFromFirestore = dic["\(month)食費固定費配列"] as! [String]?
         self.dailyGoodsMoneyFromFirestore = dic["\(month)日用品固定費SumMoney"] as! Int?
