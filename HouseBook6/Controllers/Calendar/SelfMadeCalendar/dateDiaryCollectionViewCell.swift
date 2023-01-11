@@ -11,6 +11,7 @@ class dateDiaryCollectionViewCell: UICollectionViewCell {
 
     //contentCellのSuperCategoryNameを受け取る変数
     var recieveSuperCategoryName: [String]?
+    //1日毎のsubcategorynameを格納している"\(month)\(day)\(superCategoryName)配列"
     var recieveSubCategoryName: [[String]]?
     var recieveSubMoney: [[Int]]?
     var recieveSubCategoryArray: [String]?
@@ -76,21 +77,11 @@ extension dateDiaryCollectionViewCell: UICollectionViewDelegate, UICollectionVie
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dateCategoryCollectionView.dequeueReusableCell(withReuseIdentifier: "DateContentCell", for: indexPath) as! DateContentCollectionViewCell
-        cell.recieveIndexPath = indexPath.row
-        //日毎の親カテゴリーNameを渡す
-        cell.recieveSuperCategoryNamePerDay = recieveSuperCategoryName
-        cell.recieveSubCategoryNamePerDay = recieveSubCategoryName
-        cell.recieveSubMoneyPerDay = recieveSubMoney
-        //tablevoewの個数を渡す
-        cell.recieveSubCategoryArray = recieveSubCategoryArray
-        //月を渡す
-        cell.currentCellMonth = currentCellMonth
-        var sumSubCategoryMoney: [Int] = []
-        for subCategoryMoney in recieveSubMoney ?? [[0]] {
-            sumSubCategoryMoney.append(subCategoryMoney.reduce(0, +))
-        }
-        let sumSubCategoryMoneyPerDay = sumSubCategoryMoney.reduce(0, +)
-        dateCostSumAmountLabel.text = String(sumSubCategoryMoneyPerDay)
+        //親カテゴリーの名前、サブカテゴリーの名前、サブカテゴリーのお金を表示するcellに渡す
+        getPerDayCategoryNameAndMoney(cell: cell, indexPath: indexPath)
+        //合計金額の計算
+        sumCategoryMoneySetUp()
+        //ここでしっかりとリロードできているのか
         print("リロードするよ")
         cell.dateContentTableView.reloadData()
         return cell
@@ -102,5 +93,24 @@ extension dateDiaryCollectionViewCell: UICollectionViewDelegate, UICollectionVie
         let cellMarginCount: CGFloat = cellCount
 
         return CGSize(width: dateCategoryCollectionView.bounds.width, height: cellMaxHeight * cellCount + cellMargin * cellMarginCount)
+    }
+    func getPerDayCategoryNameAndMoney(cell: DateContentCollectionViewCell, indexPath: IndexPath) {
+        cell.recieveIndexPath = indexPath.row
+        //日毎の親カテゴリーNameを渡す
+        cell.recieveSuperCategoryNamePerDay = recieveSuperCategoryName
+        cell.recieveSubCategoryNamePerDay = recieveSubCategoryName
+        cell.recieveSubMoneyPerDay = recieveSubMoney
+        //tablevoewの個数を渡す
+        cell.recieveSubCategoryArray = recieveSubCategoryArray
+        //月を渡す
+        cell.currentCellMonth = currentCellMonth
+    }
+    func sumCategoryMoneySetUp() {
+        var sumSubCategoryMoney: [Int] = []
+        for subCategoryMoney in recieveSubMoney ?? [[0]] {
+            sumSubCategoryMoney.append(subCategoryMoney.reduce(0, +))
+        }
+        let sumSubCategoryMoneyPerDay = sumSubCategoryMoney.reduce(0, +)
+        dateCostSumAmountLabel.text = String(sumSubCategoryMoneyPerDay)
     }
 }

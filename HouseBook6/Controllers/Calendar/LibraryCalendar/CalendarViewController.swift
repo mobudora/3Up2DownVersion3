@@ -51,8 +51,8 @@ class CalendarViewController: UIViewController {
         today = dateFormatter(day: Date())
         setupCalendarLayout()
         //LibraryCalendarがタップされた時に読み取った月と年
-        let currentCellMonth = currentMonth.string(from: currentDate)
-        let currentCellYear = currentYear.string(from: currentDate)
+//        let currentCellMonth = currentMonth.string(from: currentDate)
+//        let currentCellYear = currentYear.string(from: currentDate)
         //calendarDataManager.getDayCategoryData(currentCellMonth: currentCellMonth, currentCellYear: currentCellYear)
     }
 
@@ -110,7 +110,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         //選択されたLibraryCalendarの値をカレンダーに反映させる
         newCalendarSetUp()
         print("選択した1日の情報を取りに行くよ")
-//        calendarDataManager.getDayCategoryData(currentCellMonth: month, currentCellYear: year)
+//        calendarDataManager.getDayCategoryData(currentCellMonth: month, currentCellYear: year, cell: <#dateDiaryCollectionViewCell#>)
         performSegue(withIdentifier: "InputViewController", sender: nil)
     }
     
@@ -235,21 +235,23 @@ extension CalendarViewController:UICollectionViewDelegate,UICollectionViewDataSo
         //cell毎の日にち、月を取得してcurrentCellDay,currentCellMonthに代入する
         let currentCellDay = dateManager.getCurrentCellDay(index: indexPath.row)
         let currentCellMonth = dateManager.getCurrentCellMonth(index: indexPath.row)
+        let currentCellYear = dateManager.getCurrentCellYear(index: indexPath.row)
         //dateDiaryCollectionViewCellに値を渡す
         cell.currentCellDay = currentCellDay
         cell.currentCellMonth = currentCellMonth
         cell.tableH1Label.text = dateManager.conversionDateFormat(index: indexPath.row)
         //FirestoreのDataの読み取り
-        calendarDataManager.getDayCategoryData(currentCellMonth: cell.currentCellMonth, currentCellYear: year)
+        calendarDataManager.getDayCategoryData(currentCellMonth: cell.currentCellMonth, currentCellYear: currentCellYear, cell: cell)
         //その日のcellの数、親カテゴリーの名前、サブカテゴリーの名前、サブカテゴリーのお金、日にちを下の階層のcollectionViewに渡す
         perDayCategoryNameAndMoney(month: Int(currentCellMonth) ?? 0, day: Int(currentCellDay) ?? 0, cell: cell)
         //tableviewの個数を渡す
         cell.recieveSubCategoryArray = calendarDataManager.recieveSubCategoryArray
-        cell.dateCategoryCollectionView.reloadData()
         return cell
     }
     func perDayCategoryNameAndMoney(month: Int, day: Int, cell: dateDiaryCollectionViewCell) {
         cell.categoryCount = calendarDataManager.allDaySuperCategoryName[month][day-1].count
+        print("day\(day)")
+        print("cell.categoryCount\(cell.categoryCount)")
         cell.recieveSuperCategoryName = calendarDataManager.allDaySuperCategoryName[month][day-1]
         cell.recieveSubCategoryName = calendarDataManager.allDaySubCategoryName[month][day-1]
         cell.recieveSubMoney = calendarDataManager.allDayMoney[month][day-1]

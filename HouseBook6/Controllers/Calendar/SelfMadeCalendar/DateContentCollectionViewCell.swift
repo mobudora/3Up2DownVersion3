@@ -53,7 +53,10 @@ extension DateContentCollectionViewCell: UITableViewDelegate, UITableViewDataSou
             //MARK: print文
             //print("recieveSubCategoryNamePerDay:\(recieveSubCategoryNamePerDay)")
             //予めサブカテゴリー名前をコレクションViewControllerの数と合わせているため、親のコレクションViewControllerの数をrecieveIndexPathで表している
-            return recieveSubCategoryNamePerDay?[recieveIndexPath].count ?? 0
+            return
+            //1日分のサブカテゴリーの名前が2次元配列で格納されている
+            //recieveIndexPathで、[[ズボン、Tシャツ,ジャケット],[]]
+            recieveSubCategoryNamePerDay?[recieveIndexPath].count ?? 0
         }
     }
 

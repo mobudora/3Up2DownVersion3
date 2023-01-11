@@ -117,7 +117,7 @@ extension AddCollectionViewController: UICollectionViewDelegate, UICollectionVie
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var witchCost: Int!
-        print("選択されたときのcostMonthSuperCategory: \(costMonthSuperCategory)")
+//        print("選択されたときのcostMonthSuperCategory: \(costMonthSuperCaString(describing: tegory)")
         switch indexPath.row {
         case 0:
             witchCost = costMonthSuperCategory?.foodMonthSuperCategoryFromFirestore ?? 0
