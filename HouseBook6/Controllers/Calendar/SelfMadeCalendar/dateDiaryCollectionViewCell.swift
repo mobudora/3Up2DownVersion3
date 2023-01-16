@@ -82,8 +82,8 @@ extension dateDiaryCollectionViewCell: UICollectionViewDelegate, UICollectionVie
         //合計金額の計算
         sumCategoryMoneySetUp()
         //ここでしっかりとリロードできているのか
-        print("リロードするよ")
-        cell.dateContentTableView.reloadData()
+//        print("リロードするよ")
+//        cell.dateContentTableView.reloadData()
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

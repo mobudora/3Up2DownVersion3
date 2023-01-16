@@ -25,7 +25,7 @@ struct DayIdArrayFromFireStore {
     let daySubCategoryIdArray: [String]!
 
     //ここで受け取った情報を上記の変数に代入する
-    init(dic: [String: Any], month: Int, day: String, subCategoryName: String){
+    init(dic: [String: Any], month: String, day: String, subCategoryName: String){
         self.daySubCategoryIdArray = dic["\(month)\(day)\(subCategoryName)dayId配列"] as! [String]?
     }
 }
@@ -48,7 +48,7 @@ struct DaySubCategoryMoneyFromFireStore {
     let daySubCategoryMoney: Int!
 
     //ここで受け取った情報を上記の変数に代入する
-    init(dic: [String: Any], month: Int, day: String, subCategoryName: String, dayId: String){
+    init(dic: [String: Any], month: String, day: String, subCategoryName: String, dayId: String){
         self.daySubCategoryMoney = dic["\(month)\(day)\(subCategoryName)\(dayId)"] as! Int?
     }
 }
@@ -58,7 +58,7 @@ struct DaySuperCategoryArrayFromFireStore {
 
     let daySuperCategoryNameArray: [String]!
 
-    init(dic: [String: Any], month: Int, day: String){
+    init(dic: [String: Any], month: String, day: String){
         self.daySuperCategoryNameArray = dic["\(month)\(day)カテゴリー配列"] as! [String]?
     }
 }
@@ -68,7 +68,7 @@ struct DaySubCategoryArrayFromFireStore {
 
     let daySubCategoryNameArray: [String]!
 
-    init(dic: [String: Any], month: Int, superCategoryName: String, day: String){
+    init(dic: [String: Any], month: String, superCategoryName: String, day: String){
         self.daySubCategoryNameArray = dic["\(month)\(day)\(superCategoryName)配列"] as! [String]?
     }
 }

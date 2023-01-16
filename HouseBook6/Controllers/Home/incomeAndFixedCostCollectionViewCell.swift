@@ -553,6 +553,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
         //nilチェック
         guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let currentHomeTitleMonth = currentHomeTitleMonth else { return }
+        let stringCurrentHomeTitleMonth = String(currentHomeTitleMonth)
         guard let currentHomeTitleYear = currentHomeTitleYear else { return }
         calendarViewController.currentDay.dateFormat = "dd"
         let day = calendarViewController.currentDay.string(from: calendarViewController.currentDate)
@@ -595,7 +596,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 guard let data = snapshot?.data() else { return }
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
                                 let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: currentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
+                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
 
                                 guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
                                 guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
@@ -640,7 +641,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 guard let data = snapshot?.data() else { return }
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
                                 let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: currentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
+                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
 
                                 guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
                                 guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
@@ -685,7 +686,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 guard let data = snapshot?.data() else { return }
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
                                 let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: currentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
+                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
 
                                 guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
                                 guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
@@ -730,7 +731,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 guard let data = snapshot?.data() else { return }
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
                                 let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: currentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
+                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
 
                                 guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
                                 guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
@@ -775,7 +776,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 guard let data = snapshot?.data() else { return }
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
                                 let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: currentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
+                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
 
                                 guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
                                 guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }

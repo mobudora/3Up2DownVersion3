@@ -30,19 +30,19 @@ class CalendarDataManager {
     ]
     //日付毎に要素番号と関連してデータを持っておく
     var allDayMoney: [[[[Int]]]] = [[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
-                                  [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-]
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+                                    [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+    ]
     var allDaySubCategoryName: [[[[String]]]] = [                   [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
                                                                     [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
                                                                     [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
@@ -61,74 +61,74 @@ class CalendarDataManager {
     //cellのtableviewのcell数を決める配列(10月10日のサブカテゴリーの数が入る)
     var recieveSubCategoryArray: [String] = []
     
-//    func getDayCategoryData(currentCellMonth: String, currentCellYear: String) {
-//        print("1日分のカテゴリーデータが読み込まれるよ~~~~~~~~~~~~~~~")
-//        print("タップされた月は？？\(currentCellMonth)")
-//        print("タップされた年は？？\(currentCellYear)")
-//        guard let uid = Auth.auth().currentUser?.uid else { return }
-//        print("uid\(uid)")
-//        //タップしたところの年の情報
-//        let year = currentCellYear
-//        //引数はletだからvarに変換
-//        var currentCellMonth = currentCellMonth
-//        print("currentCellYear\(currentCellYear)")
-//        //やること：12月16日(完了していない)
-//        //1.Firestoreから読み取るyearが年を跨ぐときに読み取れない
-//        //2.yearをタップしたカレンダーの情報にする
-//        db.collection("\(year)subCategoryIncomeAndExpenditure").document(uid).getDocument { (snapshot, err) in
-//            if let err = err {
-//                print("使用金額の取得に失敗しました。\(err)")
-//                return
-//            } else {
-//                //データの受け取り
-//                guard let data = snapshot?.data() else { return }
-//                print("受け取ったdata: \(data)")
-//                //Firestoreを読み取る際に0をつけないと読み取れない
-//                switch currentCellMonth {
-//                case "1":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "2":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "3":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "4":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "5":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "6":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "7":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "8":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                case "9":
-//                    currentCellMonth = "0\(currentCellMonth)"
-//                default:
-//                    break
-//                }
-//                print("読み取った月currentCellMonth: \(currentCellMonth)")
-//                //入力されている日付を取得
-//                //dic["\(month)Day配列"]をとってきている→入力されている日付
-//                let recieveDayArray = DayArrayFromFireStore.init(dic: data, month: currentCellMonth)
-//                print("受け取った月の日付の配列recieveDayArray: \(recieveDayArray)")
-//                //nilをチェック早期リターン
-//                guard let dayArray = recieveDayArray.monthDayArray else { return }
-//                print("dayArray: \(dayArray)")
-//
-//                //日付毎のデータを取得
-//                self.dayMoneyFromFirestore(month: currentCellMonth, dayArray: dayArray, data: data)
-//
-//                print("使用金額の取得に成功して代入しました。")
-//                print("最終的にcostMonthSuperCategoryArray: \(self.costMonthSuperCategoryArray)")
-//                print("最終的にallDaySuperCategoryName: \(self.allDaySuperCategoryName)")
-//                print("最終的にallDayMoney: \(self.allDayMoney)")
-//                print("最終的にallDaySubCategoryName: \(self.allDaySubCategoryName)")
-//            }
-//        }
-//    }
+    //    func getDayCategoryData(currentCellMonth: String, currentCellYear: String) {
+    //        print("1日分のカテゴリーデータが読み込まれるよ~~~~~~~~~~~~~~~")
+    //        print("タップされた月は？？\(currentCellMonth)")
+    //        print("タップされた年は？？\(currentCellYear)")
+    //        guard let uid = Auth.auth().currentUser?.uid else { return }
+    //        print("uid\(uid)")
+    //        //タップしたところの年の情報
+    //        let year = currentCellYear
+    //        //引数はletだからvarに変換
+    //        var currentCellMonth = currentCellMonth
+    //        print("currentCellYear\(currentCellYear)")
+    //        //やること：12月16日(完了していない)
+    //        //1.Firestoreから読み取るyearが年を跨ぐときに読み取れない
+    //        //2.yearをタップしたカレンダーの情報にする
+    //        db.collection("\(year)subCategoryIncomeAndExpenditure").document(uid).getDocument { (snapshot, err) in
+    //            if let err = err {
+    //                print("使用金額の取得に失敗しました。\(err)")
+    //                return
+    //            } else {
+    //                //データの受け取り
+    //                guard let data = snapshot?.data() else { return }
+    //                print("受け取ったdata: \(data)")
+    //                //Firestoreを読み取る際に0をつけないと読み取れない
+    //                switch currentCellMonth {
+    //                case "1":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "2":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "3":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "4":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "5":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "6":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "7":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "8":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                case "9":
+    //                    currentCellMonth = "0\(currentCellMonth)"
+    //                default:
+    //                    break
+    //                }
+    //                print("読み取った月currentCellMonth: \(currentCellMonth)")
+    //                //入力されている日付を取得
+    //                //dic["\(month)Day配列"]をとってきている→入力されている日付
+    //                let recieveDayArray = DayArrayFromFireStore.init(dic: data, month: currentCellMonth)
+    //                print("受け取った月の日付の配列recieveDayArray: \(recieveDayArray)")
+    //                //nilをチェック早期リターン
+    //                guard let dayArray = recieveDayArray.monthDayArray else { return }
+    //                print("dayArray: \(dayArray)")
+    //
+    //                //日付毎のデータを取得
+    //                self.dayMoneyFromFirestore(month: currentCellMonth, dayArray: dayArray, data: data)
+    //
+    //                print("使用金額の取得に成功して代入しました。")
+    //                print("最終的にcostMonthSuperCategoryArray: \(self.costMonthSuperCategoryArray)")
+    //                print("最終的にallDaySuperCategoryName: \(self.allDaySuperCategoryName)")
+    //                print("最終的にallDayMoney: \(self.allDayMoney)")
+    //                print("最終的にallDaySubCategoryName: \(self.allDaySubCategoryName)")
+    //            }
+    //        }
+    //    }
     
     func getDayCategoryData(currentCellMonth: String, currentCellYear: String, cell: dateDiaryCollectionViewCell) {
-        print("1日分のカテゴリーデータが読み込まれるよ~~~~~~~~~~~~~~~")
+        print("🔶1日分のカテゴリーデータが読み込まれるよ")
         print("タップされた月は？？\(currentCellMonth)")
         print("タップされた年は？？\(currentCellYear)")
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -137,7 +137,6 @@ class CalendarDataManager {
         let year = currentCellYear
         //引数はletだからvarに変換
         var currentCellMonth = currentCellMonth
-        print("currentCellYear\(currentCellYear)")
         //やること：12月16日(完了していない)
         //1.Firestoreから読み取るyearが年を跨ぐときに読み取れない
         //2.yearをタップしたカレンダーの情報にする
@@ -181,18 +180,19 @@ class CalendarDataManager {
                 //その月のday配列
                 guard let dayArray = recieveDayArray.monthDayArray else { return }
                 print("dayArray: \(dayArray)")
-
+                
                 //日付毎のデータを取得
                 self.dayMoneyFromFirestore(month: currentCellMonth, dayArray: dayArray, data: data)
-
-                print("使用金額の取得に成功して代入しました。")
-                print("最終的にcostMonthSuperCategoryArray: \(self.costMonthSuperCategoryArray)")
-                print("最終的にallDaySuperCategoryName: \(self.allDaySuperCategoryName)")
-                print("最終的にallDayMoney: \(self.allDayMoney)")
-                print("最終的にallDaySubCategoryName: \(self.allDaySubCategoryName)")
-                //最後にリロード必要なのか？？
-                cell.dateCategoryCollectionView.reloadData()
-
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+                    print("使用金額の取得に成功して代入しました。")
+                    print("最終的にcostMonthSuperCategoryArray: \(self.costMonthSuperCategoryArray)")
+                    print("最終的にallDaySuperCategoryName: \(self.allDaySuperCategoryName)")
+                    print("最終的にallDayMoney: \(self.allDayMoney)")
+                    print("最終的にallDaySubCategoryName: \(self.allDaySubCategoryName)")
+                    //最後にリロード必要なのか？？
+                    cell.dateCategoryCollectionView.reloadData()
+                }
             }
         }
     }
@@ -200,48 +200,52 @@ class CalendarDataManager {
     //dayArrayは入力された日付が格納されている
     //(例：10月)の親のカテゴリーの名前の配列をallDaySuperCategoryNameに格納する
     func dayMoneyFromFirestore(month: String, dayArray: [String], data: [String : Any]) {
-        guard let intMonth = Int(month) else { return }
         for day in dayArray {
             //支出の親カテゴリー配列の初期化？
             costMonthSuperCategoryArray = []
-            perDayAndMonthGetSuperCategoryName(data: data, intMonth: intMonth, day: day, dayNum: Int(day) ?? 0)
+            perDayAndMonthGetSuperCategoryName(data: data, month: month, day: day, dayNum: Int(day) ?? 0)
         }
     }
-    func perDayAndMonthGetSuperCategoryName(data: [String: Any], intMonth: Int, day: String, dayNum: Int) {
+    func perDayAndMonthGetSuperCategoryName(data: [String: Any], month: String, day: String, dayNum: Int) {
+        //配列で使うために01のStringを1に変換
+        //Stringをintに変換したら01の0が消える
+        guard let intMonth = Int(month) else { return }
         //親カテゴリーの名前をゲットする
         //tableviewのcellの数を決めるための関数
-        getSuperCategoryName(data: data, intMonth: intMonth, day: day, dayNum: dayNum)
+        getSuperCategoryName(data: data, month: month, day: day, dayNum: dayNum)
         //すでに入っているallDaySuperCategoryNameを取り除いて重複しないように追加する
         allDaySuperCategoryName[intMonth].remove(at: dayNum-1)
         //新しいallDaySuperCategoryNameを追加
         allDaySuperCategoryName[intMonth].insert(costMonthSuperCategoryArray, at: dayNum-1)
     }
-    func getSuperCategoryName(data: [String : Any], intMonth: Int, day: String, dayNum: Int) {
+    func getSuperCategoryName(data: [String : Any], month: String, day: String, dayNum: Int) {
+        guard let intMonth = Int(month) else { return }
         //重複を避けるために初期化
         allDayMoney[intMonth][dayNum - 1] = []
         allDaySubCategoryName[intMonth][dayNum - 1] = []
         //(例：10月10日)に入っている親カテゴリー(服飾)名前配列を取得
-        let recieveDaySuperCategoryNameArray = DaySuperCategoryArrayFromFireStore.init(dic: data, month: intMonth, day: day)
+        let recieveDaySuperCategoryNameArray = DaySuperCategoryArrayFromFireStore.init(dic: data, month: month, day: day)
+        print("🔷recieveDaySuperCategoryNameArray\(recieveDaySuperCategoryNameArray)")
         guard let daySuperCategoryNameArray = recieveDaySuperCategoryNameArray.daySuperCategoryNameArray else { return }
-        print("(例：\(intMonth)月\(day)日)に入っている親カテゴリー名前daySuperCategoryNameArray: \(daySuperCategoryNameArray)")
+        print("(例：\(month)月\(day)日)に入っている親カテゴリー名前daySuperCategoryNameArray: \(daySuperCategoryNameArray)")
         for daySuperCaegoryName in daySuperCategoryNameArray {
             //親カテゴリー(服飾)名前を元に(例：10月10日)に入っているサブカテゴリー名前配列を取得
-            let recieveDaySubCategoryArray = DaySubCategoryArrayFromFireStore.init(dic: data, month: intMonth, superCategoryName: daySuperCaegoryName, day: day)
+            let recieveDaySubCategoryArray = DaySubCategoryArrayFromFireStore.init(dic: data, month: month, superCategoryName: daySuperCaegoryName, day: day)
             guard let daySubCategoryNameArray = recieveDaySubCategoryArray.daySubCategoryNameArray else { return }
             print("(例：10月10日)に入っているサブカテゴリー名前配列daySubCategoryNameArray: \(daySubCategoryNameArray)")
             //サブカテゴリーの個数を格納する→tableviewの個数になる
             //allDaySubCategoryNameにFirestoreからとってきたサブカテゴリーの名前が入る(今回は10月10日の服飾のサブカテゴリー)
-            allDaySubCategoryName[intMonth][dayNum - 1].append(daySubCategoryNameArray)
-            print("重複を整える前のallDaySubCategoryName:\(allDaySubCategoryName)")
+            self.allDaySubCategoryName[intMonth][dayNum - 1].append(daySubCategoryNameArray)
+            print("重複を整える前のallDaySubCategoryName:\(self.allDaySubCategoryName)")
             //NSOrderedSetで重複した値を削除する
-            let orderedSet:NSOrderedSet = NSOrderedSet(array: allDaySubCategoryName[intMonth][dayNum - 1])
+            let orderedSet:NSOrderedSet = NSOrderedSet(array: self.allDaySubCategoryName[intMonth][dayNum - 1])
             allDaySubCategoryName[intMonth][dayNum - 1] = orderedSet.array as! [[String]]
-
+            
             print("綺麗に重複を整理したallDaySubCategoryName:\(allDaySubCategoryName)")
             //tableviewのcellの数を決めるために10月10日のサブカテゴリーをrecieveSubCategoryArrayに追加する
             recieveSubCategoryArray.append(contentsOf: daySubCategoryNameArray)
             //お金をFirestoreにとりにいく
-            getDayMoney(daySubCategoryNameArray: daySubCategoryNameArray, data: data, month: intMonth, day: day, dayNum: dayNum)
+            getDayMoney(daySubCategoryNameArray: daySubCategoryNameArray, data: data, month: month, day: day, dayNum: dayNum)
             switch daySuperCaegoryName {
             case "食費":
                 // ???: daySubCategoryArrayは何のためにある？
@@ -288,13 +292,14 @@ class CalendarDataManager {
                 costMonthSuperCategoryArray.append("ペット")
             default:
                 break
-
+                
             }
         }
     }
     //親カテゴリーによって格納する配列を変えていく
     //10月10日のお金の配列をとりに行く
-    func getDayMoney(daySubCategoryNameArray: [String], data: [String : Any], month: Int, day: String, dayNum: Int) {
+    func getDayMoney(daySubCategoryNameArray: [String], data: [String : Any], month: String, day: String, dayNum: Int) {
+        guard let intMonth = Int(month) else { return }
         print("\(month)月\(day)日のサブカテゴリー名前配列daySubCategoryNameArray:\(daySubCategoryNameArray)")
         var dayMoneyArray: [Int] = []
         for daySubCaegoryName in daySubCategoryNameArray {
@@ -318,14 +323,14 @@ class CalendarDataManager {
         print("\(month)月\(day)日のdayMoneyArray:\(dayMoneyArray)")
         //1~31日までのデータを格納していく　配列に対応するために-1
         //サブカテゴリーの名前配列と一緒の数にする
-        if allDayMoney[month][dayNum - 1].count < allDaySubCategoryName[month][dayNum - 1].count {
-            allDayMoney[month][dayNum - 1].append(dayMoneyArray)
+        if allDayMoney[intMonth][dayNum - 1].count < allDaySubCategoryName[intMonth][dayNum - 1].count {
+            allDayMoney[intMonth][dayNum - 1].append(dayMoneyArray)
             
-            print("allDaySubCategoryName[intMonth][dayNum - 1].count:\(allDaySubCategoryName[month][dayNum - 1].count)")
-            print("allDayMoney[intMonth][dayNum - 1].count:\(allDayMoney[month][dayNum - 1].count)")
+            print("allDaySubCategoryName[intMonth][dayNum - 1].count:\(allDaySubCategoryName[intMonth][dayNum - 1].count)")
+            print("allDayMoney[intMonth][dayNum - 1].count:\(allDayMoney[intMonth][dayNum - 1].count)")
         }
         
         print("代入した後allDayMoney:\(allDayMoney)")
     }
-
+    
 }

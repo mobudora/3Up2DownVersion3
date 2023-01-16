@@ -225,11 +225,11 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
 //MARK: SelfMadeCalendar
 //Calendarの下にあるCollectionCellのdelegate
 extension CalendarViewController:UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     //月毎のcellの数を返す→横にコレクションをその数だけ表示させる
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return dateManager.daysAcquisition()
     }
+    //FirestoreのDataの読み取りと反映
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dateDiaryCollectionView.dequeueReusableCell(withReuseIdentifier: "CustomCell", for: indexPath) as! dateDiaryCollectionViewCell
         //cell毎の日にち、月を取得してcurrentCellDay,currentCellMonthに代入する
@@ -242,10 +242,10 @@ extension CalendarViewController:UICollectionViewDelegate,UICollectionViewDataSo
         cell.tableH1Label.text = dateManager.conversionDateFormat(index: indexPath.row)
         //FirestoreのDataの読み取り
         calendarDataManager.getDayCategoryData(currentCellMonth: cell.currentCellMonth, currentCellYear: currentCellYear, cell: cell)
-        //その日のcellの数、親カテゴリーの名前、サブカテゴリーの名前、サブカテゴリーのお金、日にちを下の階層のcollectionViewに渡す
-        perDayCategoryNameAndMoney(month: Int(currentCellMonth) ?? 0, day: Int(currentCellDay) ?? 0, cell: cell)
-        //tableviewの個数を渡す
-        cell.recieveSubCategoryArray = calendarDataManager.recieveSubCategoryArray
+        //その日のcellの数、親カテゴリーの名前、サブカテゴリーの名前、サブカテゴリーのお金、日にちを下の階層のdateDiaryCollectionViewCellに渡す
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+            self.perDayCategoryNameAndMoney(month: Int(currentCellMonth) ?? 0, day: Int(currentCellDay) ?? 0, cell: cell)
+        }
         return cell
     }
     func perDayCategoryNameAndMoney(month: Int, day: Int, cell: dateDiaryCollectionViewCell) {
@@ -255,6 +255,8 @@ extension CalendarViewController:UICollectionViewDelegate,UICollectionViewDataSo
         cell.recieveSuperCategoryName = calendarDataManager.allDaySuperCategoryName[month][day-1]
         cell.recieveSubCategoryName = calendarDataManager.allDaySubCategoryName[month][day-1]
         cell.recieveSubMoney = calendarDataManager.allDayMoney[month][day-1]
+        //tableviewの個数を渡す
+        cell.recieveSubCategoryArray = calendarDataManager.recieveSubCategoryArray
     }
                                                             
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

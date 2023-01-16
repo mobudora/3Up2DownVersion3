@@ -70,7 +70,7 @@ extension DateContentCollectionViewCell: UITableViewDelegate, UITableViewDataSou
             } else {
                 //MARK: print文
 //                print("recieveSuperCategoryNamePerDay: \(recieveSuperCategoryNamePerDay)")
-                cell.sumCategoryImageView.image = SuperCategoryIcon.CostIcon[(self.recieveSuperCategoryNamePerDay?[recieveIndexPath])!] ?? UIImage(systemName: "questionmark.square")
+                cell.sumCategoryImageView.image = SuperCategoryIcon.CostIcon[(self.recieveSuperCategoryNamePerDay?[recieveIndexPath]) ?? ""] ?? UIImage(systemName: "questionmark.square")
             }
             guard let sumSubMoney = recieveSubMoneyPerDay?[recieveIndexPath].reduce(0, +) else { return cell }
             cell.sumMoneyLabel.text = String(sumSubMoney)
