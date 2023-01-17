@@ -184,15 +184,17 @@ class CalendarDataManager {
                 //日付毎のデータを取得
                 self.dayMoneyFromFirestore(month: currentCellMonth, dayArray: dayArray, data: data)
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                    print("使用金額の取得に成功して代入しました。")
-                    print("最終的にcostMonthSuperCategoryArray: \(self.costMonthSuperCategoryArray)")
-                    print("最終的にallDaySuperCategoryName: \(self.allDaySuperCategoryName)")
-                    print("最終的にallDayMoney: \(self.allDayMoney)")
-                    print("最終的にallDaySubCategoryName: \(self.allDaySubCategoryName)")
-                    //最後にリロード必要なのか？？
-                    cell.dateCategoryCollectionView.reloadData()
-                }
+//                print("🟥待ってるよ")
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+//                    print("🟥1秒経ったよ")
+//                    print("使用金額の取得に成功して代入しました。")
+//                    print("最終的にcostMonthSuperCategoryArray: \(self.costMonthSuperCategoryArray)")
+//                    print("最終的にallDaySuperCategoryName: \(self.allDaySuperCategoryName)")
+//                    print("最終的にallDayMoney: \(self.allDayMoney)")
+//                    print("最終的にallDaySubCategoryName: \(self.allDaySubCategoryName)")
+//                    //MARK: リロード
+////                    cell.dateCategoryCollectionView.reloadData()
+//                }
             }
         }
     }
@@ -214,9 +216,9 @@ class CalendarDataManager {
         //tableviewのcellの数を決めるための関数
         getSuperCategoryName(data: data, month: month, day: day, dayNum: dayNum)
         //すでに入っているallDaySuperCategoryNameを取り除いて重複しないように追加する
-        allDaySuperCategoryName[intMonth].remove(at: dayNum-1)
+        allDaySuperCategoryName[intMonth - 1].remove(at: dayNum-1)
         //新しいallDaySuperCategoryNameを追加
-        allDaySuperCategoryName[intMonth].insert(costMonthSuperCategoryArray, at: dayNum-1)
+        allDaySuperCategoryName[intMonth - 1].insert(costMonthSuperCategoryArray, at: dayNum-1)
     }
     func getSuperCategoryName(data: [String : Any], month: String, day: String, dayNum: Int) {
         guard let intMonth = Int(month) else { return }
@@ -235,11 +237,11 @@ class CalendarDataManager {
             print("(例：10月10日)に入っているサブカテゴリー名前配列daySubCategoryNameArray: \(daySubCategoryNameArray)")
             //サブカテゴリーの個数を格納する→tableviewの個数になる
             //allDaySubCategoryNameにFirestoreからとってきたサブカテゴリーの名前が入る(今回は10月10日の服飾のサブカテゴリー)
-            self.allDaySubCategoryName[intMonth][dayNum - 1].append(daySubCategoryNameArray)
+            self.allDaySubCategoryName[intMonth - 1][dayNum - 1].append(daySubCategoryNameArray)
             print("重複を整える前のallDaySubCategoryName:\(self.allDaySubCategoryName)")
             //NSOrderedSetで重複した値を削除する
-            let orderedSet:NSOrderedSet = NSOrderedSet(array: self.allDaySubCategoryName[intMonth][dayNum - 1])
-            allDaySubCategoryName[intMonth][dayNum - 1] = orderedSet.array as! [[String]]
+            let orderedSet:NSOrderedSet = NSOrderedSet(array: self.allDaySubCategoryName[intMonth - 1][dayNum - 1])
+            allDaySubCategoryName[intMonth - 1][dayNum - 1] = orderedSet.array as! [[String]]
             
             print("綺麗に重複を整理したallDaySubCategoryName:\(allDaySubCategoryName)")
             //tableviewのcellの数を決めるために10月10日のサブカテゴリーをrecieveSubCategoryArrayに追加する
@@ -323,11 +325,11 @@ class CalendarDataManager {
         print("\(month)月\(day)日のdayMoneyArray:\(dayMoneyArray)")
         //1~31日までのデータを格納していく　配列に対応するために-1
         //サブカテゴリーの名前配列と一緒の数にする
-        if allDayMoney[intMonth][dayNum - 1].count < allDaySubCategoryName[intMonth][dayNum - 1].count {
-            allDayMoney[intMonth][dayNum - 1].append(dayMoneyArray)
+        if allDayMoney[intMonth - 1][dayNum - 1].count < allDaySubCategoryName[intMonth - 1][dayNum - 1].count {
+            allDayMoney[intMonth - 1][dayNum - 1].append(dayMoneyArray)
             
-            print("allDaySubCategoryName[intMonth][dayNum - 1].count:\(allDaySubCategoryName[intMonth][dayNum - 1].count)")
-            print("allDayMoney[intMonth][dayNum - 1].count:\(allDayMoney[intMonth][dayNum - 1].count)")
+            print("allDaySubCategoryName[intMonth][dayNum - 1].count:\(allDaySubCategoryName[intMonth - 1][dayNum - 1].count)")
+            print("allDayMoney[intMonth][dayNum - 1].count:\(allDayMoney[intMonth - 1][dayNum - 1].count)")
         }
         
         print("代入した後allDayMoney:\(allDayMoney)")

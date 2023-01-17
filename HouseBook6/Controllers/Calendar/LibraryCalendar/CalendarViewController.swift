@@ -243,18 +243,24 @@ extension CalendarViewController:UICollectionViewDelegate,UICollectionViewDataSo
         //FirestoreのDataの読み取り
         calendarDataManager.getDayCategoryData(currentCellMonth: cell.currentCellMonth, currentCellYear: currentCellYear, cell: cell)
         //その日のcellの数、親カテゴリーの名前、サブカテゴリーの名前、サブカテゴリーのお金、日にちを下の階層のdateDiaryCollectionViewCellに渡す
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
+        print("🔷Firestoreからの情報の読み取り後待ってるよ")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            print("🔶下の階層に渡す")
             self.perDayCategoryNameAndMoney(month: Int(currentCellMonth) ?? 0, day: Int(currentCellDay) ?? 0, cell: cell)
+            //MARK: リロード
+            cell.dateCategoryCollectionView.reloadData()
+            //MARK: 合計が0にならないのを0にする
+            cell.sumCategoryMoneySetUp()
         }
         return cell
     }
     func perDayCategoryNameAndMoney(month: Int, day: Int, cell: dateDiaryCollectionViewCell) {
-        cell.categoryCount = calendarDataManager.allDaySuperCategoryName[month][day-1].count
+        cell.categoryCount = calendarDataManager.allDaySuperCategoryName[month - 1][day - 1].count
         print("day\(day)")
         print("cell.categoryCount\(cell.categoryCount)")
-        cell.recieveSuperCategoryName = calendarDataManager.allDaySuperCategoryName[month][day-1]
-        cell.recieveSubCategoryName = calendarDataManager.allDaySubCategoryName[month][day-1]
-        cell.recieveSubMoney = calendarDataManager.allDayMoney[month][day-1]
+        cell.recieveSuperCategoryName = calendarDataManager.allDaySuperCategoryName[month - 1][day - 1]
+        cell.recieveSubCategoryName = calendarDataManager.allDaySubCategoryName[month - 1][day - 1]
+        cell.recieveSubMoney = calendarDataManager.allDayMoney[month - 1][day - 1]
         //tableviewの個数を渡す
         cell.recieveSubCategoryArray = calendarDataManager.recieveSubCategoryArray
     }

@@ -60,7 +60,7 @@ class dateDiaryCollectionViewCell: UICollectionViewCell {
         dateCategoryCollectionView.dataSource = self
 
         dateCategoryCollectionView.register(UINib(nibName: "DateContentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "DateContentCell")
-        
+        print("🔷categoryCollectionViewを通ったよ")
     }
 
 }
@@ -81,9 +81,9 @@ extension dateDiaryCollectionViewCell: UICollectionViewDelegate, UICollectionVie
         getPerDayCategoryNameAndMoney(cell: cell, indexPath: indexPath)
         //合計金額の計算
         sumCategoryMoneySetUp()
-        //ここでしっかりとリロードできているのか
-//        print("リロードするよ")
-//        cell.dateContentTableView.reloadData()
+        //MARK: リロード
+        print("🟥一番下の層をリロード")
+        cell.dateContentTableView.reloadData()
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

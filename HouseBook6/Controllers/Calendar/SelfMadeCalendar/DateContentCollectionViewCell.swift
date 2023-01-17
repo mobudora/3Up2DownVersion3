@@ -65,26 +65,16 @@ extension DateContentCollectionViewCell: UITableViewDelegate, UITableViewDataSou
         case 0:
             print("イメージ合計更新します")
             let cell = tableView.dequeueReusableCell(withIdentifier: "sumCategoryCell", for: indexPath) as! DateCategoryAndSumMoneyTableViewCell
-            if self.recieveSuperCategoryNamePerDay == [] {
-                cell.sumCategoryImageView.image = UIImage(systemName: "questionmark.square")
-            } else {
-                //MARK: print文
-//                print("recieveSuperCategoryNamePerDay: \(recieveSuperCategoryNamePerDay)")
-                cell.sumCategoryImageView.image = SuperCategoryIcon.CostIcon[(self.recieveSuperCategoryNamePerDay?[recieveIndexPath]) ?? ""] ?? UIImage(systemName: "questionmark.square")
-            }
             guard let sumSubMoney = recieveSubMoneyPerDay?[recieveIndexPath].reduce(0, +) else { return cell }
             cell.sumMoneyLabel.text = String(sumSubMoney)
+            cell.sumCategoryImageView.image = SuperCategoryIcon.CostIcon[(self.recieveSuperCategoryNamePerDay?[recieveIndexPath]) ?? ""] ?? UIImage(systemName: "questionmark.square")
             return cell
         default:
             print("カテゴリー内更新します")
             let cell = tableView.dequeueReusableCell(withIdentifier: "cotegoryMoneyCell", for: indexPath) as! CategoryMoneyTableViewCell
-            //MARK: print文
-            //print("recieveSubCategoryNamePerDay:\(recieveSubCategoryNamePerDay)")
-            cell.subCategoryNameLabel.text = recieveSubCategoryNamePerDay?[recieveIndexPath][indexPath.row]
-            //MARK: print文
-            //print("recieveSubMoneyPerDay:\(recieveSubMoneyPerDay)")
             guard let stringSubMoney = recieveSubMoneyPerDay?[recieveIndexPath][indexPath.row] else { return cell }
             cell.subCategoryMoneyLabel.text = String(stringSubMoney)
+            cell.subCategoryNameLabel.text = recieveSubCategoryNamePerDay?[recieveIndexPath][indexPath.row]
             return cell
         }
     }
