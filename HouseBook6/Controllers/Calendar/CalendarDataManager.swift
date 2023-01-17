@@ -237,12 +237,15 @@ class CalendarDataManager {
             print("(例：10月10日)に入っているサブカテゴリー名前配列daySubCategoryNameArray: \(daySubCategoryNameArray)")
             //サブカテゴリーの個数を格納する→tableviewの個数になる
             //allDaySubCategoryNameにFirestoreからとってきたサブカテゴリーの名前が入る(今回は10月10日の服飾のサブカテゴリー)
-            self.allDaySubCategoryName[intMonth - 1][dayNum - 1].append(daySubCategoryNameArray)
+            if self.allDaySubCategoryName[intMonth - 1][dayNum - 1] != [] {
+                self.allDaySubCategoryName[intMonth - 1][dayNum - 1].remove(at: 0)
+            }
             print("重複を整える前のallDaySubCategoryName:\(self.allDaySubCategoryName)")
-            //NSOrderedSetで重複した値を削除する
-            let orderedSet:NSOrderedSet = NSOrderedSet(array: self.allDaySubCategoryName[intMonth - 1][dayNum - 1])
-            allDaySubCategoryName[intMonth - 1][dayNum - 1] = orderedSet.array as! [[String]]
+            self.allDaySubCategoryName[intMonth - 1][dayNum - 1].append(daySubCategoryNameArray)
             
+            //NSOrderedSetで重複した値を削除する
+//            let orderedSet:NSOrderedSet = NSOrderedSet(array: self.allDaySubCategoryName[intMonth - 1][dayNum - 1])
+//            allDaySubCategoryName[intMonth - 1][dayNum - 1] = orderedSet.array as! [[String]]
             print("綺麗に重複を整理したallDaySubCategoryName:\(allDaySubCategoryName)")
             //tableviewのcellの数を決めるために10月10日のサブカテゴリーをrecieveSubCategoryArrayに追加する
             recieveSubCategoryArray.append(contentsOf: daySubCategoryNameArray)
@@ -309,28 +312,56 @@ class CalendarDataManager {
             let recieveDaySubCategoryId = DayIdArrayFromFireStore.init(dic: data, month: month, day: day, subCategoryName: daySubCaegoryName)
             guard let daySubCategoryIdArray = recieveDaySubCategoryId.daySubCategoryIdArray else { return }
             print("\(month)月\(day)日のdaySubCategoryIdArray: \(daySubCategoryIdArray)")
-            for dayId in daySubCategoryIdArray {
-                //dayId配列をもとに日にち毎のお金を取得
-                let recieveDaySubCategoryMoney = DaySubCategoryMoneyFromFireStore.init(dic: data, month: month, day: day, subCategoryName: daySubCaegoryName, dayId: dayId)
-                guard let dayMoney = recieveDaySubCategoryMoney.daySubCategoryMoney else { return }
-                //サブカテゴリーをどんどん入れていい理由は表示するときに親カテゴリーで分けられているからそのまま配列の順番で表示する
-                //サブカテゴリー
-                print("daySubCaegoryName: \(daySubCaegoryName)")
+            //重複したサブカテゴリーの料金を足して1つにする
+            if daySubCategoryIdArray.count >= 2 {
+                var dayMoneyStock: Int = 0
+                for dayId in daySubCategoryIdArray {
+                    //dayId配列をもとに日にち毎のお金を取得
+                    let recieveDaySubCategoryMoney = DaySubCategoryMoneyFromFireStore.init(dic: data, month: month, day: day, subCategoryName: daySubCaegoryName, dayId: dayId)
+                    guard let dayMoney = recieveDaySubCategoryMoney.daySubCategoryMoney else { return }
+                    //サブカテゴリーをどんどん入れていい理由は表示するときに親カテゴリーで分けられているからそのまま配列の順番で表示する
+                    //サブカテゴリー
+                    print("daySubCaegoryName: \(daySubCaegoryName)")
+                    dayMoneyStock += dayMoney
+                    //サブカテゴリーに対応するお金
+                    print("dayMoney:\(dayMoney)")
+                    print("dayMoneyStock:\(dayMoneyStock)")
+                }
                 //日にち毎のお金を格納
-                dayMoneyArray.append(dayMoney)
-                //サブカテゴリーに対応するお金
-                print("dayMoney:\(dayMoney)")
+                dayMoneyArray.append(dayMoneyStock)
+            } else {
+                for dayId in daySubCategoryIdArray {
+                    //dayId配列をもとに日にち毎のお金を取得
+                    let recieveDaySubCategoryMoney = DaySubCategoryMoneyFromFireStore.init(dic: data, month: month, day: day, subCategoryName: daySubCaegoryName, dayId: dayId)
+                    guard let dayMoney = recieveDaySubCategoryMoney.daySubCategoryMoney else { return }
+                    //サブカテゴリーをどんどん入れていい理由は表示するときに親カテゴリーで分けられているからそのまま配列の順番で表示する
+                    //サブカテゴリー
+                    print("daySubCaegoryName: \(daySubCaegoryName)")
+                    //サブカテゴリーに対応するお金
+                    print("dayMoney:\(dayMoney)")
+                    //日にち毎のお金を格納
+                    dayMoneyArray.append(dayMoney)
+                }
             }
         }
         print("\(month)月\(day)日のdayMoneyArray:\(dayMoneyArray)")
+        print("🟥allDaySubCategoryName[intMonth][dayNum - 1]:\(allDaySubCategoryName[intMonth - 1][dayNum - 1])")
+        print("🟥allDayMoney[intMonth][dayNum - 1]:\(allDayMoney[intMonth - 1][dayNum - 1])")
+        if self.allDayMoney[intMonth - 1][dayNum - 1] != [] {
+            self.allDayMoney[intMonth - 1][dayNum - 1].remove(at: 0)
+        }
+        allDayMoney[intMonth - 1][dayNum - 1].append(dayMoneyArray)
         //1~31日までのデータを格納していく　配列に対応するために-1
         //サブカテゴリーの名前配列と一緒の数にする
-        if allDayMoney[intMonth - 1][dayNum - 1].count < allDaySubCategoryName[intMonth - 1][dayNum - 1].count {
-            allDayMoney[intMonth - 1][dayNum - 1].append(dayMoneyArray)
-            
-            print("allDaySubCategoryName[intMonth][dayNum - 1].count:\(allDaySubCategoryName[intMonth - 1][dayNum - 1].count)")
-            print("allDayMoney[intMonth][dayNum - 1].count:\(allDayMoney[intMonth - 1][dayNum - 1].count)")
-        }
+//        allDaySubCategoryName[intMonth - 1][dayNum - 1].forEach { subCategoryNameArray in
+//            print("🔷\(subCategoryNameArray.count)")
+//            print("🔷\(allDayMoney[intMonth - 1][dayNum - 1][subCategoryNameArray.count - 1].count)")
+//            print("🔷\(subCategoryNameArray.count)")
+//            if allDayMoney[intMonth - 1][dayNum - 1][subCategoryNameArray.count - 1].count < subCategoryNameArray.count {
+//                allDayMoney[intMonth - 1][dayNum - 1].append(dayMoneyArray)
+//            }
+//        }
+        
         
         print("代入した後allDayMoney:\(allDayMoney)")
     }
