@@ -120,7 +120,6 @@ class CalendarDataManager {
                 //その月のday配列
                 guard let dayArray = recieveDayArray.monthDayArray else { return }
                 print("dayArray: \(dayArray)")
-                
                 //日付毎のデータを取得
                 self.dayMoneyFromFirestore(month: currentCellMonth, dayArray: dayArray, data: data)
             }

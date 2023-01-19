@@ -109,8 +109,6 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
         calendarSetUp(date: date)
         //選択されたLibraryCalendarの値をカレンダーに反映させる
         newCalendarSetUp()
-        print("選択した1日の情報を取りに行くよ")
-//        calendarDataManager.getDayCategoryData(currentCellMonth: month, currentCellYear: year, cell: <#dateDiaryCollectionViewCell#>)
         performSegue(withIdentifier: "InputViewController", sender: nil)
     }
     

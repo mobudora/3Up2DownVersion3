@@ -439,7 +439,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
         
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //収入と固定費のコレクションCell
+        //MARK: 収入と固定費のコレクションCell
         if collectionView.tag == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "incomeAndFixedCostCell", for: indexPath) as! incomeAndFixedCostCollectionViewCell
             //コレクションビューの題名を入れている配列をラベルに表示

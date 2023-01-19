@@ -130,10 +130,15 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
             } else {
                 // コレクション内のドキュメントを取得
                 guard let data = snapshot?.data() else { return }
+                print("🟩data\(data)")
                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
                 let incomeSuperCategory = IncomeFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? 0)
+                print("🔶self.currentHomeTitleMonth\(self.currentHomeTitleMonth)")
                 //受け取った固定費コレクション用に固定費親カテゴリー情報の整理
                 let fixedCostSuperCategory = FixedCostFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? 0)
+                
+                print("🔷incomeSuperCategory\(incomeSuperCategory)")
+                print("🔷fixedCostSuperCategory\(fixedCostSuperCategory)")
                 
                 //初期化
                 self.incomeCollectionCellTitle = []
@@ -144,6 +149,7 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
                 self.fixedCostCollectionCellImage = []
                 self.fixedCostCollectionCellMoney = []
 
+                print("🟥incomeSuperCategory.salaryMoneyFromFirestore\(incomeSuperCategory.salaryMoneyFromFirestore)")
                 //収入と固定費TableView用の情報を取得
                 //給料の金額が入っていたら、タイトルに給料と金額を代入する
                 if incomeSuperCategory.salaryMoneyFromFirestore != nil {
