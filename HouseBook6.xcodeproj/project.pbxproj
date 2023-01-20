@@ -508,8 +508,8 @@
 			isa = PBXGroup;
 			children = (
 				86C4F11427F2D5F100E1AB43 /* DetailSetting.storyboard */,
-				AB7D892528C1BB07007B2CCB /* ExternalLink */,
 				AB7D892428C1BAFE007B2CCB /* InternalLink */,
+				AB7D892528C1BB07007B2CCB /* ExternalLink */,
 			);
 			path = Detail;
 			sourceTree = "<group>";

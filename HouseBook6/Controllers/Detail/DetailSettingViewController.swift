@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import StoreKit
+import PKHUD
 
 class DetailSettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,8 +17,8 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
     
     let viewSettingTextCell = ["テーマ","総資産表示"]
     let viewSettingImgCell = ["paintpalette","cylinder.split.1x2"]
-    let generalSettingTextCell = ["ログアウト","アカウント","バックアップと復元","記入通知お知らせ時間","カテゴリ追加"]
-    let generalSettingImgCell = ["arrow.uturn.left.circle","lock.shield","cloud","bell","plus.rectangle.on.rectangle"]
+    let generalSettingTextCell = ["ログアウト","アカウント","バックアップと復元","記入通知お知らせ時間","カテゴリ追加","アカウント削除"]
+    let generalSettingImgCell = ["arrow.uturn.left.circle","lock.shield","cloud","bell","plus.rectangle.on.rectangle","person.crop.circle.badge.minus"]
     let aboutAppTextCell = ["家計簿のメリット","アプリの使い方","開発者おすすめの貯金術","これからの開発について"]
     let aboutAppImgCell = ["arrow.triangle.branch","book","sparkles","hammer"]
     let contactTextCell = ["ご意見・ご要望","レビューする","開発者Twitter","利用規約","Version"]
@@ -127,6 +128,10 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
                 print("カテゴリ追加の設定をここに記入")
                 goDetailTextViewController()
             }
+            else if indexPath.row == 5 {
+                print("アカウント削除の設定をここに記入")
+                accountDeleteAlert()
+            }
         case 2:
             print("アプリについてだよ\(cell)")
             if indexPath.row == 0 {
@@ -191,6 +196,62 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
         let nextVc = storyboard.instantiateViewController(withIdentifier: "DetailAccountViewController") as! DetailAccountViewController
         self.navigationController?.pushViewController(nextVc, animated: true)
     }
+    
+    func accountDeleteAlert() {
+        //アラート生成
+        //UIAlertControllerのスタイルがalert
+        let alert: UIAlertController = UIAlertController(title: "本当にアカウントを削除しますか？", message:  "はいを選択すると今までのデータが消えてログインができなくなります", preferredStyle:  UIAlertController.Style.alert)
+        // はいボタンの処理
+        let confirmAction: UIAlertAction = UIAlertAction(title: "はい", style: UIAlertAction.Style.default, handler:{
+            // 確定ボタンが押された時の処理をクロージャ実装する
+            (action: UIAlertAction!) -> Void in
+            //実際の処理
+            print("はい")
+            HUD.show(.progress, onView: self.view)
+            Auth.auth().currentUser?.delete { error in
+              if let error = error {
+                  self.showErrorIfNeeded(error)
+              } else {
+                  //成功してTopViewControllerへ
+                  HUD.hide { (_) in
+                      HUD.flash(.success, onView: self.view, delay: 1)
+                  }
+                  self.goTopViewController()
+              }
+            }
+        })
+        // いいえボタンの処理
+        let cancelAction: UIAlertAction = UIAlertAction(title: "いいえ", style: UIAlertAction.Style.cancel, handler:{
+            // いいえボタンが押された時の処理をクロージャ実装する
+            (action: UIAlertAction!) -> Void in
+            //実際の処理
+            print("いいえ")
+        })
+
+        //UIAlertControllerにキャンセルボタンと確定ボタンをActionを追加
+        alert.addAction(cancelAction)
+        alert.addAction(confirmAction)
+        //実際にAlertを表示する
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func showErrorIfNeeded(_ errorOrNil: Error?) {
+        // エラーがなければ何もしません
+        guard errorOrNil != nil else { return }
+        
+        let message = "エラーが発生しました"
+        
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func goTopViewController() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.performSegue(withIdentifier: "goTopViewStoryboard", sender: self)
+        }
+    }
+    
 
     func goDetailAboutAppViewController() {
         let storyboard = UIStoryboard(name: "DetailAboutApp", bundle: nil)
