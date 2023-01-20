@@ -120,6 +120,7 @@
 		86F819B528000FFE00FCF325 /* PassCaluculatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */; };
 		AB4085F4653B2543FAD20AE0 /* Pods_HouseBook6.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5072B8E5C17244648DEE6F3 /* Pods_HouseBook6.framework */; };
 		AB57347A294F2DDF003F067C /* CalendarDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB573479294F2DDF003F067C /* CalendarDataManager.swift */; };
+		AB573541297A6FB2003F067C /* CopyUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB573540297A6FB2003F067C /* CopyUILabel.swift */; };
 		AB7D8A6028E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7D8A5F28E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift */; };
 		AB7D8A6228E2E443007B2CCB /* UIViewController-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7D8A6128E2E443007B2CCB /* UIViewController-Extension.swift */; };
 /* End PBXBuildFile section */
@@ -238,6 +239,7 @@
 		86F819A827FEC5BA00FCF325 /* InputCalculatorSemiModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCalculatorSemiModalViewController.swift; sourceTree = "<group>"; };
 		86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassCaluculatorProtocol.swift; sourceTree = "<group>"; };
 		AB573479294F2DDF003F067C /* CalendarDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataManager.swift; sourceTree = "<group>"; };
+		AB573540297A6FB2003F067C /* CopyUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyUILabel.swift; sourceTree = "<group>"; };
 		AB7D8A5F28E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparencyModel.swift; sourceTree = "<group>"; };
 		AB7D8A6128E2E443007B2CCB /* UIViewController-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController-Extension.swift"; sourceTree = "<group>"; };
 		CAFF069EF96C52C2004E8D11 /* Pods-HouseBook6.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HouseBook6.release.xcconfig"; path = "Target Support Files/Pods-HouseBook6/Pods-HouseBook6.release.xcconfig"; sourceTree = "<group>"; };
@@ -354,13 +356,22 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
+		AB57353F297A6F81003F067C /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				AB573540297A6FB2003F067C /* CopyUILabel.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
 		AB7D890D28C09F41007B2CCB /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				AB7D892928C1BC2F007B2CCB /* Login */,
 				AB7D892828C1BC13007B2CCB /* Calendar */,
-				AB7D892A28C1BC3B007B2CCB /* ChatNote */,
 				AB7D892B28C1BC57007B2CCB /* Category */,
+				AB7D892A28C1BC3B007B2CCB /* ChatNote */,
+				AB57353F297A6F81003F067C /* Detail */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -963,6 +974,7 @@
 				4284569D2834978D00FF7EF8 /* HomeMonthToIncomeAndFixedProtocol.swift in Sources */,
 				86C4F13727F2DA1B00E1AB43 /* HomeViewController.swift in Sources */,
 				42C48CCA283B52C00007617C /* DateContentCollectionViewCell.swift in Sources */,
+				AB573541297A6FB2003F067C /* CopyUILabel.swift in Sources */,
 				42AAC2F5281964FA004B967C /* PassIncomeAndFixedCollectionCellProtocol.swift in Sources */,
 				86C4F13F27F2DAA800E1AB43 /* WelcomeLoginViewController.swift in Sources */,
 				428BF917283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift in Sources */,
