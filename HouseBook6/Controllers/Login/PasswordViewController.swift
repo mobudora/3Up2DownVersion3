@@ -10,23 +10,30 @@ import Firebase
 
 class PasswordViewController: UIViewController {
     
+    var countUp = 1
+    //パスワードを格納するための配列
+    var recievePasswordNumber: [String] = []
+    
     let numbers = [
         ["1","2","3"],
         ["4","5","6"],
         ["7","8","9"],
-        ["delete.left","0","delete.left"],
+        ["arrow.uturn.backward","0","delete.left"],
     ]
     //登録したユーザーをまとめたものをuserに代入
     var user: User?
     //数字を表示するラベル
-    @IBOutlet weak var numberLabel: UILabel!
+    @IBOutlet weak var passwordNumberLabel1: UILabel!
+    @IBOutlet weak var passwordNumberLabel2: UILabel!
+    @IBOutlet weak var passwordNumberLabel3: UILabel!
+    @IBOutlet weak var passwordNumberLabel4: UILabel!
     @IBOutlet weak var caluculatorCollectionView: UICollectionView!
     @IBOutlet weak var caluculatorHeightConstraints: NSLayoutConstraint!
     @IBOutlet weak var collectionViewFlowLayout: UICollectionViewFlowLayout!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        labelSetUp()
         // Do any additional setup after loading the view.
         caluculatorCollectionView.delegate = self
         caluculatorCollectionView.dataSource = self
@@ -34,8 +41,8 @@ class PasswordViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-//        confirmLoggedInUser()
-        }
+        //        confirmLoggedInUser()
+    }
     
     //ログインしている状態か初期登録状態か判断する
     private func confirmLoggedInUser() {
@@ -49,6 +56,17 @@ class PasswordViewController: UIViewController {
         let firstLoginViewController = storyBoard.instantiateViewController(withIdentifier: "FirstLoginViewController") as! UINavigationController
         firstLoginViewController.modalPresentationStyle = .fullScreen
         self.present(firstLoginViewController, animated: true, completion: nil)
+    }
+    
+    private func labelSetUp() {
+        self.passwordNumberLabel1.layer.borderWidth = 1.0
+        self.passwordNumberLabel1.layer.borderColor = UIColor.black.cgColor
+        self.passwordNumberLabel2.layer.borderWidth = 1.0
+        self.passwordNumberLabel2.layer.borderColor = UIColor.black.cgColor
+        self.passwordNumberLabel3.layer.borderWidth = 1.0
+        self.passwordNumberLabel3.layer.borderColor = UIColor.black.cgColor
+        self.passwordNumberLabel4.layer.borderWidth = 1.0
+        self.passwordNumberLabel4.layer.borderColor = UIColor.black.cgColor
     }
 }
 extension PasswordViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -82,15 +100,15 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
     //cellの情報を変えることができる
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = caluculatorCollectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! PasswordViewCell
-        if numbers[indexPath.section][indexPath.row] == "delete.left" {
-            let deleteImage = UIImage(systemName: "delete.left")
+        if numbers[indexPath.section][indexPath.row] == "delete.left" || numbers[indexPath.section][indexPath.row] == "arrow.uturn.backward" {
+            let deleteImage = UIImage(systemName: numbers[indexPath.section][indexPath.row])
             let deleteImageView = UIImageView(image: deleteImage)
             deleteImageView.frame.size = cell.sizeThatFits(CGSize(width: cell.frame.size.width / 2, height: cell.frame.size.height / 2))
             deleteImageView.center = CGPoint(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2)
             deleteImageView.tintColor = .white
             cell.numberLabel.isHidden = true
             cell.addSubview(deleteImageView)
-        }else {
+        } else {
             cell.numberLabel.text = numbers[indexPath.section][indexPath.row]
         }
         
@@ -102,9 +120,25 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
         print(clickedNumber)
         switch clickedNumber {
         case "0"..."9":
-            numberLabel.text = clickedNumber
+            switch countUp {
+            case 2:
+                passwordNumberLabel2.text = clickedNumber
+            case 3:
+                passwordNumberLabel3.text = clickedNumber
+            case 4:
+                passwordNumberLabel4.text = clickedNumber
+                let storyboard = UIStoryboard(name: "Password", bundle: nil)
+                let nextVc = storyboard.instantiateViewController(withIdentifier: "PasswordStoryboard") as! PasswordViewController
+                self.present(nextVc, animated: true, completion: nil)
+            default:
+                passwordNumberLabel1.text = clickedNumber
+            }
+            countUp += 1
         case "delete.left":
-            numberLabel.text = ""
+            passwordNumberLabel1.text = ""
+            passwordNumberLabel2.text = ""
+            passwordNumberLabel3.text = ""
+            passwordNumberLabel4.text = ""
         default:
             break
         }
@@ -112,6 +146,7 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
 }
 class PasswordViewCell: UICollectionViewCell {
     
+    //cellのnumberLabel
     let numberLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
@@ -122,7 +157,7 @@ class PasswordViewCell: UICollectionViewCell {
         label.clipsToBounds = true
         return label
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(numberLabel)

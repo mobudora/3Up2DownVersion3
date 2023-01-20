@@ -17,8 +17,8 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
     
     let viewSettingTextCell = ["テーマ","総資産表示"]
     let viewSettingImgCell = ["paintpalette","cylinder.split.1x2"]
-    let generalSettingTextCell = ["ログアウト","アカウント","バックアップと復元","記入通知お知らせ時間","カテゴリ追加","アカウント削除"]
-    let generalSettingImgCell = ["arrow.uturn.left.circle","lock.shield","cloud","bell","plus.rectangle.on.rectangle","person.crop.circle.badge.minus"]
+    let generalSettingTextCell = ["ログアウト","アカウント","ログイン画面をパスワード画面に変更","バックアップと復元","記入通知お知らせ時間","カテゴリ追加","アカウント削除"]
+    let generalSettingImgCell = ["arrow.uturn.left.circle","lock.shield","lock.rotation","cloud","bell","plus.rectangle.on.rectangle","person.crop.circle.badge.minus"]
     let aboutAppTextCell = ["家計簿のメリット","アプリの使い方","開発者おすすめの貯金術","これからの開発について"]
     let aboutAppImgCell = ["arrow.triangle.branch","book","sparkles","hammer"]
     let contactTextCell = ["ご意見・ご要望","レビューする","開発者Twitter","利用規約","Version"]
@@ -117,18 +117,22 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
                 goDetailAccountViewController()
             }
             else if indexPath.row == 2 {
+                print("ログイン画面をパスワード画面に変更の設定をここに記入")
+                goDetailAccountViewController()
+            }
+            else if indexPath.row == 3 {
                 print("バックアップと復元の設定をここに記入")
                 goDetailTextViewController()
             }
-            else if indexPath.row == 3 {
+            else if indexPath.row == 4 {
                 print("記入通知お知らせ時間の設定をここに記入")
                 goDetailTextViewController()
             }
-            else if indexPath.row == 4 {
+            else if indexPath.row == 5 {
                 print("カテゴリ追加の設定をここに記入")
                 goDetailTextViewController()
             }
-            else if indexPath.row == 5 {
+            else if indexPath.row == 6 {
                 print("アカウント削除の設定をここに記入")
                 accountDeleteAlert()
             }
