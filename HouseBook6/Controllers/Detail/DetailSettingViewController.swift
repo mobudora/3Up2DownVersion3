@@ -15,6 +15,8 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var TableView: UITableView!
     @IBOutlet weak var heightConstant: NSLayoutConstraint!
     
+    let passwordNumber = UserDefaults.standard.array(forKey: "passwordNumber") as? [Int] ?? [Int]()
+    
     let viewSettingTextCell = ["テーマ","総資産表示"]
     let viewSettingImgCell = ["paintpalette","cylinder.split.1x2"]
     let generalSettingTextCell = ["ログアウト","アカウント","起動画面設定","バックアップと復元","記入通知お知らせ時間","カテゴリ追加","アカウント削除"]
@@ -106,8 +108,14 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
             if indexPath.row == 0 {
                 print("ログアウトの設定をここに記入")
                 do {
+                    print("🟩とおたよ")
                     try Auth.auth().signOut()
-                    performSegue(withIdentifier: "goTopViewStoryboard", sender: self)
+                    if passwordNumber == [] {
+                        
+                    } else {
+                        performSegue(withIdentifier: "goTopViewStoryboard", sender: self)
+                    }
+                    
                 } catch (let err) {
                     print("ログアウトに失敗しました。\(err)")
                 }

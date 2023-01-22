@@ -9,7 +9,6 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
-    let passwordNumber = UserDefaults.standard.array(forKey: "passwordNumber") as? [Int] ?? [Int]()
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -17,37 +16,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
-        
-        print("🔶passwordNumber\(passwordNumber)")
-        
-        if let windowScene = scene as? UIWindowScene {
-            
-            if passwordNumber != [] {
-                // 1. 初期化
-                let window = UIWindow(windowScene: windowScene)
-                self.window = window
-                window.makeKeyAndVisible()
-                
-                // 2. 最初に表示する画面を設定
-                // Storyboard の場合
-                let storyboard = UIStoryboard(name: "Password", bundle: nil)
-                let rootVc = storyboard.instantiateViewController(identifier: "PasswordStoryboard")
-                
-                window.rootViewController = rootVc
-            } else {
-                // 1. 初期化
-                let window = UIWindow(windowScene: windowScene)
-                self.window = window
-                window.makeKeyAndVisible()
-                
-                // 2. 最初に表示する画面を設定
-                // Storyboard の場合
-                let storyboard = UIStoryboard(name: "Top", bundle: nil)
-                let rootVc = storyboard.instantiateViewController(identifier: "NavgationTopStoryboard")
-                
-                window.rootViewController = rootVc
-            }
-        }
     }
     
     func sceneDidDisconnect(_ scene: UIScene) {

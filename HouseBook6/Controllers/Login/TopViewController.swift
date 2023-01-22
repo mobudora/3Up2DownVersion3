@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import Firebase
 
 class TopViewController: UIViewController {
+    
+    let passwordNumber = UserDefaults.standard.array(forKey: "passwordNumber") as? [Int] ?? [Int]()
     
     @IBOutlet weak var goFirstLoginButton: UIButton!
     @IBOutlet weak var goAlreadyLoginButton: UIButton!
@@ -19,6 +22,17 @@ class TopViewController: UIViewController {
         super.viewDidLoad()
         self.uiAlertAction()
         self.setupView()
+    }
+    
+    //unwindSegueでログアウトできなくなるから、必ずTopViewを挟んで起動する
+    //なのでTopViewControllerで判定をしてパスワード画面を出すか決める
+    override func viewDidAppear(_ animated: Bool) {
+        if passwordNumber != [] && Auth.auth().currentUser != nil {
+            let storyboard = UIStoryboard(name: "Password", bundle: nil)
+            let nextVc = storyboard.instantiateViewController(withIdentifier: "PasswordStoryboard") as! PasswordViewController
+            nextVc.modalPresentationStyle = .fullScreen
+            self.present(nextVc, animated: true, completion: nil)
+        }
     }
     
     private func setupView() {

@@ -45,7 +45,6 @@ class AlreadyLoginViewController: UIViewController {
                 let user = User.init(dic: data)
                 print("ユーザー情報の取得に成功しました。\(user.name)")
                 HUD.hide { (_) in
-                    //                    HUD.flash(.success, delay: 1)
                     HUD.flash(.success, onView: self.view, delay: 1) { (_) in
                         self.presentToPasswordViewController(user: user)
                     }

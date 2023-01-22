@@ -37,6 +37,7 @@ class PasswordViewController: UIViewController {
     ]
     //登録したユーザーをまとめたものをuserに代入
     var user: User?
+    
     @IBOutlet weak var passwordSubTitleLabel: UILabel!
     @IBOutlet weak var passwordTitleLabel: UILabel!
     //数字を表示するラベル
@@ -60,24 +61,43 @@ class PasswordViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        //        confirmLoggedInUser()
+        confirmLoggedInUser()
     }
     
     //ログインしている状態か初期登録状態か判断する
     private func confirmLoggedInUser() {
-        if Auth.auth().currentUser?.uid == nil || user == nil {
-            presentToFirstLoginViewController()
+        if Auth.auth().currentUser == nil {
+            print("🟩とおたよ")
+            let storyBoard = UIStoryboard(name: "FirstLogin", bundle: nil)
+            let firstLoginViewController = storyBoard.instantiateViewController(withIdentifier: "FirstLoginViewController") as! UINavigationController
+            firstLoginViewController.modalPresentationStyle = .fullScreen
+            self.present(firstLoginViewController, animated: true, completion: nil)
+        } else {
+            
+            if let uid = Auth.auth().currentUser?.uid {
+                Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+                    if let err = err {
+                        print("Firestoreからの読み取りに失敗しました\(err)")
+                        return
+                    }
+                    guard let dic = snapshot?.data() else { return }
+                    let userInfo = User.init(dic: dic)
+
+                    Auth.auth().signIn(withEmail: userInfo.email, password: userInfo.password) { (res, err) in
+                        if let err = err {
+                            print("ログイン情報の取得に失敗しました。", err)
+                            HUD.hide { (_) in
+                                HUD.flash(.error, delay: 1)
+                            }
+                            return
+                        }
+                        print("ログインに成功しました。")
+                    }
+                }
+            } else {
+                print("🟩uidがないよ")
+            }
         }
-        else if userDefaults.array(forKey: "passwordNumber") == nil {
-            presentToFirstLoginViewController()
-        }
-    }
-    
-    private func presentToFirstLoginViewController() {
-        let storyBoard = UIStoryboard(name: "FirstLogin", bundle: nil)
-        let firstLoginViewController = storyBoard.instantiateViewController(withIdentifier: "FirstLoginViewController") as! UINavigationController
-        firstLoginViewController.modalPresentationStyle = .fullScreen
-        self.present(firstLoginViewController, animated: true, completion: nil)
     }
     
     private func labelSetUp() {
@@ -221,7 +241,10 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
                     //戻るボタンを表示
                     numbers[3].remove(at: 0)
                     numbers[3].insert("arrow.uturn.backward", at: 0)
-                    collectionView.reloadData()
+                    //初回で間違えた時だけリロードしてuturnのアイコンを表示させるから、フラッグはfalseのままにしてリロードさせないでおく
+                    if imageDisplayFlag == true {
+                        collectionView.reloadData()
+                    }
                 }
             }
         case "delete.left":
@@ -256,9 +279,10 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
                 print("🔶recieveNumber\(recieveNumber)")
                 if recieveNumber == numberBox {
                     userDefaults.set(recieveNumber, forKey: "passwordNumber")
-                    HUD.flash(.success, onView: self.view, delay: 1)
-                    let index = navigationController!.viewControllers.count - 3
-                    navigationController?.popToViewController(navigationController!.viewControllers[index], animated: true)
+                    HUD.flash(.success, onView: self.view, delay: 1) { (_) in
+                        let index = self.navigationController!.viewControllers.count - 3
+                        self.navigationController?.popToViewController(self.navigationController!.viewControllers[index], animated: true)
+                    }
                 } else if recieveNumber != [] {
                     resetPasswordNumber()
                 } else {
