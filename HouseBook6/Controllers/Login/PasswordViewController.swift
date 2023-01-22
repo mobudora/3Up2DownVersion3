@@ -11,6 +11,14 @@ import PKHUD
 
 class PasswordViewController: UIViewController {
     
+    //セルの再利用を防ぐために、再利用した際にremoveFromSuperview()をするためにここに宣言しておく
+    var passwordImageView: UIImageView = UIImageView()
+    //戻るボタンを表示させるためのフラッグ
+    var imageDisplayFlag: Bool = true
+    
+    //インスタンス化
+    var userDefaults = UserDefaults.standard
+    
     var recieveNumber: [Int] = []
     var numberBox: [Int] = []
     
@@ -21,11 +29,11 @@ class PasswordViewController: UIViewController {
     //パスワードを格納するための配列
     var recievePasswordNumber: [String] = []
     
-    let numbers = [
+    var numbers = [
         ["1","2","3"],
         ["4","5","6"],
         ["7","8","9"],
-        ["arrow.uturn.backward","0","delete.left"],
+        ["arrow.uturn.backward","0","delete.left"]
     ]
     //登録したユーザーをまとめたものをuserに代入
     var user: User?
@@ -60,6 +68,9 @@ class PasswordViewController: UIViewController {
         if Auth.auth().currentUser?.uid == nil || user == nil {
             presentToFirstLoginViewController()
         }
+        else if userDefaults.array(forKey: "passwordNumber") == nil {
+            presentToFirstLoginViewController()
+        }
     }
     
     private func presentToFirstLoginViewController() {
@@ -76,6 +87,10 @@ class PasswordViewController: UIViewController {
         } else if movefromPassword2times == true {
             passwordTitleLabel.text = "新しいパスコード再入力"
             passwordSubTitleLabel.text = "確認のためにもう一度入力してください"
+        } else {
+            //戻るボタンを非表示に
+            numbers[3].remove(at: 0)
+            numbers[3].insert("", at: 0)
         }
         
         self.passwordNumberLabel1.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
@@ -139,14 +154,27 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = caluculatorCollectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! PasswordViewCell
         if numbers[indexPath.section][indexPath.row] == "delete.left" || numbers[indexPath.section][indexPath.row] == "arrow.uturn.backward" {
-            let deleteImage = UIImage(systemName: numbers[indexPath.section][indexPath.row])
-            let deleteImageView = UIImageView(image: deleteImage)
-            deleteImageView.frame.size = cell.sizeThatFits(CGSize(width: cell.frame.size.width / 2, height: cell.frame.size.height / 2))
-            deleteImageView.center = CGPoint(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2)
-            deleteImageView.tintColor = .white
+            let image = UIImage(systemName: numbers[indexPath.section][indexPath.row])
+            passwordImageView = UIImageView(image: image)
+            passwordImageView.frame.size = cell.sizeThatFits(CGSize(width: cell.frame.size.width / 2, height: cell.frame.size.height / 2))
+            passwordImageView.center = CGPoint(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2)
+            passwordImageView.tintColor = .white
             cell.numberLabel.isHidden = true
-            cell.addSubview(deleteImageView)
+            cell.addSubview(passwordImageView)
+            
+            //表示しないときのコードも書かないとcellの再利用で以前の記憶のまま表示されてしまう
+            cell.numberLabel.text = ""
+            //arrow.uturn.backwardは表示させたいから、removeFromSuperview()をさせないためにフラッグを使ってコードを読み込ませないようにする(一時的)
+            if numbers[indexPath.section][indexPath.row] == "arrow.uturn.backward" {
+                imageDisplayFlag = false
+            }
         } else {
+            //表示しないときのコードも書かないとcellの再利用で以前の記憶のまま表示されてしまう
+            cell.numberLabel.isHidden = false
+            if imageDisplayFlag != false {
+                passwordImageView.removeFromSuperview()
+            }
+            
             cell.numberLabel.text = numbers[indexPath.section][indexPath.row]
         }
         
@@ -155,6 +183,61 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
     //クリックしたものを認識させる
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let clickedNumber = numbers[indexPath.section][indexPath.row]
+        //MARK: パスワード設定画面を表示
+        if movefromDetail == true || movefromPassword2times == true {
+            passwordForSetting(clickedNumber: clickedNumber)
+        } else { //MARK: 初回起動時の初期画面
+            launchDisplayPasswordController(clickedNumber: clickedNumber, collectionView: collectionView)
+        }
+        
+    }
+    
+    func launchDisplayPasswordController(clickedNumber: String, collectionView: UICollectionView) {
+        switch clickedNumber {
+        case "0"..."9":
+            if passwordNumberLabel1.text == "" {
+                passwordNumberLabel1.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+            } else if passwordNumberLabel2.text == "" {
+                passwordNumberLabel2.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+            } else if passwordNumberLabel3.text == "" {
+                passwordNumberLabel3.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+            } else if passwordNumberLabel4.text == "" {
+                passwordNumberLabel4.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+                //入力された数字とUserDefalutsに保存されている配列が同じか確認する
+                let passwordNumber = userDefaults.array(forKey: "passwordNumber") as? [Int] ?? [Int]()
+                
+                if passwordNumber == numberBox {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let nextVc = storyboard.instantiateViewController(withIdentifier: "MainStoryboard") as! UITabBarController
+                    self.present(nextVc, animated: true, completion: nil)
+                } else {
+                    resetPasswordNumber()
+                    passwordTitleLabel.text = "パスコードが違います"
+                    passwordSubTitleLabel.text = "起動時に使用する\n4つのパスコードを入力してください"
+                    //戻るボタンを表示
+                    numbers[3].remove(at: 0)
+                    numbers[3].insert("arrow.uturn.backward", at: 0)
+                    collectionView.reloadData()
+                }
+            }
+        case "delete.left":
+            resetPasswordNumber()
+        case "arrow.uturn.backward":
+            let storyboard = UIStoryboard(name: "Top", bundle: nil)
+            let nextVc = storyboard.instantiateViewController(withIdentifier: "NavgationTopStoryboard") as! TopViewController
+            nextVc.modalPresentationStyle = .fullScreen
+            self.present(nextVc, animated: true, completion: nil)
+        default:
+            break
+        }
+        
+    }
+    
+    func passwordForSetting(clickedNumber: String) {
         print(clickedNumber)
         switch clickedNumber {
         case "0"..."9":
@@ -172,43 +255,38 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
                 numberBox.append(Int(clickedNumber) ?? 0)
                 print("🔶recieveNumber\(recieveNumber)")
                 if recieveNumber == numberBox {
+                    userDefaults.set(recieveNumber, forKey: "passwordNumber")
                     HUD.flash(.success, onView: self.view, delay: 1)
                     let index = navigationController!.viewControllers.count - 3
                     navigationController?.popToViewController(navigationController!.viewControllers[index], animated: true)
                 } else if recieveNumber != [] {
-                    passwordNumberLabel1.text = ""
-                    passwordNumberLabel2.text = ""
-                    passwordNumberLabel3.text = ""
-                    passwordNumberLabel4.text = ""
-                    numberBox = []
+                    resetPasswordNumber()
                 } else {
                     let storyboard = UIStoryboard(name: "Password", bundle: nil)
                     let nextVc = storyboard.instantiateViewController(withIdentifier: "PasswordStoryboard") as! PasswordViewController
                     nextVc.movefromPassword2times = true
                     nextVc.recieveNumber = numberBox
-                    passwordNumberLabel1.text = ""
-                    passwordNumberLabel2.text = ""
-                    passwordNumberLabel3.text = ""
-                    passwordNumberLabel4.text = ""
-                    numberBox = []
+                    resetPasswordNumber()
                     self.navigationController?.pushViewController(nextVc, animated: true)
                 }
             }
         case "delete.left":
-            passwordNumberLabel1.text = ""
-            passwordNumberLabel2.text = ""
-            passwordNumberLabel3.text = ""
-            passwordNumberLabel4.text = ""
+            resetPasswordNumber()
         case "arrow.uturn.backward":
-            passwordNumberLabel1.text = ""
-            passwordNumberLabel2.text = ""
-            passwordNumberLabel3.text = ""
-            passwordNumberLabel4.text = ""
-            numberBox = []
+            resetPasswordNumber()
             self.navigationController?.popViewController(animated: true)
         default:
             break
         }
+    }
+    
+    //ラベルとタップされた数字配列をリセットする関数
+    private func resetPasswordNumber() {
+        passwordNumberLabel1.text = ""
+        passwordNumberLabel2.text = ""
+        passwordNumberLabel3.text = ""
+        passwordNumberLabel4.text = ""
+        numberBox = []
     }
 }
 class PasswordViewCell: UICollectionViewCell {
