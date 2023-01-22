@@ -7,8 +7,15 @@
 
 import UIKit
 import Firebase
+import PKHUD
 
 class PasswordViewController: UIViewController {
+    
+    var recieveNumber: [Int] = []
+    var numberBox: [Int] = []
+    
+    var movefromDetail: Bool = false
+    var movefromPassword2times: Bool = false
     
     var countUp = 1
     //パスワードを格納するための配列
@@ -22,6 +29,8 @@ class PasswordViewController: UIViewController {
     ]
     //登録したユーザーをまとめたものをuserに代入
     var user: User?
+    @IBOutlet weak var passwordSubTitleLabel: UILabel!
+    @IBOutlet weak var passwordTitleLabel: UILabel!
     //数字を表示するラベル
     @IBOutlet weak var passwordNumberLabel1: UILabel!
     @IBOutlet weak var passwordNumberLabel2: UILabel!
@@ -34,6 +43,8 @@ class PasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         labelSetUp()
+        //navgationのタイトルを""にして、Backボタンを空白にする
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         // Do any additional setup after loading the view.
         caluculatorCollectionView.delegate = self
         caluculatorCollectionView.dataSource = self
@@ -59,12 +70,39 @@ class PasswordViewController: UIViewController {
     }
     
     private func labelSetUp() {
+        if movefromDetail == true {
+            passwordTitleLabel.text = "新しいパスコード入力"
+            passwordSubTitleLabel.text = "起動時に使用する\n新しいパスコードを4つ入力"
+        } else if movefromPassword2times == true {
+            passwordTitleLabel.text = "新しいパスコード再入力"
+            passwordSubTitleLabel.text = "確認のためにもう一度入力してください"
+        }
+        
+        self.passwordNumberLabel1.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel1.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel1.layer.cornerRadius = UIScreen.main.bounds.width / 8
+        self.passwordNumberLabel1.clipsToBounds = true
         self.passwordNumberLabel1.layer.borderWidth = 1.0
         self.passwordNumberLabel1.layer.borderColor = UIColor.black.cgColor
+        
+        self.passwordNumberLabel2.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel2.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel2.layer.cornerRadius = UIScreen.main.bounds.width / 8
+        self.passwordNumberLabel2.clipsToBounds = true
         self.passwordNumberLabel2.layer.borderWidth = 1.0
         self.passwordNumberLabel2.layer.borderColor = UIColor.black.cgColor
+        
+        self.passwordNumberLabel3.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel3.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel3.layer.cornerRadius = UIScreen.main.bounds.width / 8
+        self.passwordNumberLabel3.clipsToBounds = true
         self.passwordNumberLabel3.layer.borderWidth = 1.0
         self.passwordNumberLabel3.layer.borderColor = UIColor.black.cgColor
+        
+        self.passwordNumberLabel4.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel4.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 4).isActive = true
+        self.passwordNumberLabel4.layer.cornerRadius = UIScreen.main.bounds.width / 8
+        self.passwordNumberLabel4.clipsToBounds = true
         self.passwordNumberLabel4.layer.borderWidth = 1.0
         self.passwordNumberLabel4.layer.borderColor = UIColor.black.cgColor
     }
@@ -120,31 +158,71 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
         print(clickedNumber)
         switch clickedNumber {
         case "0"..."9":
-            switch countUp {
-            case 2:
-                passwordNumberLabel2.text = clickedNumber
-            case 3:
-                passwordNumberLabel3.text = clickedNumber
-            case 4:
-                passwordNumberLabel4.text = clickedNumber
-                let storyboard = UIStoryboard(name: "Password", bundle: nil)
-                let nextVc = storyboard.instantiateViewController(withIdentifier: "PasswordStoryboard") as! PasswordViewController
-                self.present(nextVc, animated: true, completion: nil)
-            default:
+            if passwordNumberLabel1.text == "" {
                 passwordNumberLabel1.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+            } else if passwordNumberLabel2.text == "" {
+                passwordNumberLabel2.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+            } else if passwordNumberLabel3.text == "" {
+                passwordNumberLabel3.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+            } else if passwordNumberLabel4.text == "" {
+                passwordNumberLabel4.text = clickedNumber
+                numberBox.append(Int(clickedNumber) ?? 0)
+                print("🔶recieveNumber\(recieveNumber)")
+                if recieveNumber == numberBox {
+                    HUD.flash(.success, onView: self.view, delay: 1)
+                    let index = navigationController!.viewControllers.count - 3
+                    navigationController?.popToViewController(navigationController!.viewControllers[index], animated: true)
+                } else if recieveNumber != [] {
+                    passwordNumberLabel1.text = ""
+                    passwordNumberLabel2.text = ""
+                    passwordNumberLabel3.text = ""
+                    passwordNumberLabel4.text = ""
+                    numberBox = []
+                } else {
+                    let storyboard = UIStoryboard(name: "Password", bundle: nil)
+                    let nextVc = storyboard.instantiateViewController(withIdentifier: "PasswordStoryboard") as! PasswordViewController
+                    nextVc.movefromPassword2times = true
+                    nextVc.recieveNumber = numberBox
+                    passwordNumberLabel1.text = ""
+                    passwordNumberLabel2.text = ""
+                    passwordNumberLabel3.text = ""
+                    passwordNumberLabel4.text = ""
+                    numberBox = []
+                    self.navigationController?.pushViewController(nextVc, animated: true)
+                }
             }
-            countUp += 1
         case "delete.left":
             passwordNumberLabel1.text = ""
             passwordNumberLabel2.text = ""
             passwordNumberLabel3.text = ""
             passwordNumberLabel4.text = ""
+        case "arrow.uturn.backward":
+            passwordNumberLabel1.text = ""
+            passwordNumberLabel2.text = ""
+            passwordNumberLabel3.text = ""
+            passwordNumberLabel4.text = ""
+            numberBox = []
+            self.navigationController?.popViewController(animated: true)
         default:
             break
         }
     }
 }
 class PasswordViewCell: UICollectionViewCell {
+    
+    //押した時に薄くなる
+    override var isHighlighted: Bool {
+        didSet {
+            if isHighlighted {
+                self.numberLabel.backgroundColor = .rgb(red: 240, green: 240, blue: 240, alpha: 0.5)
+            } else {
+                self.numberLabel.backgroundColor = .rgb(red: 0, green: 0, blue: 0, alpha: 1)
+            }
+        }
+    }
     
     //cellのnumberLabel
     let numberLabel: UILabel = {
