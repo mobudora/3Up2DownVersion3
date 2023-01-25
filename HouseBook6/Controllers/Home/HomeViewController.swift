@@ -186,6 +186,7 @@ class HomeViewController: UIViewController{
         getCostMonthSuperCategory()
 
         //UserDefalutsに保存されている目標金額を読み込む
+        print("🟩生活費が読み込まれるよ")
         livingExpensesTargetAmountArrayAppend()
 
         //タイトルの日付を取得

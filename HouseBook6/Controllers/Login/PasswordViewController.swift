@@ -58,6 +58,7 @@ class PasswordViewController: UIViewController {
         caluculatorCollectionView.delegate = self
         caluculatorCollectionView.dataSource = self
         caluculatorCollectionView.register(PasswordViewCell.self, forCellWithReuseIdentifier: "cellId")
+        caluculatorHeightConstraints.constant = CGFloat(UIScreen.main.bounds.height / 2 - 30)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -157,7 +158,7 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         //横のマージン10*2個の横マージンがある
-        let width = (collectionView.frame.width - 2 * 10) / 3
+        let width = (collectionView.frame.width - 3 * 10) / 3
         let height = collectionView.frame.height / 4
         return .init(width: width, height:  height)
     }
