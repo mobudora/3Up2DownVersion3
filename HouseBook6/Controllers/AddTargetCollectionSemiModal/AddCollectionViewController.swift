@@ -69,16 +69,6 @@ class AddCollectionViewController: UIViewController {
             }
         }
     }
-
-    /*
-     // MARK: - Navigation
-
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
 }
 extension AddCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -117,7 +107,7 @@ extension AddCollectionViewController: UICollectionViewDelegate, UICollectionVie
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var witchCost: Int!
-//        print("選択されたときのcostMonthSuperCategory: \(costMonthSuperCaString(describing: tegory)")
+//        print("選択されたときのcostMonthSuperCategory")
         switch indexPath.row {
         case 0:
             witchCost = costMonthSuperCategory?.foodMonthSuperCategoryFromFirestore ?? 0

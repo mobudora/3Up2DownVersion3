@@ -10,21 +10,21 @@ import Firebase
 import PKHUD
 
 class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
-
+    
     // FirestoreのDB取得
     let db = Firestore.firestore()
-
+    
     //今のホーム画面のタイトル月
     var currentHomeTitleMonth: Int?
     var currentHomeTitleYear: Int?
-
+    
     let calendarViewController = CalendarViewController.calendarViewControllerInstance
-
+    
     //HomeViewの生活費(収入ー固定費)のテキストを更新するためのプロトコル
     var homeLivingExpensesUpdateDelegate: IncomeAndFixedToHomeProtocol?
     var incomeSumText: String!
     var fixedCostSumText: String!
-
+    
     //InputViewControllerへ移動するためのプロトコル
     var delegate: PassIncomeAndFixedCollectionCellProtocol!
     //±を行うプロトコル
@@ -69,16 +69,16 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
     var housingFixedCostSubCategoryArray: [String] = []
     var medicalFixedCostSubCategoryArray: [String] = []
     var petFixedCostSubCategoryArray: [String] = []
-
+    
     static var incomeAndFixedCollectionInstance = incomeAndFixedCostCollectionViewCell()
     var incomeAndFixedIconNameReciever: String!
     var incomeAndFIxedIconMoneyReciever: String!
-
+    
     //収入と固定費の数
     let tableCountUp = 3
     
     let colors = Colors()
-
+    
     //収入・固定費コレクションのタイトル
     @IBOutlet weak var incomeLabel: UILabel!
     //storyboardにTableViewを載せる
@@ -89,18 +89,18 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
     let tableViewCellHeight: CGFloat = 44
     //総合計のテキスト
     @IBOutlet weak var incomeSumMoneyLabel: UILabel!
-
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
+        
         //現在の年月を取得
         calendarViewController.currentMonth.dateFormat = "MM"
         calendarViewController.currentYear.dateFormat = "yyyy"
-
+        
         currentHomeTitleMonth = Int(calendarViewController.currentMonth.string(from: calendarViewController.currentDate)) ?? 0
         currentHomeTitleYear = Int(calendarViewController.currentYear.string(from: calendarViewController.currentDate)) ?? 0
-
+        
         print("最初のTableViewのデータ取得行います。")
         getIncomeCollectionDataFromFirestore()
         //コレクションビューのデザイン
@@ -116,12 +116,12 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
         //初期設定では入力する欄2 + 増やしたり減らす欄1 = 3
         tableViewHeightConstraint.constant = CGFloat(Int(tableViewCellHeight) * 4)
     }
-
+    
     func getIncomeCollectionDataFromFirestore() {
         
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let year = calendarViewController.currentYear.string(from: calendarViewController.currentDate)
-
+        
         //incomeAndExpenditureコレクションを取得
         db.collection("\(year)superCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
             // エラー発生時
@@ -130,7 +130,7 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
             } else {
                 // コレクション内のドキュメントを取得
                 guard let data = snapshot?.data() else { return }
-                print("🟩data\(data)")
+                print("🟩収入と固定費に使うdata\(data)")
                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
                 let incomeSuperCategory = IncomeFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? 0)
                 print("🔶self.currentHomeTitleMonth\(self.currentHomeTitleMonth)")
@@ -144,262 +144,102 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
                 self.incomeCollectionCellTitle = []
                 self.incomeCollectionCellImage = []
                 self.incomeCollectionCellMoney = []
-
+                
                 self.fixedCostCollectionCellTitle = []
                 self.fixedCostCollectionCellImage = []
                 self.fixedCostCollectionCellMoney = []
-
-                print("🟥incomeSuperCategory.salaryMoneyFromFirestore\(incomeSuperCategory.salaryMoneyFromFirestore)")
+                
+                print("🟥Firestoreから読み取った収入と固定費を配列に代入してHomeViewにも生活費を出すために渡す")
                 //収入と固定費TableView用の情報を取得
                 //給料の金額が入っていたら、タイトルに給料と金額を代入する
                 if incomeSuperCategory.salaryMoneyFromFirestore != nil {
-                    print("給料の取得に成功しました。\(String(describing: incomeSuperCategory.salaryMoneyFromFirestore))")
-                    self.incomeCollectionCellTitle.append("給料")
-                    self.incomeCollectionCellImage.append((SuperCategoryIcon.IncomeIcon["給料"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    self.incomeCollectionCellMoney.append(incomeSuperCategory.salaryMoneyFromFirestore)
-                    //Firestoreに保存する給料サブカテゴリー固定費に追加する(既にif letで親の給料カテゴリー固定費があるかないか判断されている)(給料のサブカテゴリー→ボーナス、その他など)
-                    self.salaryIncomeSubCategoryArray = incomeSuperCategory.salaryIncomeSubCategoryArrayFromFirestore
+                    self.incomeCollectionViewSetUp(superCategory: "給料", sumIncomeMoneyFromFirestore: incomeSuperCategory.salaryMoneyFromFirestore, subCategoryIncomeArray: incomeSuperCategory.salaryIncomeSubCategoryArrayFromFirestore)
                 }
-
                 if incomeSuperCategory.sideBusinessMoneyFromFirestore != nil {
-                    print("副業の取得に成功しました。\(String(describing: incomeSuperCategory.sideBusinessMoneyFromFirestore))")
-                    self.incomeCollectionCellTitle.append("副業")
-                    self.incomeCollectionCellImage.append((SuperCategoryIcon.IncomeIcon["副業"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.incomeCollectionCellMoney)")
-                    self.incomeCollectionCellMoney.append(incomeSuperCategory.sideBusinessMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.incomeCollectionCellMoney)")
-                    self.sideBusinessIncomeSubCategoryArray = incomeSuperCategory.sideBusinessIncomeSubCategoryArrayFromFirestore
+                    self.incomeCollectionViewSetUp(superCategory: "副業", sumIncomeMoneyFromFirestore: incomeSuperCategory.sideBusinessMoneyFromFirestore, subCategoryIncomeArray: incomeSuperCategory.sideBusinessIncomeSubCategoryArrayFromFirestore)
                 }
                 if incomeSuperCategory.extraordinaryMoneyFromFirestore != nil {
-                    print("臨時収入の取得に成功しました。\(String(describing: incomeSuperCategory.extraordinaryMoneyFromFirestore))")
-                    self.incomeCollectionCellTitle.append("臨時収入")
-                    self.incomeCollectionCellImage.append((SuperCategoryIcon.IncomeIcon["臨時収入"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.incomeCollectionCellMoney)")
-                    self.incomeCollectionCellMoney.append(incomeSuperCategory.extraordinaryMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.incomeCollectionCellMoney)")
-                    self.extraordinaryIncomeSubCategoryArray = incomeSuperCategory.extraordinaryIncomeSubCategoryArrayFromFirestore
+                    self.incomeCollectionViewSetUp(superCategory: "臨時収入", sumIncomeMoneyFromFirestore: incomeSuperCategory.extraordinaryMoneyFromFirestore, subCategoryIncomeArray: incomeSuperCategory.extraordinaryIncomeSubCategoryArrayFromFirestore)
                 }
                 if incomeSuperCategory.investmentMoneyFromFirestore != nil {
-                    print("投資の取得に成功しました。\(String(describing: incomeSuperCategory.investmentMoneyFromFirestore))")
-                    self.incomeCollectionCellTitle.append("投資")
-                    self.incomeCollectionCellImage.append((SuperCategoryIcon.IncomeIcon["投資"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.incomeCollectionCellMoney)")
-                    self.incomeCollectionCellMoney.append(incomeSuperCategory.investmentMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.incomeCollectionCellMoney)")
-                    self.investmentIncomeSubCategoryArray = incomeSuperCategory.investmentIncomeSubCategoryArrayFromFirestore
+                    self.incomeCollectionViewSetUp(superCategory: "投資", sumIncomeMoneyFromFirestore: incomeSuperCategory.investmentMoneyFromFirestore, subCategoryIncomeArray: incomeSuperCategory.investmentIncomeSubCategoryArrayFromFirestore)
                 }
                 if incomeSuperCategory.prizeMoneyFromFirestore != nil {
-                    print("賞の取得に成功しました。\(String(describing: incomeSuperCategory.prizeMoneyFromFirestore))")
-                    self.incomeCollectionCellTitle.append("賞")
-                    self.incomeCollectionCellImage.append((SuperCategoryIcon.IncomeIcon["賞"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.incomeCollectionCellMoney)")
-                    self.incomeCollectionCellMoney.append(incomeSuperCategory.prizeMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.incomeCollectionCellMoney)")
-                    self.prizeIncomeSubCategoryArray = incomeSuperCategory.prizeIncomeSubCategoryArrayFromFirestore
+                    self.incomeCollectionViewSetUp(superCategory: "賞", sumIncomeMoneyFromFirestore: incomeSuperCategory.prizeMoneyFromFirestore, subCategoryIncomeArray: incomeSuperCategory.prizeIncomeSubCategoryArrayFromFirestore)
                 }
-
+                
                 //固定費のデータ取得
                 // ???: if文がしつこい
                 if let foodMoneyFromFirestore = fixedCostSuperCategory.foodMoneyFromFirestore {
-                    print("食費の取得に成功しました。\(foodMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("食費")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["食費"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(foodMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    //Firestoreに保存する食費サブカテゴリー固定費を追加する(既にif letで親の食費カテゴリー固定費があるかないか判断されている)
-                    self.foodFixedCostSubCategoryArray = fixedCostSuperCategory.foodFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "食費", sumIncomeMoneyFromFirestore: foodMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.foodFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let dailyGoodsMoneyFromFirestore = fixedCostSuperCategory.dailyGoodsMoneyFromFirestore {
-                    print("日用品の取得に成功しました。\(dailyGoodsMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("日用品")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["日用品"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(dailyGoodsMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.dailyGoodsFixedCostSubCategoryArray = fixedCostSuperCategory.dailyGoodsFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "日用品", sumIncomeMoneyFromFirestore: dailyGoodsMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.dailyGoodsFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let clothMoneyFromFirestore = fixedCostSuperCategory.clothMoneyFromFirestore {
-                    print("服飾の取得に成功しました。\(clothMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("服飾")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["服飾"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(clothMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.clothFixedCostSubCategoryArray = fixedCostSuperCategory.clothFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "服飾", sumIncomeMoneyFromFirestore: clothMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.clothFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let healthMoneyFromFirestore = fixedCostSuperCategory.healthMoneyFromFirestore {
-                    print("健康の取得に成功しました。\(healthMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("健康")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["健康"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(healthMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.healthFixedCostSubCategoryArray = fixedCostSuperCategory.healthFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "健康", sumIncomeMoneyFromFirestore: healthMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.healthFixedCostSubCategoryArrayFromFirestore)
                 }
-                if let datingMoneyFromFirestore = fixedCostSuperCategory.datingMoneyFromFirestore {
-                    print("交際の取得に成功しました。\(datingMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("交際")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["交際"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(datingMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.datingFixedCostSubCategoryArray = fixedCostSuperCategory.datingFixedCostSubCategoryArrayFromFirestore
+                if let datingMoneyFromFirestore = fixedCostSuperCategory.datingMoneyFromFirestore { self.fixedCollectionViewSetUp(superCategory: "交際", sumIncomeMoneyFromFirestore: datingMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.datingFixedCostSubCategoryArrayFromFirestore)
                 }
-                if let hobbiesMoneyFromFirestore = fixedCostSuperCategory.hobbiesMoneyFromFirestore {
-                    print("趣味の取得に成功しました。\(hobbiesMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("趣味")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["趣味"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(hobbiesMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.hobbiesFixedCostSubCategoryArray = fixedCostSuperCategory.hobbiesFixedCostSubCategoryArrayFromFirestore
+                if let hobbiesMoneyFromFirestore = fixedCostSuperCategory.hobbiesMoneyFromFirestore { self.fixedCollectionViewSetUp(superCategory: "趣味", sumIncomeMoneyFromFirestore: hobbiesMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.hobbiesFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let liberalArtsMoneyFromFirestore = fixedCostSuperCategory.liberalArtsMoneyFromFirestore {
-                    print("教養の取得に成功しました。\(liberalArtsMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("教養")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["教養"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(liberalArtsMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.liberalArtsFixedCostSubCategoryArray = fixedCostSuperCategory.liberalArtsFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "教養", sumIncomeMoneyFromFirestore: liberalArtsMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.liberalArtsFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let transportationMoneyFromFirestore = fixedCostSuperCategory.transportationMoneyFromFirestore {
-                    print("交通の取得に成功しました。\(transportationMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("交通")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["交通"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(transportationMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.transportationFixedCostSubCategoryArray = fixedCostSuperCategory.transportationFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "交通", sumIncomeMoneyFromFirestore: transportationMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.transportationFixedCostSubCategoryArrayFromFirestore)
                 }
-                if let cosmetologyMoneyFromFirestore = fixedCostSuperCategory.cosmetologyMoneyFromFirestore {
-                    print("美容の取得に成功しました。\(cosmetologyMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("美容")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["美容"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(cosmetologyMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.cosmetologyFixedCostSubCategoryArray = fixedCostSuperCategory.cosmetologyFixedCostSubCategoryArrayFromFirestore
+                if let cosmetologyMoneyFromFirestore = fixedCostSuperCategory.cosmetologyMoneyFromFirestore { self.fixedCollectionViewSetUp(superCategory: "美容", sumIncomeMoneyFromFirestore: cosmetologyMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.cosmetologyFixedCostSubCategoryArrayFromFirestore)
                 }
-                if let sightseeingMoneyFromFirestore = fixedCostSuperCategory.sightseeingMoneyFromFirestore {
-                    print("観光の取得に成功しました。\(sightseeingMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("観光")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["観光"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(sightseeingMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.sightseeingFixedCostSubCategoryArray = fixedCostSuperCategory.sightseeingFixedCostSubCategoryArrayFromFirestore
+                if let sightseeingMoneyFromFirestore =  fixedCostSuperCategory.sightseeingMoneyFromFirestore {
+                    self.fixedCollectionViewSetUp(superCategory: "観光", sumIncomeMoneyFromFirestore: sightseeingMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.sightseeingFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let carMoneyFromFirestore = fixedCostSuperCategory.carMoneyFromFirestore {
-                    print("車の取得に成功しました。\(carMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("車")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["車"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(carMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.carFixedCostSubCategoryArray = fixedCostSuperCategory.carFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "車", sumIncomeMoneyFromFirestore: carMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.carFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let motorcycleMoneyFromFirestore = fixedCostSuperCategory.motorcycleMoneyFromFirestore {
-                    print("バイクの取得に成功しました。\(motorcycleMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("バイク")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["バイク"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(motorcycleMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.motorcycleFixedCostSubCategoryArray = fixedCostSuperCategory.motorcycleFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "バイク", sumIncomeMoneyFromFirestore: motorcycleMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.motorcycleFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let netWorkMoneyFromFirestore = fixedCostSuperCategory.netWorkMoneyFromFirestore {
-                    print("通信の取得に成功しました。\(netWorkMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("通信")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["通信"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(netWorkMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.netWorkFixedCostSubCategoryArray = fixedCostSuperCategory.netWorkFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "通信", sumIncomeMoneyFromFirestore: netWorkMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.netWorkFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let waterMoneyFromFirestore = fixedCostSuperCategory.waterMoneyFromFirestore {
-                    print("水道代の取得に成功しました。\(waterMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("水道代")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["水道代"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(waterMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.waterFixedCostSubCategoryArray = fixedCostSuperCategory.waterFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "水道代", sumIncomeMoneyFromFirestore: waterMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.waterFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let gasMoneyFromFirestore = fixedCostSuperCategory.gasMoneyFromFirestore {
-                    print("ガス代の取得に成功しました。\(gasMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("ガス代")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["ガス代"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(gasMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.gasFixedCostSubCategoryArray = fixedCostSuperCategory.gasFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "ガス代", sumIncomeMoneyFromFirestore: gasMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.gasFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let electricityMoneyFromFirestore = fixedCostSuperCategory.electricityMoneyFromFirestore {
-                    print("電気代の取得に成功しました。\(electricityMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("電気代")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["電気代"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(electricityMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.electricityFixedCostSubCategoryArray = fixedCostSuperCategory.electricityFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "電気代", sumIncomeMoneyFromFirestore: electricityMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.electricityFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let insuranceMoneyFromFirestore = fixedCostSuperCategory.insuranceMoneyFromFirestore {
-                    print("保険の取得に成功しました。\(insuranceMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("保険")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["保険"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(insuranceMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.insuranceFixedCostSubCategoryArray = fixedCostSuperCategory.insuranceFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "保険", sumIncomeMoneyFromFirestore: insuranceMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.insuranceFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let taxMoneyFromFirestore = fixedCostSuperCategory.taxMoneyFromFirestore {
-                    print("税金の取得に成功しました。\(taxMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("税金")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["税金"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(taxMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.taxFixedCostSubCategoryArray = fixedCostSuperCategory.taxFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "税金", sumIncomeMoneyFromFirestore: taxMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.taxFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let housingMoneyFromFirestore = fixedCostSuperCategory.housingMoneyFromFirestore {
-                    print("住宅の取得に成功しました。\(String(describing: fixedCostSuperCategory.housingMoneyFromFirestore))")
-                    self.fixedCostCollectionCellTitle.append("住宅")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["住宅"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(housingMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.housingFixedCostSubCategoryArray = fixedCostSuperCategory.housingFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "住宅", sumIncomeMoneyFromFirestore: housingMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.housingFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let medicalMoneyFromFirestore = fixedCostSuperCategory.medicalMoneyFromFirestore {
-                    print("医療の取得に成功しました。\(medicalMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("医療")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["医療"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(medicalMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.medicalFixedCostSubCategoryArray = fixedCostSuperCategory.medicalFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "医療", sumIncomeMoneyFromFirestore: medicalMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.medicalFixedCostSubCategoryArrayFromFirestore)
                 }
                 if let petMoneyFromFirestore = fixedCostSuperCategory.petMoneyFromFirestore {
-                    print("ペットの取得に成功しました。\(petMoneyFromFirestore)")
-                    self.fixedCostCollectionCellTitle.append("ペット")
-                    self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["ペット"] ?? UIImage(systemName: "questionmark.folder"))!)
-                    print("Money配列に追加する前: \(self.fixedCostCollectionCellMoney)")
-                    self.fixedCostCollectionCellMoney.append(petMoneyFromFirestore)
-                    print("Money配列に追加した後: \(self.fixedCostCollectionCellMoney)")
-                    self.petFixedCostSubCategoryArray = fixedCostSuperCategory.petFixedCostSubCategoryArrayFromFirestore
+                    self.fixedCollectionViewSetUp(superCategory: "ペット", sumIncomeMoneyFromFirestore: petMoneyFromFirestore, subCategoryIncomeArray: fixedCostSuperCategory.petFixedCostSubCategoryArrayFromFirestore)
                 }
-
+                
                 //incomeTableCellのCellの数
                 self.incomeTableCellRowCount = self.incomeCollectionCellMoney.count
                 //fixedCostTableCellのCellの数
                 self.fixedCostTableCellRowCount = self.fixedCostCollectionCellMoney.count
-
+                
                 //HomeViewのlivingExpensesTextを更新するために収入コレクションの総合計と固定費コレクションの総合計を渡す
                 self.incomeSumText = String(self.incomeCollectionCellMoney.reduce(0, +))
                 self.fixedCostSumText = String(self.fixedCostCollectionCellMoney.reduce(0, +))
-
+                
                 //データを取得したらリロード
                 print("リロードするよ")
                 self.incomeTableView.reloadData()
@@ -408,9 +248,88 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
                 self.homeLivingExpensesUpdateDelegate?.livingExpensesLabelUpdate(incomeSumText: self.incomeSumText ?? "0", fixedCostSumText: self.fixedCostSumText ?? "0")
             }
         }
-
+    }
+    
+    func incomeCollectionViewSetUp(superCategory: String, sumIncomeMoneyFromFirestore: Int, subCategoryIncomeArray: [String]) {
+        print("\(superCategory)の取得に成功しました。\(String(describing: sumIncomeMoneyFromFirestore))")
+        self.incomeCollectionCellTitle.append("\(superCategory)")
+        self.incomeCollectionCellImage.append((SuperCategoryIcon.IncomeIcon["\(superCategory)"] ?? UIImage(systemName: "questionmark.folder"))!)
+        //収入の親カテゴリーの合計をFirestoreからとってきている
+        self.incomeCollectionCellMoney.append(sumIncomeMoneyFromFirestore)
+        //Firestoreに保存する給料サブカテゴリー固定費に追加する(既にif letで親の給料カテゴリー固定費があるかないか判断されている)(給料のサブカテゴリー→ボーナス、その他など)
+        //収入の親カテゴリーのサブカテゴリーの配列をFirestoreからとってきている
+        switch superCategory {
+        case "給料":
+            self.salaryIncomeSubCategoryArray = subCategoryIncomeArray
+        case "副業":
+            self.sideBusinessIncomeSubCategoryArray = subCategoryIncomeArray
+        case "臨時収入":
+            self.extraordinaryIncomeSubCategoryArray = subCategoryIncomeArray
+        case "投資":
+            self.investmentIncomeSubCategoryArray = subCategoryIncomeArray
+        case "賞":
+            self.prizeIncomeSubCategoryArray = subCategoryIncomeArray
+        default:
+            break
+        }
     }
 
+    func fixedCollectionViewSetUp(superCategory: String, sumIncomeMoneyFromFirestore: Int, subCategoryIncomeArray: [String]) {
+        print("\(superCategory)の取得に成功しました。\(String(describing: sumIncomeMoneyFromFirestore))")
+        self.fixedCostCollectionCellTitle.append("\(superCategory)")
+        self.fixedCostCollectionCellImage.append((SuperCategoryIcon.CostIcon["\(superCategory)"] ?? UIImage(systemName: "questionmark.folder"))!)
+        //収入の親カテゴリーの合計をFirestoreからとってきている
+        self.fixedCostCollectionCellMoney.append(sumIncomeMoneyFromFirestore)
+        //Firestoreに保存する給料サブカテゴリー固定費に追加する(既にif letで親の給料カテゴリー固定費があるかないか判断されている)(給料のサブカテゴリー→ボーナス、その他など)
+        //収入の親カテゴリーのサブカテゴリーの配列をFirestoreからとってきている
+        switch superCategory {
+        case "食費":
+            self.foodFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "日用品":
+            self.dailyGoodsFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "服飾":
+            self.clothFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "健康":
+            self.healthFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "交際":
+            self.datingFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "趣味":
+            self.hobbiesFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "教養":
+            self.liberalArtsFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "交通":
+            self.transportationFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "美容":
+            self.cosmetologyFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "観光":
+            self.sightseeingFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "車":
+            self.carFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "バイク":
+            self.motorcycleFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "通信":
+            self.netWorkFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "水道代":
+            self.waterFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "ガス代":
+            self.gasFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "電気代":
+            self.electricityFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "保険":
+            self.insuranceFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "税金":
+            self.taxFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "住宅":
+            self.housingFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "医療":
+            self.medicalFixedCostSubCategoryArray = subCategoryIncomeArray
+        case "ペット":
+            self.petFixedCostSubCategoryArray = subCategoryIncomeArray
+        default:
+            break
+        }
+    }
+    
     //一番大元となるcollectionviewのデザイン
     func baseCollectionViewSetUp() {
         backgroundColor = .white

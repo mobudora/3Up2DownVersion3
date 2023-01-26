@@ -145,7 +145,6 @@ class HomeViewController: UIViewController{
             }
         }
 
-
         livingExpensesCollection.reloadData()
         HUD.hide { (_) in
             HUD.flash(.success, onView: self.view, delay: 1)
@@ -176,11 +175,12 @@ class HomeViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        bannerView = GADBannerView(adSize: GADAdSizeBanner)
-        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        addBannerViewToView(bannerView)
+        //MARK: AdMob
+//        bannerView = GADBannerView(adSize: GADAdSizeBanner)
+//        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+//        bannerView.rootViewController = self
+//        bannerView.load(GADRequest())
+//        addBannerViewToView(bannerView)
 
         //生活費の使用金額データをFirestoreから読み込む
         getCostMonthSuperCategory()
@@ -283,7 +283,7 @@ class HomeViewController: UIViewController{
                 let currentMonth = self.calendarViewController.currentMonth.string(from: self.calendarViewController.currentDate)
                 //受け取ったユーザー情報の整理
                 self.costMonthSuperCategory = CostMothSuperCategoryFromFireStore.init(dic: data, month: currentMonth)
-                print("使用金額の取得に成功して代入しました。")
+                print("🔷使用金額の取得に成功して代入しました。")
 
                 self.livingExpensesCollection.reloadData()
             }
@@ -291,7 +291,7 @@ class HomeViewController: UIViewController{
     }
 
     func livingExpensesTargetAmountArrayAppend() {
-        print("UserDefaluts読み込むよ")
+        print("🔷UserDefaluts読み込むよ")
 
         if let foodTargetAmountTextField = userDefaults.string(forKey: "foodTargetAmountTextField") {
             livingExpensesTargetAmountArray.append(foodTargetAmountTextField)
@@ -442,6 +442,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //MARK: 収入と固定費のコレクションCell
         if collectionView.tag == 0 {
+            print("収入と固定費のコレクションが読み込まれたよ")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "incomeAndFixedCostCell", for: indexPath) as! incomeAndFixedCostCollectionViewCell
             //コレクションビューの題名を入れている配列をラベルに表示
             cell.incomeLabel.text = self.incomeLabelHeader[indexPath.row]
@@ -451,9 +452,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             cell.delegate = self
             cell.homeLivingExpensesUpdateDelegate = self
             return cell
-        } else { //生活費のコレクションCell
-            print("生活費のコレクションが読み込まれたよ")
+        } else { //MARK: 生活費のコレクションCell
+            print("🔶生活費のコレクションが読み込まれたよ")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "livingExpensesCustomCell", for: indexPath) as! livingExpensesCollectionViewCell
+            print("🔶livingExpensesUsageAmountArray: \(livingExpensesUsageAmountArray)")
             //Firestoreからデータを取得した後にもう一回追加するから、初期化
             self.livingExpensesUsageAmountArray.remove(at: indexPath.row)
             //UserDefaultsで取得した目標金額の反映
@@ -461,6 +463,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             //使用金額の反映
             livingExpensesUsageAmountArray.insert(cell.getUsageAmountFromFireStore(cellTitle: self.livingExpensesLabelHeaderArray[indexPath.row], costMonthSuperCategory: costMonthSuperCategory ?? CostMothSuperCategoryFromFireStore.init(dic: dicForNil, month: ""), index: indexPath.row), at: indexPath.row)
             print("livingExpensesUsageAmountArray: \(livingExpensesUsageAmountArray)")
+            print("🔶今何番目のCell\(indexPath.row)")
             cell.usageAmountLabel.text = String(livingExpensesUsageAmountArray[indexPath.row])
             cell.livingExpensesHeaderLabel.text = self.livingExpensesLabelHeaderArray[indexPath.row]
             cell.livingExpensesIconImageView.image = SuperCategoryIcon.CostIcon[livingExpensesLabelHeaderArray[indexPath.row]]
@@ -554,23 +557,20 @@ extension HomeViewController: IncomeAndFixedToHomeProtocol {
 
     func livingExpensesLabelUpdate(incomeSumText: String, fixedCostSumText: String) {
         //生活費(収入ー固定費)のテキストを表示
-        // ???: Intに変換して代入しないとうまくいかない
         let intIncomeSumText = Int(incomeSumText) ?? 0
         let intFixedCostSumText = Int(fixedCostSumText) ?? 0
         print("intIncomeSumText: \(intIncomeSumText)")
         print("intFixedCostSumText: \(intFixedCostSumText)")
         livingExpensesTextLabel.text = String(intIncomeSumText - intFixedCostSumText)
         print("livingExpensesTextLabel.text: \(livingExpensesTextLabel.text)")
-        //収入と固定費のFirestoreからの読み取りが終わり次第反映のためのリロード
-        livingExpensesCollection.reloadData()
     }
 }
 //コレクションセルを追加するプロトコル
 extension HomeViewController: AddCollectionViewCellProtocol {
     func addCollectionViewCell(collectionTitle: String, collectionImage: UIImage, collectionUsageAmount: Int) {
+        print("🔶生活費を反映するためにリロードするよ")
         livingExpensesLabelHeaderArray.append(collectionTitle)
         livingExpensesTargetAmountArray.append("0")
-        livingExpensesUsageAmountArray.append(collectionUsageAmount)
         livingExpensesCollection.reloadData()
     }
 }
