@@ -31,6 +31,7 @@ class livingExpensesCollectionViewCell: UICollectionViewCell {
     //目標金額
     @IBOutlet weak var targetAmountTextField: UITextField!
 
+    //MARK: 目標金額をUserDefaultに保存する
     @IBAction func targetAmountActionTextField(_ sender: Any) {
         print("書き込まれたよ:\(targetAmountTextField.text)")
         switch livingExpensesHeaderLabel.text {
@@ -168,10 +169,9 @@ class livingExpensesCollectionViewCell: UICollectionViewCell {
         guard let intTargetAmountLabel = Int(self.targetAmountTextField.text ?? "0") else { return recieveLivingExpensesUsageAmount ?? 0 }
 
         let intUsageAmountLabel = Int(self.recieveLivingExpensesUsageAmount ?? 0)
-        
+        //MARK: 残高
         self.balanceLabel.text = String(intTargetAmountLabel - intUsageAmountLabel)
         print("残高のおかねは何円？:\(self.balanceLabel.text)")
         return recieveLivingExpensesUsageAmount ?? 0
     }
-    
 }

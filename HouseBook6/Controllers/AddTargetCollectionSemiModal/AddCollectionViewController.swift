@@ -19,8 +19,6 @@ class AddCollectionViewController: UIViewController {
     // FirestoreのDB取得
     let db = Firestore.firestore()
 
-    var delegate: AddCollectionViewCellProtocol?
-
     //初期値として空の配列を入れている
     var costDisplayImages: [UIImage] = []
 
@@ -106,56 +104,8 @@ extension AddCollectionViewController: UICollectionViewDelegate, UICollectionVie
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var witchCost: Int!
-//        print("選択されたときのcostMonthSuperCategory")
-        switch indexPath.row {
-        case 0:
-            witchCost = costMonthSuperCategory?.foodMonthSuperCategoryFromFirestore ?? 0
-        case 1:
-            witchCost = costMonthSuperCategory?.dailyGoodsMonthSuperCategoryFromFirestore ?? 0
-        case 2:
-            witchCost = costMonthSuperCategory?.clothMonthSuperCategoryFromFirestore ?? 0
-        case 3:
-            witchCost = costMonthSuperCategory?.healthdMonthSuperCategoryFromFirestore ?? 0
-        case 4:
-            witchCost = costMonthSuperCategory?.datingMonthSuperCategoryFromFirestore ?? 0
-        case 5:
-            witchCost = costMonthSuperCategory?.hobbiesMonthSuperCategoryFromFirestore ?? 0
-        case 6:
-            witchCost = costMonthSuperCategory?.liberalArtsMonthSuperCategoryFromFirestore ?? 0
-        case 7:
-            witchCost = costMonthSuperCategory?.transportationMonthSuperCategoryFromFirestore ?? 0
-        case 8:
-            witchCost = costMonthSuperCategory?.cosmetologyMonthSuperCategoryFromFirestore ?? 0
-        case 9:
-            witchCost = costMonthSuperCategory?.sightseeingMonthSuperCategoryFromFirestore ?? 0
-        case 10:
-            witchCost = costMonthSuperCategory?.carMonthSuperCategoryFromFirestore ?? 0
-        case 11:
-            witchCost = costMonthSuperCategory?.motorcycleMonthSuperCategoryFromFirestore ?? 0
-        case 12:
-            witchCost = costMonthSuperCategory?.netWorkMonthSuperCategoryFromFirestore ?? 0
-        case 13:
-            witchCost = costMonthSuperCategory?.waterMonthSuperCategoryFromFirestore ?? 0
-        case 14:
-            witchCost = costMonthSuperCategory?.gasMonthSuperCategoryFromFirestore ?? 0
-        case 15:
-            witchCost = costMonthSuperCategory?.electricityMonthSuperCategoryFromFirestore ?? 0
-        case 16:
-            witchCost = costMonthSuperCategory?.insuranceMonthSuperCategoryFromFirestore ?? 0
-        case 17:
-            witchCost = costMonthSuperCategory?.taxMonthSuperCategoryFromFirestore ?? 0
-        case 18:
-            witchCost = costMonthSuperCategory?.housingMonthSuperCategoryFromFirestore ?? 0
-        case 19:
-            witchCost = costMonthSuperCategory?.medicalMonthSuperCategoryFromFirestore ?? 0
-        case 20:
-            witchCost = costMonthSuperCategory?.petMonthSuperCategoryFromFirestore ?? 0
-        default:
-            break
-        }
         //delegateを通して選択したタイトルと画像を渡す
-        delegate?.addCollectionViewCell(collectionTitle: costDisplayTitles[indexPath.row], collectionImage: costDisplayImages[indexPath.row], collectionUsageAmount: witchCost)
+//        delegate?.addCollectionViewCell(collectionTitle: costDisplayTitles[indexPath.row])
         dismiss(animated: true)
     }
 }

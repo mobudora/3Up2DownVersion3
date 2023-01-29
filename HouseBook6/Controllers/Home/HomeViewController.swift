@@ -10,33 +10,36 @@ import Firebase
 import PKHUD
 import GoogleMobileAds
 
-class HomeViewController: UIViewController{
+//やること
+//UserデフォルトではなくlivingExpensesUsageAmountArrayを配列に入れて行ってカウントと、表示を行う
 
+class HomeViewController: UIViewController {
+    
     let yearArray: [String] = ["2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033"]
     let monthArray: [String] = ["01","02","03","04","05","06","07","08","09","10","11","12"]
-
+    
     var bannerView: GADBannerView!
-
+    
     //インスタンス化
     let db = Firestore.firestore()
     var costMonthSuperCategory: CostMothSuperCategoryFromFireStore?
     let dicForNil: [String:Any] = [:]
-
+    
     //インスタンス化
     var userDefaults = UserDefaults.standard
-
+    
     static var homeViewInstance = HomeViewController()
-
+    
     // 収入と固定費のコレクションの共有インスタンス
     let incomeAndFixedCollectionInstance = incomeAndFixedCostCollectionViewCell.incomeAndFixedCollectionInstance
     var incomeAndFixedIconNameReciever: String!
     var incomeAndFixedIconMoneyReciever: String!
     
     let colors = Colors()
-
+    
     //カレンダーの日付をとる共有インスタンス
     let calendarViewController = CalendarViewController.calendarViewControllerInstance
-
+    
     var currentTitleMonth: String!
     var currentTitleYear: String!
     
@@ -77,93 +80,22 @@ class HomeViewController: UIViewController{
     @IBOutlet weak var livingExpensesBackgroundView: UIView!
     //生活費(収入ー固定費)のテキストラベル
     @IBOutlet weak var livingExpensesTextLabel: UILabel!
-
-    //生活費のコレクションビュー
     
+    //生活費のコレクションビュー
     @IBOutlet weak var livingExpensesCollection: UICollectionView!
     //生活費のコレクションビューの高さ指定
     @IBOutlet weak var livingExpensesCollectionHeightConstraint: NSLayoutConstraint!
-    //生活費のコレクションビューの題名を入れる配列
-    var livingExpensesLabelHeaderArray: [String] = []
+    //生活費のタイトル
+    var livingExpensesCollectionCellTitle: [String] = []
+    //生活費のImgae
+    var livingExpensesCollectionCellImage: [UIImage] = []
     //生活費の目標金額を格納する配列
     var livingExpensesTargetAmountArray: [String] = []
-    //生活費の使用金額を格納する配列
-    var livingExpensesUsageAmountArray: [Int] = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    //生活費目標金額を保存するボタン
-    @IBOutlet weak var targetAmountStorageButton: UIButton!
-    @IBAction func targetAmountStorageActionButton(_ sender: Any) {
-        HUD.show(.progress, onView: view)
-
-        //配列の初期化
-        livingExpensesTargetAmountArray = []
-        for livingExpensesLabelHeader in livingExpensesLabelHeaderArray {
-            switch livingExpensesLabelHeader {
-            case "食費":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "foodTargetAmountTextField") ?? "0")
-            case "日用品":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "dailyGoodsTargetAmountTextField") ?? "0")
-            case "服飾":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "clothTargetAmountTextField") ?? "0")
-            case "健康":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "healthTargetAmountTextField") ?? "0")
-            case "交際":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "datingTargetAmountTextField") ?? "0")
-            case "趣味":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "hobbiesTargetAmountTextField") ?? "0")
-            case "教養":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "liberalArtsTargetAmountTextField") ?? "0")
-            case "交通":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "transportationTargetAmountTextField") ?? "0")
-            case "美容":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "cosmetologyTargetAmountTextField") ?? "0")
-            case "観光":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "sightseeingTargetAmountTextField") ?? "0")
-            case "車":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "carTargetAmountTextField") ?? "0")
-            case "バイク":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "motorcycleTargetAmountTextField") ?? "0")
-            case "通信":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "netWorkTargetAmountTextField") ?? "0")
-            case "水道代":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "waterTargetAmountTextField") ?? "0")
-            case "ガス代":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "gasTargetAmountTextField") ?? "0")
-            case "電気代":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "electricityTargetAmountTextField") ?? "0")
-            case "保険":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "insuranceTargetAmountTextField") ?? "0")
-            case "税金":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "taxTargetAmountTextField") ?? "0")
-            case "住宅":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "housingTargetAmountTextField") ?? "0")
-            case "医療":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "medicalTargetAmountTextField") ?? "0")
-            case "ペット":
-                livingExpensesTargetAmountArray.append(userDefaults.string(forKey: "petTargetAmountTextField") ?? "0")
-            default:
-                break
-            }
-        }
-
-        livingExpensesCollection.reloadData()
-        HUD.hide { (_) in
-            HUD.flash(.success, onView: self.view, delay: 1)
-        }
-    }
-    //生活費コレクションを増やすボタン
-    @IBOutlet weak var plusLivingExpensesCollectionButton: UIButton!
-    @IBAction func plusLivingExpensesCollectionActionButton(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "AddCollectionSemiModal", bundle: nil)
-        let nextVc = storyboard.instantiateViewController(withIdentifier: "AddCollectionViewController") as! AddCollectionViewController
-        if let sheet = nextVc.sheetPresentationController {
-            //どの位置に止まるのか
-            sheet.detents = [.medium()]
-        }
-        nextVc.delegate = self
-        nextVc.costMonthSuperCategory = costMonthSuperCategory
-        present(nextVc, animated: true, completion: nil)
-    }
-
+    //生活費の使用金額
+    var livingExpensesCollectionCellMoney: [Int] = []
+    //使用金額の合計値を計算して代入する変数
+    var usageSum = 0
+    
     //貯金額のボタン
     @IBOutlet weak var savingAmountButton: UIButton!
     //貯金額の表示箇所
@@ -171,34 +103,27 @@ class HomeViewController: UIViewController{
     //貯金額のテキストラベル
     @IBOutlet weak var savingAmountLabel: UILabel!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //MARK: AdMob
-//        bannerView = GADBannerView(adSize: GADAdSizeBanner)
-//        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
-//        bannerView.rootViewController = self
-//        bannerView.load(GADRequest())
-//        addBannerViewToView(bannerView)
-
-        //生活費の使用金額データをFirestoreから読み込む
-        getCostMonthSuperCategory()
-
-        //UserDefalutsに保存されている目標金額を読み込む
-        print("🟩生活費が読み込まれるよ")
-        livingExpensesTargetAmountArrayAppend()
-
+        //        bannerView = GADBannerView(adSize: GADAdSizeBanner)
+        //        bannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        //        bannerView.rootViewController = self
+        //        bannerView.load(GADRequest())
+        //        addBannerViewToView(bannerView)
+        
         //タイトルの日付を取得
         calendarViewController.currentMonth.dateFormat = "MM"
         calendarViewController.currentYear.dateFormat = "yyyy"
-
+        
         self.navigationItem.setTitleView(withTitle: "\(calendarViewController.currentMonth.string(from: calendarViewController.currentDate))", subTitile: "\(calendarViewController.currentYear.string(from: calendarViewController.currentDate))")
-
+        
         //収入と固定費の入力の際に何年何月の入力か判断するための変数
         currentTitleYear = calendarViewController.currentYear.string(from: calendarViewController.currentDate)
         currentTitleMonth = calendarViewController.currentMonth.string(from: calendarViewController.currentDate)
-
+        
         //総資産の背景Viewをセットアップ
         setUpSumMoneyBackgroundContent()
         
@@ -206,7 +131,7 @@ class HomeViewController: UIViewController{
         incomeAndFixedCostCollection.register(UINib(nibName: "incomeAndFixedCostCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "incomeAndFixedCostCell")
         //incomeAndFixedCostCollectionViewの高さを決める(ラベル*2+cell*初期3列+ margin)
         incomeAndFixedCollectionHeightConstraint.constant = CGFloat((44 * 2) + (44 * tableCountUp)) + 20
-
+        
         //生活費(収入ー固定費)の背景Viewをセットアップ
         setUpLivingExpensesBackgroundContent()
         
@@ -214,170 +139,300 @@ class HomeViewController: UIViewController{
         livingExpensesCollection.register(UINib(nibName: "livingExpensesCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "livingExpensesCustomCell")
         //livingExpensesCollectionViewの高さを決める
         livingExpensesCollectionHeightConstraint.constant = ((UIScreen.main.bounds.width / 2 - 20) * 8 / 2) + 50
-
-        //目標金額保存するボタンのセットアップ
-        setUpTargetAmountStorageButton()
         
         //貯金額の背景Viewをセットアップ
         setUpsavingAmountBackgroundContent()
         
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        // ???: 場合わけでリロードすることがベストincomeは収入が入力されたときlivingは生活関係が入力されたとき
+        getLivingExpensesCollectionDataFromFirestore()
+    }
+    
+    //HomeViewが見られるたびに呼ばれる関数
+    //生活費の"\(month)食費SumMoney"をFirestoreからとってくる
+    //???: 収入と固定費でFirestoreから同じドキュメントを読み取っているので、2回読み込む必要はない？
+    func getLivingExpensesCollectionDataFromFirestore() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let year = calendarViewController.currentYear.string(from: calendarViewController.currentDate)
+        guard let currentTitleYear = currentTitleYear else { return }
         
-        db.collection("\(year)superCategoryIncomeAndExpenditure").document(uid).getDocument { (snapshot, err) in
+        db.collection("\(currentTitleYear)superCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
+            // エラー発生時
             if let err = err {
-                print("使用金額の取得に失敗しました。\(err)")
-                return
+                print("Firestoreからの生活費SuperCategoryDataの取得に失敗しました: \(err)")
             } else {
+                // コレクション内のドキュメントを取得
                 guard let data = snapshot?.data() else { return }
-                self.calendarViewController.currentMonth.dateFormat = "MM"
-                let currentMonth = self.calendarViewController.currentMonth.string(from: self.calendarViewController.currentDate)
+                print("🔶🔷生活費に使うdata\(data)")
+                
                 //受け取ったユーザー情報の整理
-                self.costMonthSuperCategory = CostMothSuperCategoryFromFireStore.init(dic: data, month: currentMonth)
-                print("使用金額の取得に成功して代入しました。")
-
-                self.incomeAndFixedCostCollection.reloadData()
-
+                let livingExpensesMonthSuperCategory = CostMothSuperCategoryFromFireStore.init(dic: data, month: self.currentTitleMonth ?? "0")
+                
+                print("🔷livingExpensesMonthSuperCategory\(livingExpensesMonthSuperCategory)")
+                
+                //初期化
+                self.livingExpensesCollectionCellTitle = []
+                self.livingExpensesCollectionCellImage = []
+                self.livingExpensesTargetAmountArray = []
+                self.livingExpensesCollectionCellMoney = []
+                self.usageSum = 0
+                
+                print("🟥Firestoreから読み取った生活費の月の合計を配列に代入してHomeViewに反映させる")
+                
+                //生活費のデータ取得
+                // ???: if文がしつこい
+                if let foodMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.foodMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "食費", sumLivingExpensesMoneyFromFirestore: foodMonthSumMoneyFromFirestore)
+                }
+                if let dailyGoodsMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.dailyGoodsMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "日用品", sumLivingExpensesMoneyFromFirestore: dailyGoodsMonthSumMoneyFromFirestore)
+                }
+                if let clothMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.clothMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "服飾", sumLivingExpensesMoneyFromFirestore: clothMonthSumMoneyFromFirestore)
+                }
+                if let healthMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.healthdMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "健康", sumLivingExpensesMoneyFromFirestore: healthMonthSumMoneyFromFirestore)
+                }
+                if let datingMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.datingMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "交際", sumLivingExpensesMoneyFromFirestore: datingMonthSumMoneyFromFirestore)
+                }
+                if let hobbiesMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.hobbiesMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "趣味", sumLivingExpensesMoneyFromFirestore: hobbiesMonthSumMoneyFromFirestore)
+                }
+                if let liberalArtsMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.liberalArtsMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "教養", sumLivingExpensesMoneyFromFirestore: liberalArtsMonthSumMoneyFromFirestore)
+                }
+                if let transportationMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.transportationMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "交通", sumLivingExpensesMoneyFromFirestore: transportationMonthSumMoneyFromFirestore)
+                }
+                if let cosmetologyMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.cosmetologyMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "美容", sumLivingExpensesMoneyFromFirestore: cosmetologyMonthSumMoneyFromFirestore)
+                }
+                if let sightseeingMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.sightseeingMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "観光", sumLivingExpensesMoneyFromFirestore: sightseeingMonthSumMoneyFromFirestore)
+                }
+                if let carMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.carMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "車", sumLivingExpensesMoneyFromFirestore: carMonthSumMoneyFromFirestore)
+                }
+                if let motorcycleMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.motorcycleMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "バイク", sumLivingExpensesMoneyFromFirestore: motorcycleMonthSumMoneyFromFirestore)
+                }
+                if let netWorkMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.netWorkMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "通信", sumLivingExpensesMoneyFromFirestore: netWorkMonthSumMoneyFromFirestore)
+                }
+                if let waterMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.waterMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "水道代", sumLivingExpensesMoneyFromFirestore: waterMonthSumMoneyFromFirestore)
+                }
+                if let gasMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.gasMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "ガス代", sumLivingExpensesMoneyFromFirestore: gasMonthSumMoneyFromFirestore)
+                }
+                if let electricityMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.electricityMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "電気代", sumLivingExpensesMoneyFromFirestore: electricityMonthSumMoneyFromFirestore)
+                }
+                if let insuranceMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.insuranceMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "保険", sumLivingExpensesMoneyFromFirestore: insuranceMonthSumMoneyFromFirestore)
+                }
+                if let taxMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.taxMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "税金", sumLivingExpensesMoneyFromFirestore: taxMonthSumMoneyFromFirestore)
+                }
+                if let housingMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.housingMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "住宅", sumLivingExpensesMoneyFromFirestore: housingMonthSumMoneyFromFirestore)
+                }
+                if let medicalMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.medicalMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "医療", sumLivingExpensesMoneyFromFirestore: medicalMonthSumMoneyFromFirestore)
+                }
+                if let petMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.petMonthSuperCategoryFromFirestore {
+                    self.livingExpensesCollectionViewSetUp(superCategory: "ペット", sumLivingExpensesMoneyFromFirestore: petMonthSumMoneyFromFirestore)
+                }
+                self.livingExpensesCollection.reloadData()
+                //収入と固定費のコレクションが読み取られるまで待つ
+                //待ってから生活費のラベルのテキストを読み込む
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    //貯金額のリロード
+                    //使用金額の合計値を出す
+                    for usageCellMoney in self.livingExpensesCollectionCellMoney {
+                        self.usageSum += usageCellMoney
+                    }
+                    //生活費
+                    let intLivingExpensesTextLabel = Int(self.livingExpensesTextLabel.text ?? "0") ?? 0
+                    print("生活費金額の合計:\(intLivingExpensesTextLabel)")
+                    //貯金額
+                    self.savingAmountLabel.text = String(intLivingExpensesTextLabel - self.usageSum)
+                    print("貯金額の合計:\(String(describing: self.savingAmountLabel.text))")
+                    //総資産への反映
+                    self.userDefaults.set(intLivingExpensesTextLabel - self.usageSum, forKey: "\(self.currentTitleYear ?? "0")\(self.currentTitleMonth ?? "0")sumMoney")
+                    
+                    //???: 総資産足していく?
+                    for year in self.yearArray {
+                        for month in self.monthArray {
+                            self.sumMoneyLabel.text = String(intLivingExpensesTextLabel - self.usageSum + self.userDefaults.integer(forKey: "\(year)\(month)sumMoney"))
+                        }
+                    }
+                }
             }
         }
     }
-
+    
+    func livingExpensesCollectionViewSetUp(superCategory: String, sumLivingExpensesMoneyFromFirestore: Int) {
+        print("\(superCategory)の取得に成功しました。\(String(describing: sumLivingExpensesMoneyFromFirestore))")
+        self.livingExpensesCollectionCellTitle.append("\(superCategory)")
+        self.livingExpensesCollectionCellImage.append((SuperCategoryIcon.CostIcon["\(superCategory)"] ?? UIImage(systemName: "questionmark.folder"))!)
+        //収入の親カテゴリーの合計をFirestoreからとってきている
+        self.livingExpensesCollectionCellMoney.append(sumLivingExpensesMoneyFromFirestore)
+        //ifletで目標金額の存在の確認をする理由は、使用金額があったからといって目標金額を全てに設定するわけではないから
+        //livingExpensesCollectionCellMoneyの同じ数しか目標金額をlivingExpensesTargetAmountArrayに入れないために1つ上の関数のFirestoreでiflet確認している
+        switch superCategory {
+        case "食費":
+            if let foodTargetAmountTextField = userDefaults.string(forKey: "foodTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(foodTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "日用品":
+            if let dailyGoodsTargetAmountTextField = userDefaults.string(forKey: "dailyGoodsTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(dailyGoodsTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "服飾":
+            if let clothTargetAmountTextField = userDefaults.string(forKey: "clothTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(clothTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "健康":
+            if let healthTargetAmountTextField = userDefaults.string(forKey: "healthTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(healthTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "交際":
+            if let datingTargetAmountTextField = userDefaults.string(forKey: "datingTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(datingTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "趣味":
+            if let hobbiesTargetAmountTextField = userDefaults.string(forKey: "hobbiesTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(hobbiesTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "教養":
+            if let liberalArtsTargetAmountTextField = userDefaults.string(forKey: "liberalArtsTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(liberalArtsTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "交通":
+            if let transportationTargetAmountTextField = userDefaults.string(forKey: "transportationTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(transportationTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "美容":
+            if let cosmetologyTargetAmountTextField = userDefaults.string(forKey: "cosmetologyTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(cosmetologyTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "観光":
+            if let sightseeingTargetAmountTextField = userDefaults.string(forKey: "sightseeingTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(sightseeingTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "車":
+            if let carTargetAmountTextField = userDefaults.string(forKey: "carTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(carTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "バイク":
+            if let motorcycleTargetAmountTextField = userDefaults.string(forKey: "motorcycleTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(motorcycleTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "通信":
+            if let netWorkTargetAmountTextField = userDefaults.string(forKey: "netWorkTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(netWorkTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "水道代":
+            if let waterTargetAmountTextField = userDefaults.string(forKey: "waterTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(waterTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "ガス代":
+            if let gasTargetAmountTextField = userDefaults.string(forKey: "gasTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(gasTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "電気代":
+            if let electricityTargetAmountTextField = userDefaults.string(forKey: "electricityTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(electricityTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "保険":
+            if let insuranceTargetAmountTextField = userDefaults.string(forKey: "insuranceTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(insuranceTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "税金":
+            if let taxTargetAmountTextField = userDefaults.string(forKey: "taxTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(taxTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "住宅":
+            if let housingTargetAmountTextField = userDefaults.string(forKey: "housingTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(housingTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "医療":
+            if let medicalTargetAmountTextField = userDefaults.string(forKey: "medicalTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(medicalTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        case "ペット":
+            if let petTargetAmountTextField = userDefaults.string(forKey: "petTargetAmountTextField") {
+                livingExpensesTargetAmountArray.append(petTargetAmountTextField)
+            } else {
+                livingExpensesTargetAmountArray.append("0")
+            }
+        default:
+            break
+        }
+    }
+    
     func addBannerViewToView(_ bannerView: GADBannerView) {
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(bannerView)
         view.addConstraints(
-          [NSLayoutConstraint(item: bannerView,
-                              attribute: .bottom,
-                              relatedBy: .equal,
-                              toItem: view.safeAreaLayoutGuide,
-                              attribute: .top,
-                              multiplier: 1,
-                              constant: 0),
-           NSLayoutConstraint(item: bannerView,
-                              attribute: .centerX,
-                              relatedBy: .equal,
-                              toItem: view,
-                              attribute: .centerX,
-                              multiplier: 1,
-                              constant: 0)
-          ])
-       }
-
-    func getCostMonthSuperCategory() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let year = calendarViewController.currentYear.string(from: calendarViewController.currentDate)
-
-        db.collection("\(year)superCategoryIncomeAndExpenditure").document(uid).getDocument { (snapshot, err) in
-            if let err = err {
-                print("使用金額の取得に失敗しました。\(err)")
-                return
-            } else {
-                guard let data = snapshot?.data() else { return }
-                self.calendarViewController.currentMonth.dateFormat = "MM"
-                let currentMonth = self.calendarViewController.currentMonth.string(from: self.calendarViewController.currentDate)
-                //受け取ったユーザー情報の整理
-                self.costMonthSuperCategory = CostMothSuperCategoryFromFireStore.init(dic: data, month: currentMonth)
-                print("🔷使用金額の取得に成功して代入しました。")
-
-                self.livingExpensesCollection.reloadData()
-            }
-        }
-    }
-
-    func livingExpensesTargetAmountArrayAppend() {
-        print("🔷UserDefaluts読み込むよ")
-
-        if let foodTargetAmountTextField = userDefaults.string(forKey: "foodTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(foodTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("食費")
-        }
-        if let dailyGoodsTargetAmountTextField = userDefaults.string(forKey: "dailyGoodsTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(dailyGoodsTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("日用品")
-        }
-        if let clothTargetAmountTextField = userDefaults.string(forKey: "clothTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(clothTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("服飾")
-        }
-        if let healthTargetAmountTextField = userDefaults.string(forKey: "healthTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(healthTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("健康")
-        }
-        if let datingTargetAmountTextField = userDefaults.string(forKey: "datingTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(datingTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("交際")
-        }
-        if let hobbiesTargetAmountTextField = userDefaults.string(forKey: "hobbiesTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(hobbiesTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("趣味")
-        }
-        if let liberalArtsTargetAmountTextField = userDefaults.string(forKey: "liberalArtsTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(liberalArtsTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("教養")
-        }
-        if let transportationTargetAmountTextField = userDefaults.string(forKey: "transportationTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(transportationTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("交通")
-        }
-        if let cosmetologyTargetAmountTextField = userDefaults.string(forKey: "cosmetologyTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(cosmetologyTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("美容")
-        }
-        if let sightseeingTargetAmountTextField = userDefaults.string(forKey: "sightseeingTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(sightseeingTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("観光")
-        }
-        if let carTargetAmountTextField = userDefaults.string(forKey: "carTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(carTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("車")
-        }
-        if let motorcycleTargetAmountTextField = userDefaults.string(forKey: "motorcycleTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(motorcycleTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("バイク")
-        }
-        if let netWorkTargetAmountTextField = userDefaults.string(forKey: "netWorkTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(netWorkTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("通信")
-        }
-        if let waterTargetAmountTextField = userDefaults.string(forKey: "waterTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(waterTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("水道代")
-        }
-        if let gasTargetAmountTextField = userDefaults.string(forKey: "gasTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(gasTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("ガス代")
-        }
-        if let electricityTargetAmountTextField = userDefaults.string(forKey: "electricityTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(electricityTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("電気代")
-        }
-        if let insuranceTargetAmountTextField = userDefaults.string(forKey: "insuranceTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(insuranceTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("保険")
-        }
-        if let taxTargetAmountTextField = userDefaults.string(forKey: "taxTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(taxTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("税金")
-        }
-        if let housingTargetAmountTextField = userDefaults.string(forKey: "housingTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(housingTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("住宅")
-        }
-        if let medicalTargetAmountTextField = userDefaults.string(forKey: "medicalTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(medicalTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("医療")
-        }
-        if let petTargetAmountTextField = userDefaults.string(forKey: "petTargetAmountTextField") {
-            livingExpensesTargetAmountArray.append(petTargetAmountTextField)
-            livingExpensesLabelHeaderArray.append("ペット")
-        }
-        print("UserDefaluts読み込み終わったよ\(livingExpensesTargetAmountArray)")
+            [NSLayoutConstraint(item: bannerView,
+                                attribute: .bottom,
+                                relatedBy: .equal,
+                                toItem: view.safeAreaLayoutGuide,
+                                attribute: .top,
+                                multiplier: 1,
+                                constant: 0),
+             NSLayoutConstraint(item: bannerView,
+                                attribute: .centerX,
+                                relatedBy: .equal,
+                                toItem: view,
+                                attribute: .centerX,
+                                multiplier: 1,
+                                constant: 0)
+            ])
     }
     
     func setUpSumMoneyBackgroundContent() {
@@ -410,15 +465,6 @@ class HomeViewController: UIViewController{
         savingAmountBackgroundView.layer.borderWidth = 1
         savingAmountBackgroundView.layer.borderColor = colors.black.cgColor
     }
-
-    func setUpTargetAmountStorageButton() {
-        targetAmountStorageButton.layer.cornerRadius = 10
-        targetAmountStorageButton.layer.shadowOffset = CGSize(width: 2, height: 2)
-        targetAmountStorageButton.layer.shadowColor = UIColor.gray.cgColor
-        targetAmountStorageButton.layer.shadowOpacity = 0.2
-        targetAmountStorageButton.layer.borderWidth = 1
-        targetAmountStorageButton.layer.borderColor = colors.black.cgColor
-    }
     
 }
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
@@ -435,58 +481,42 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if collectionView.tag == 0 {
             return 2
         } else {
-            return livingExpensesTargetAmountArray.count
+            print("livingExpensesCollectionCellMoney: \(livingExpensesCollectionCellMoney)")
+            return livingExpensesCollectionCellMoney.count
         }
     }
-        
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         //MARK: 収入と固定費のコレクションCell
         if collectionView.tag == 0 {
+            print("🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷🔷")
             print("収入と固定費のコレクションが読み込まれたよ")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "incomeAndFixedCostCell", for: indexPath) as! incomeAndFixedCostCollectionViewCell
             //コレクションビューの題名を入れている配列をラベルに表示
             cell.incomeLabel.text = self.incomeLabelHeader[indexPath.row]
-            print("最初のCollectionViewの描画を行います。")
-            cell.getIncomeCollectionDataFromFirestore()
             //InputViewControllerへ移動するプロトコル
             cell.delegate = self
             cell.homeLivingExpensesUpdateDelegate = self
+            print("最初のCollectionViewの描画を行います。")
+            cell.getIncomeCollectionDataFromFirestore()
             return cell
         } else { //MARK: 生活費のコレクションCell
+            print("🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩")
             print("🔶生活費のコレクションが読み込まれたよ")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "livingExpensesCustomCell", for: indexPath) as! livingExpensesCollectionViewCell
-            print("🔶livingExpensesUsageAmountArray: \(livingExpensesUsageAmountArray)")
-            //Firestoreからデータを取得した後にもう一回追加するから、初期化
-            self.livingExpensesUsageAmountArray.remove(at: indexPath.row)
+            print("🔶livingExpensesTargetAmountArray: \(livingExpensesTargetAmountArray)")
+            print("🔶今何番目のCell\(indexPath.row)")
+            //カテゴリータイトル
+            cell.livingExpensesHeaderLabel.text = self.livingExpensesCollectionCellTitle[indexPath.row]
+            //カテゴリーImage
+            cell.livingExpensesIconImageView.image = SuperCategoryIcon.CostIcon[livingExpensesCollectionCellTitle[indexPath.row]]
             //UserDefaultsで取得した目標金額の反映
             cell.targetAmountTextField.text = self.livingExpensesTargetAmountArray[indexPath.row]
-            //使用金額の反映
-            livingExpensesUsageAmountArray.insert(cell.getUsageAmountFromFireStore(cellTitle: self.livingExpensesLabelHeaderArray[indexPath.row], costMonthSuperCategory: costMonthSuperCategory ?? CostMothSuperCategoryFromFireStore.init(dic: dicForNil, month: ""), index: indexPath.row), at: indexPath.row)
-            print("livingExpensesUsageAmountArray: \(livingExpensesUsageAmountArray)")
-            print("🔶今何番目のCell\(indexPath.row)")
-            cell.usageAmountLabel.text = String(livingExpensesUsageAmountArray[indexPath.row])
-            cell.livingExpensesHeaderLabel.text = self.livingExpensesLabelHeaderArray[indexPath.row]
-            cell.livingExpensesIconImageView.image = SuperCategoryIcon.CostIcon[livingExpensesLabelHeaderArray[indexPath.row]]
-            //貯金額のリロード
-            var usageSum = 0
-            for usageAmount in livingExpensesUsageAmountArray {
-                usageSum += usageAmount
-            }
-            //生活費
-            let intLivingExpensesTextLabel = Int(livingExpensesTextLabel.text ?? "0") ?? 0
-            print("生活費金額の合計:\(intLivingExpensesTextLabel)")
-            //貯金額
-            savingAmountLabel.text = String(intLivingExpensesTextLabel - usageSum)
-            print("貯金額の合計:\(savingAmountLabel.text)")
-            //総資産への反映
-            userDefaults.set(intLivingExpensesTextLabel - usageSum, forKey: "\(currentTitleYear ?? "0")\(currentTitleMonth ?? "0")sumMoney")
+            //使用金額
+            cell.usageAmountLabel.text = String(livingExpensesCollectionCellMoney[indexPath.row])
+            //残高
+            cell.balanceLabel.text = String((Int(livingExpensesTargetAmountArray[indexPath.row]) ?? 0) - livingExpensesCollectionCellMoney[indexPath.row])
             
-            for year in yearArray {
-                for month in monthArray {
-                    sumMoneyLabel.text = String(intLivingExpensesTextLabel - usageSum + userDefaults.integer(forKey: "\(year)\(month)sumMoney"))
-                }
-            }
-
             return cell
         }
     }
@@ -502,29 +532,29 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 }
 //Navigationタイトル変更
 extension UINavigationItem {
-
+    
     func setTitleView(withTitle title: String, subTitile: String) {
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.font = .systemFont(ofSize: 30, weight: .medium)
         titleLabel.textColor = .black
-
+        
         let subTitleLabel = UILabel()
         subTitleLabel.text = subTitile
         subTitleLabel.font = .systemFont(ofSize: 10)
         subTitleLabel.textColor = .black
-
+        
         let stackView = UIStackView(arrangedSubviews: [titleLabel, subTitleLabel])
         stackView.alignment = .firstBaseline
         stackView.axis = .horizontal
-
+        
         self.titleView = stackView
     }
 }
 
 //HomeViewの収入・固定費テーブルビューからInputViewへ情報が渡されるためのdelegate
 extension HomeViewController: PassIncomeAndFixedCollectionCellProtocol {
-
+    
     func goInputViewController(h1Label: String) {
         let storyboard = UIStoryboard(name: "Input", bundle: nil)
         // ここに画面遷移処理(NextViewControllerに遷移する処理)を記載
@@ -545,7 +575,7 @@ extension HomeViewController: PassIncomeAndFixedCollectionCellProtocol {
 }
 //戻ったときに通知される処理
 extension HomeViewController: UIAdaptivePresentationControllerDelegate {
-
+    
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         // Modal画面から戻った際の画面の更新処理を行う。収入か固定費のプラスをクリックして戻るとき
         print("戻ってリロードするよ")
@@ -554,7 +584,7 @@ extension HomeViewController: UIAdaptivePresentationControllerDelegate {
 }
 //生活費(収入ー固定費)を更新するためのプロトコル
 extension HomeViewController: IncomeAndFixedToHomeProtocol {
-
+    
     func livingExpensesLabelUpdate(incomeSumText: String, fixedCostSumText: String) {
         //生活費(収入ー固定費)のテキストを表示
         let intIncomeSumText = Int(incomeSumText) ?? 0
@@ -563,14 +593,5 @@ extension HomeViewController: IncomeAndFixedToHomeProtocol {
         print("intFixedCostSumText: \(intFixedCostSumText)")
         livingExpensesTextLabel.text = String(intIncomeSumText - intFixedCostSumText)
         print("livingExpensesTextLabel.text: \(livingExpensesTextLabel.text)")
-    }
-}
-//コレクションセルを追加するプロトコル
-extension HomeViewController: AddCollectionViewCellProtocol {
-    func addCollectionViewCell(collectionTitle: String, collectionImage: UIImage, collectionUsageAmount: Int) {
-        print("🔶生活費を反映するためにリロードするよ")
-        livingExpensesLabelHeaderArray.append(collectionTitle)
-        livingExpensesTargetAmountArray.append("0")
-        livingExpensesCollection.reloadData()
     }
 }

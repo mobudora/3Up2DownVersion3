@@ -26,7 +26,6 @@
 		428456A42835DC5E00FF7EF8 /* AddCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428456A32835DC5E00FF7EF8 /* AddCollectionViewController.swift */; };
 		42848BA2283751A90036B5CB /* CostMothSuperCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42848BA1283751A90036B5CB /* CostMothSuperCategory.swift */; };
 		4289B3D7282E299500B7B8BD /* Income.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4289B3D6282E299500B7B8BD /* Income.swift */; };
-		428BF917283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428BF916283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift */; };
 		429FB7E528128A2F00067EE7 /* dateDiaryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429FB7E328128A2F00067EE7 /* dateDiaryCollectionViewCell.swift */; };
 		429FB7E628128A2F00067EE7 /* dateDiaryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 429FB7E428128A2F00067EE7 /* dateDiaryCollectionViewCell.xib */; };
 		42A23DE52845DCF50088754D /* DetailAboutAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A23DE42845DCF40088754D /* DetailAboutAppViewController.swift */; };
@@ -146,7 +145,6 @@
 		428456A32835DC5E00FF7EF8 /* AddCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollectionViewController.swift; sourceTree = "<group>"; };
 		42848BA1283751A90036B5CB /* CostMothSuperCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostMothSuperCategory.swift; sourceTree = "<group>"; };
 		4289B3D6282E299500B7B8BD /* Income.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Income.swift; sourceTree = "<group>"; };
-		428BF916283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCollectionViewCellProtocol.swift; sourceTree = "<group>"; };
 		429FB7E328128A2F00067EE7 /* dateDiaryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dateDiaryCollectionViewCell.swift; sourceTree = "<group>"; };
 		429FB7E428128A2F00067EE7 /* dateDiaryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = dateDiaryCollectionViewCell.xib; sourceTree = "<group>"; };
 		42A23DE42845DCF40088754D /* DetailAboutAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailAboutAppViewController.swift; sourceTree = "<group>"; };
@@ -330,7 +328,6 @@
 			isa = PBXGroup;
 			children = (
 				86C4F11E27F2D7CC00E1AB43 /* UIColor-Extension.swift */,
-				AB7D893228C1BD72007B2CCB /* AddTargetCollectionSemiModal */,
 				AB7D893028C1BD55007B2CCB /* Home */,
 				AB7D892F28C1BD4C007B2CCB /* ChatNote */,
 				AB7D892E28C1BCE6007B2CCB /* Calendar */,
@@ -720,14 +717,6 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
-		AB7D893228C1BD72007B2CCB /* AddTargetCollectionSemiModal */ = {
-			isa = PBXGroup;
-			children = (
-				428BF916283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift */,
-			);
-			path = AddTargetCollectionSemiModal;
-			sourceTree = "<group>";
-		};
 		AB7D893328C1BEB7007B2CCB /* SelfMadeCalendar */ = {
 			isa = PBXGroup;
 			children = (
@@ -977,7 +966,6 @@
 				AB573541297A6FB2003F067C /* CopyUILabel.swift in Sources */,
 				42AAC2F5281964FA004B967C /* PassIncomeAndFixedCollectionCellProtocol.swift in Sources */,
 				86C4F13F27F2DAA800E1AB43 /* WelcomeLoginViewController.swift in Sources */,
-				428BF917283607B900C1C9D1 /* AddCollectionViewCellProtocol.swift in Sources */,
 				86647B5C283136ED00491483 /* PlusMinusCollectionReloadProtocol.swift in Sources */,
 				86F819B528000FFE00FCF325 /* PassCaluculatorProtocol.swift in Sources */,
 				86647B582824AC8400491483 /* SubCategory.swift in Sources */,

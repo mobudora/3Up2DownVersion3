@@ -83,7 +83,7 @@ class PasswordViewController: UIViewController {
                     }
                     guard let dic = snapshot?.data() else { return }
                     let userInfo = User.init(dic: dic)
-
+                    
                     Auth.auth().signIn(withEmail: userInfo.email, password: userInfo.password) { (res, err) in
                         if let err = err {
                             print("ログイン情報の取得に失敗しました。", err)
@@ -232,6 +232,7 @@ extension PasswordViewController: UICollectionViewDelegate, UICollectionViewData
                 let passwordNumber = userDefaults.array(forKey: "passwordNumber") as? [Int] ?? [Int]()
                 
                 if passwordNumber == numberBox {
+                    print("🟩🟩🟩")
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let nextVc = storyboard.instantiateViewController(withIdentifier: "MainStoryboard") as! UITabBarController
                     self.present(nextVc, animated: true, completion: nil)
