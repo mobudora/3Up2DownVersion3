@@ -103,6 +103,9 @@ class HomeViewController: UIViewController {
     //貯金額のテキストラベル
     @IBOutlet weak var savingAmountLabel: UILabel!
     
+    @IBOutlet weak var investCollectionView: UICollectionView!
+    
+    @IBOutlet weak var homeViewHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,6 +117,21 @@ class HomeViewController: UIViewController {
         //        bannerView.load(GADRequest())
         //        addBannerViewToView(bannerView)
         
+        let sumMoneyButtonHeight: CGFloat = 40
+        let paddingHeight: CGFloat = 10
+        let paddingCount: CGFloat = 10
+        let sumMoneyBackgroundHeight: CGFloat = 64
+        let incomeAndFixedCostCollectionHeight = CGFloat(44 * 2 + 44 * tableCountUp + 20)
+        let livingExpensesButtonHeight: CGFloat = 40
+        let livingExpensesBackgroundHeight: CGFloat = 64
+        let livingExpensesCollectionHeight = CGFloat((UIScreen.main.bounds.width / 2 - 20) * 8 / 2 + 50)
+        let savingAmountButtonHeight: CGFloat = 40
+        let savingAmountBackgroundHeight: CGFloat = 64
+        let investLabelHeight: CGFloat = 40
+        let investCollectionHeight: CGFloat = 100
+        //HomeViewの高さを画面サイズによって変える
+        homeViewHeightConstraint.constant = CGFloat(sumMoneyButtonHeight + paddingHeight * paddingCount + sumMoneyBackgroundHeight + incomeAndFixedCostCollectionHeight + livingExpensesButtonHeight + livingExpensesBackgroundHeight +
+        livingExpensesCollectionHeight + savingAmountButtonHeight + savingAmountBackgroundHeight + investLabelHeight + investCollectionHeight)
         //タイトルの日付を取得
         calendarViewController.currentMonth.dateFormat = "MM"
         calendarViewController.currentYear.dateFormat = "yyyy"
@@ -130,7 +148,7 @@ class HomeViewController: UIViewController {
         //incomeAndFixedCostのコレクションセルを登録
         incomeAndFixedCostCollection.register(UINib(nibName: "incomeAndFixedCostCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "incomeAndFixedCostCell")
         //incomeAndFixedCostCollectionViewの高さを決める(ラベル*2+cell*初期3列+ margin)
-        incomeAndFixedCollectionHeightConstraint.constant = CGFloat((44 * 2) + (44 * tableCountUp)) + 20
+        incomeAndFixedCollectionHeightConstraint.constant = incomeAndFixedCostCollectionHeight
         
         //生活費(収入ー固定費)の背景Viewをセットアップ
         setUpLivingExpensesBackgroundContent()
@@ -138,10 +156,13 @@ class HomeViewController: UIViewController {
         //livingExpensesCollectionのコレクションセルを登録
         livingExpensesCollection.register(UINib(nibName: "livingExpensesCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "livingExpensesCustomCell")
         //livingExpensesCollectionViewの高さを決める
-        livingExpensesCollectionHeightConstraint.constant = ((UIScreen.main.bounds.width / 2 - 20) * 8 / 2) + 50
+        livingExpensesCollectionHeightConstraint.constant = livingExpensesCollectionHeight
         
         //貯金額の背景Viewをセットアップ
         setUpsavingAmountBackgroundContent()
+        
+        //投資コレクションセルを登録
+        investCollectionView.register(UINib(nibName: "InvestCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "InvestCell")
         
     }
     
@@ -467,10 +488,13 @@ class HomeViewController: UIViewController {
     }
     
 }
-extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+//MARK: 収入固定費Cell,生活費Cell,投資Cell
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     //セクションの数
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if collectionView.tag == 0 {
+            return 1
+        } else if collectionView.tag == 1 {
             return 1
         } else {
             return 1
@@ -480,9 +504,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == 0 {
             return 2
-        } else {
+        } else if collectionView.tag == 1 {
             print("livingExpensesCollectionCellMoney: \(livingExpensesCollectionCellMoney)")
             return livingExpensesCollectionCellMoney.count
+        } else {
+            return 3
         }
     }
     
@@ -500,7 +526,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             print("最初のCollectionViewの描画を行います。")
             cell.getIncomeCollectionDataFromFirestore()
             return cell
-        } else { //MARK: 生活費のコレクションCell
+        } else if collectionView.tag == 1 { //MARK: 生活費のコレクションCell
             print("🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩")
             print("🔶生活費のコレクションが読み込まれたよ")
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "livingExpensesCustomCell", for: indexPath) as! livingExpensesCollectionViewCell
@@ -517,6 +543,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             //残高
             cell.balanceLabel.text = String((Int(livingExpensesTargetAmountArray[indexPath.row]) ?? 0) - livingExpensesCollectionCellMoney[indexPath.row])
             
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InvestCell", for: indexPath) as! InvestCollectionViewCell
             return cell
         }
     }

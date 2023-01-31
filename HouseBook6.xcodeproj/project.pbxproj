@@ -120,6 +120,8 @@
 		AB4085F4653B2543FAD20AE0 /* Pods_HouseBook6.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5072B8E5C17244648DEE6F3 /* Pods_HouseBook6.framework */; };
 		AB57347A294F2DDF003F067C /* CalendarDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB573479294F2DDF003F067C /* CalendarDataManager.swift */; };
 		AB573541297A6FB2003F067C /* CopyUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB573540297A6FB2003F067C /* CopyUILabel.swift */; };
+		AB57355E2987879E003F067C /* InvestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB57355C2987879E003F067C /* InvestCollectionViewCell.swift */; };
+		AB57355F2987879E003F067C /* InvestCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB57355D2987879E003F067C /* InvestCollectionViewCell.xib */; };
 		AB7D8A6028E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7D8A5F28E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift */; };
 		AB7D8A6228E2E443007B2CCB /* UIViewController-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7D8A6128E2E443007B2CCB /* UIViewController-Extension.swift */; };
 /* End PBXBuildFile section */
@@ -238,6 +240,8 @@
 		86F819B428000FFE00FCF325 /* PassCaluculatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassCaluculatorProtocol.swift; sourceTree = "<group>"; };
 		AB573479294F2DDF003F067C /* CalendarDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataManager.swift; sourceTree = "<group>"; };
 		AB573540297A6FB2003F067C /* CopyUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyUILabel.swift; sourceTree = "<group>"; };
+		AB57355C2987879E003F067C /* InvestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCollectionViewCell.swift; sourceTree = "<group>"; };
+		AB57355D2987879E003F067C /* InvestCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvestCollectionViewCell.xib; sourceTree = "<group>"; };
 		AB7D8A5F28E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparencyModel.swift; sourceTree = "<group>"; };
 		AB7D8A6128E2E443007B2CCB /* UIViewController-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController-Extension.swift"; sourceTree = "<group>"; };
 		CAFF069EF96C52C2004E8D11 /* Pods-HouseBook6.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HouseBook6.release.xcconfig"; path = "Target Support Files/Pods-HouseBook6/Pods-HouseBook6.release.xcconfig"; sourceTree = "<group>"; };
@@ -393,6 +397,7 @@
 				86C4F12227F2D87000E1AB43 /* incomeTableViewCell.swift */,
 				86C4F12627F2D8B000E1AB43 /* incomePlusMinusTableViewCell.swift */,
 				86C4F12A27F2D92900E1AB43 /* livingExpensesCollectionViewCell.swift */,
+				AB57355C2987879E003F067C /* InvestCollectionViewCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -550,6 +555,7 @@
 				86C4F12327F2D87000E1AB43 /* incomeTableViewCell.xib */,
 				86C4F12727F2D8B000E1AB43 /* incomePlusMinusTableViewCell.xib */,
 				86C4F12B27F2D92900E1AB43 /* livingExpensesCollectionViewCell.xib */,
+				AB57355D2987879E003F067C /* InvestCollectionViewCell.xib */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -811,6 +817,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86C4F12527F2D87000E1AB43 /* incomeTableViewCell.xib in Resources */,
+				AB57355F2987879E003F067C /* InvestCollectionViewCell.xib in Resources */,
 				8670CC2228027D2100A66426 /* InputSubCategorySemiModal.storyboard in Resources */,
 				428456A22835DC3300FF7EF8 /* AddCollectionSemiModal.storyboard in Resources */,
 				86C4F11727F2D62E00E1AB43 /* Calendar.storyboard in Resources */,
@@ -936,6 +943,7 @@
 				8670CC2428027D5D00A66426 /* InputSubCategorySemiModalViewController.swift in Sources */,
 				4283F0FC28474C9500855069 /* DetailAccountViewController.swift in Sources */,
 				86CBC20B27FABD64007F192A /* UIView-Extension.swift in Sources */,
+				AB57355E2987879E003F067C /* InvestCollectionViewCell.swift in Sources */,
 				8670CC1E28016A3600A66426 /* InputCategorySemiModalViewController.swift in Sources */,
 				86C4F0F127F2D42500E1AB43 /* AppDelegate.swift in Sources */,
 				AB57347A294F2DDF003F067C /* CalendarDataManager.swift in Sources */,
@@ -1120,7 +1128,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HouseBook6/HouseBook6.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.1;
+				CURRENT_PROJECT_VERSION = 1.1.2;
 				DEVELOPMENT_TEAM = 96M8PRAQ5B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HouseBook6/Info.plist;
@@ -1139,7 +1147,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = tokyo.swiftblog.3Up2DownHouseBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1156,7 +1164,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = HouseBook6/HouseBook6.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.1.1;
+				CURRENT_PROJECT_VERSION = 1.1.2;
 				DEVELOPMENT_TEAM = 96M8PRAQ5B;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HouseBook6/Info.plist;
@@ -1175,7 +1183,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = tokyo.swiftblog.3Up2DownHouseBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

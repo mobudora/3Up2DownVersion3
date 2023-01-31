@@ -341,7 +341,10 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
         layer.masksToBounds = false
         layer.borderWidth = 1
         layer.borderColor = colors.black.cgColor
-        self.anchor(width: UIScreen.main.bounds.width / 2 - 20, height: CGFloat((44 * 2) + (44 * tableCountUp)))
+        //CollectionCellの高さを決める
+        let incomeAndFixedCostLabelHeight = 44
+        let sumMoneyLabelHeight = 44
+        self.anchor(width: UIScreen.main.bounds.width / 2 - 20, height: CGFloat((incomeAndFixedCostLabelHeight + sumMoneyLabelHeight) + (44 * tableCountUp)))
     }
 
 }
