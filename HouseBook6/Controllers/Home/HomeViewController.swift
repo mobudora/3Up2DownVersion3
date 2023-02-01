@@ -47,6 +47,9 @@ class HomeViewController: UIViewController {
         performSegue(withIdentifier: "goDetailSettingStoryboard", sender: nil)
     }
     
+    //HomeViewの高さ
+    @IBOutlet weak var homeViewHeightConstraint: NSLayoutConstraint!
+    
     var sumMoneyButtonFlag: Bool = false
     //総資産と純資産のボタン
     @IBOutlet weak var sumMoneyButton: UIButton!
@@ -55,9 +58,9 @@ class HomeViewController: UIViewController {
         sumMoneyButtonFlag.toggle()
         
         if sumMoneyButtonFlag {
-            sumMoneyButton.setTitle("純資産", for: .normal)
+            sumMoneyButton.setTitle("純資産(貯金額)", for: .normal)
         } else {
-            sumMoneyButton.setTitle("総資産", for: .normal)
+            sumMoneyButton.setTitle("総資産(貯金額+投資)", for: .normal)
         }
     }
     
@@ -74,6 +77,13 @@ class HomeViewController: UIViewController {
     //収入と固定費のコレクションビューの題名を入れる配列
     let incomeLabelHeader = ["収入","固定費"]
     
+    //投資コレクション
+    @IBOutlet weak var investCollectionView: UICollectionView!
+    
+    @IBAction func investPlusButtonAction(_ sender: Any) {
+        //投資の種類を追加する時の処理
+        
+    }
     //生活費のボタン
     @IBOutlet weak var livingExpensesButton: UIButton!
     //生活費の表示箇所
@@ -102,10 +112,6 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var savingAmountBackgroundView: UIView!
     //貯金額のテキストラベル
     @IBOutlet weak var savingAmountLabel: UILabel!
-    
-    @IBOutlet weak var investCollectionView: UICollectionView!
-    
-    @IBOutlet weak var homeViewHeightConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -589,6 +595,7 @@ extension HomeViewController: PassIncomeAndFixedCollectionCellProtocol {
         // ここに画面遷移処理(NextViewControllerに遷移する処理)を記載
         let nextVc = storyboard.instantiateViewController(withIdentifier: "InputViewController") as! InputViewController
         nextVc.incomeAndFixedCellReciever = h1Label
+        print("🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\(h1Label)")
         if h1Label == "固定費名" {
             //Firestoreへ保存する固定費と他を区別するための名前
             nextVc.fixedCostReciever = "固定費"

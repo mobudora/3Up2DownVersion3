@@ -19,12 +19,11 @@ class InputCategorySemiModalViewController: UIViewController {
     
     var recieveSuperImageName: UIImage?
     var recieveSuperTitleName: String?
-    //delegateへ移譲するためにプロトコルに準拠
+    
     var delegate: PassCategoryProtocol?
 
     var recieveWhitchIsCollectionCell: Int!
 
-    //初期値として空の配列を入れている
     //ImgaeMaster 配列
     lazy var costAndIncomeDisplayImage: [UIImage] = []
     //TitleMaster 配列
@@ -63,17 +62,31 @@ class InputCategorySemiModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if recieveWhitchIsCollectionCell == 1 {
+            //HomeViewの収入からきたら押せなくする
+            costAndIncomeSegmentedControl.isEnabled = false
+        } else if recieveWhitchIsCollectionCell == 2 {
+            //HomeViewの固定費からきたら押せなくする
+            costAndIncomeSegmentedControl.isEnabled = false
+            //固定費のsegmentのselectedSegmentIndexは0か1で判断しているから支出の0を再代入する
+            recieveWhitchIsCollectionCell = 0
+        }
+        
         //Firestoreから親カテゴリーからの情報を取得してカテゴリーに当てはめる
         getSuperCategoryDataFromFirestore()
 
-        costAndIncomeSegmentedControl.selectedSegmentTintColor = UIColor.black
-        costAndIncomeSegmentedControl.setTitleTextAttributes( [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
-        costAndIncomeSegmentedControl.layer.borderWidth = 0.1
-        costAndIncomeSegmentedControl.layer.borderColor = .init(red: 0, green: 0, blue: 0, alpha: 0.9)
+        segmentSetUp()
         
         costAndIncomeCategoryCollectionView.delegate = self
         costAndIncomeCategoryCollectionView.dataSource = self
         costAndIncomeCategoryCollectionView.register(CostCategoryImageViewCell.self, forCellWithReuseIdentifier: "cellId")
+    }
+    
+    func segmentSetUp() {
+        costAndIncomeSegmentedControl.selectedSegmentTintColor = UIColor.black
+        costAndIncomeSegmentedControl.setTitleTextAttributes( [NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+        costAndIncomeSegmentedControl.layer.borderWidth = 0.1
+        costAndIncomeSegmentedControl.layer.borderColor = .init(red: 0, green: 0, blue: 0, alpha: 0.9)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -108,7 +121,7 @@ class InputCategorySemiModalViewController: UIViewController {
 
                 //inocmeDIsplayTitleをcostAndIncomeDisplayTitleに入れたい//
                 
-                //Firestoreのデータをタイトルに反映
+                //Firestoreの親カテゴリー名前配列データをタイトルに反映
                 self.costDisplayTitles = superCategory.superCategorySortedCostNameFromFirestore
                 self.incomeDisplayTitles = superCategory.superCategorySortedIncomeNameFromFirestore
 
@@ -147,16 +160,6 @@ class InputCategorySemiModalViewController: UIViewController {
             }
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 extension InputCategorySemiModalViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 

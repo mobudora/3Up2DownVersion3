@@ -125,8 +125,13 @@ class InputViewController: UIViewController {
         }
         //カテゴリーの画像とタイトルをInputViewController==selfに適応する
         nextVc.delegate = self
+        
         if incomeAndFixedCellReciever == "収入名" {
+            //収入コレクションから来たときは支出をタップできないようにする
             nextVc.recieveWhitchIsCollectionCell = 1
+        } else if incomeAndFixedCellReciever == "固定費名" {
+            //固定費コレクションから来たときは収入をタップできないようにする
+            nextVc.recieveWhitchIsCollectionCell = 2
         }
         present(nextVc, animated: true, completion: nil)
     }

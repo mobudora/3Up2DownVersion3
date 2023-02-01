@@ -54,6 +54,9 @@ class InputSubCategorySemiModalViewController: UIViewController {
             //収入カテゴリーから来たとき
             //Firestoreから収入サブカテゴリーの情報を取得する
             getSubCategoryDataFromFirestore(whitchSuperCategory: inputViewControllerOfInputSubCategory.incomeCategoryIndex)
+        } else {
+            //サブカテゴリーを親カテゴリーを押さずに最初に押した時に表示する
+            superCategoryTitle.text = "親カテゴリーを選択してください"
         }
 
         subCategoryCollectionView.delegate = self
