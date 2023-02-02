@@ -49,7 +49,12 @@ class InputViewController: UIViewController {
     var inputSubCategoryIcon = InputButton(image: UIImage(systemName: "greaterthan") ?? UIImage())
     
     var inputSubCategoryTitle = InputLabel(title: "未分類")
-
+    
+    //カテゴリーやお金が入力されたときtrueになって保存ボタンが押せるようになる
+    var inputMoneyNumbersIsEnabled: Bool = false
+    var inputSuperCategoryIconIsEnabled: Bool = false
+    var inputSubCategoryIconIsEnabled: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -151,6 +156,20 @@ class InputViewController: UIViewController {
     @objc func saveToFirebase() {
         
         HUD.show(.progress, onView: view)
+
+        //カテゴリーやお金が入力されたときtrueになって保存ボタンからFirestoreへ保存ができるようになる
+        if inputMoneyNumbersIsEnabled == false || inputSuperCategoryIconIsEnabled == false || inputSubCategoryIconIsEnabled == false {
+            HUD.hide { (_) in
+                HUD.flash(.error, delay: 1) { _ in
+                    HUD.show(.progress)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        HUD.flash(.label("金額と親カテゴリーと子カテゴリーを全て入力してください"), delay: 3)
+                    }
+                }
+            }
+            return
+        }
+        
         //最初に今ログインしているユーザーの情報を取得する
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
@@ -425,6 +444,8 @@ class InputViewController: UIViewController {
 extension InputViewController: PassCaluculatorProtocol {
     func recieveData(data: String) {
         inputMoneyNumbers.setTitle("\(data)", for: .normal)
+        //お金が入力されたとき、保存ボタンが押せるようにBool値を変える
+        inputMoneyNumbersIsEnabled = true
     }
 }
 //収入、支出のカテゴリーを渡されるプロトコル
@@ -432,6 +453,8 @@ extension InputViewController: PassCategoryProtocol {
     func recieveSuperCategoryData(superImage: UIImage,superTitle: String) {
         inputSuperCategoryIcon.setImage(superImage, for: .normal)
         inputSuperCategoryTitle.text = "\(superTitle)"
+        //親カテゴリーが入力されたとき、保存ボタンが押せるようにBool値を変える
+        inputSuperCategoryIconIsEnabled = true
     }
 }
 extension InputViewController {

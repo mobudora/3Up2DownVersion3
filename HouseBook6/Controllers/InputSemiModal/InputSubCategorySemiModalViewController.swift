@@ -10,7 +10,8 @@ import Firebase
 
 class InputSubCategorySemiModalViewController: UIViewController {
     
-    //共有のInputViewControllerのインスタンス今回は未分類かどうか判断するために使う//InputViewControllerの部品を上書きするために用意するインスタンス
+    //共有のInputViewControllerのインスタンス今回は未分類かどうか判断するために使う
+    //InputViewControllerの部品を上書きするために用意するインスタンス
     let inputViewControllerOfInputSubCategory = InputViewController.inputViewControllerInstance
     //InputSuperCategoryのインスタンスを上書きする
     let inputSuperCategoryInstance = InputCategorySemiModalViewController.inputSuperCategoryInstance
@@ -241,31 +242,37 @@ extension InputSubCategorySemiModalViewController: UICollectionViewDelegate, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
         //delegateの処理と戻る処理を行う
-        subCategoryDataToInputView()
-        
-        func subCategoryDataToInputView() {
-            if inputViewControllerOfInputSubCategory.costCategoryIndex != nil {
-                recieveSubImageName = self.subCostDisplayImages[indexPath.row]
-                recieveSubTitleName = self.subCostDisplayTitle[indexPath.row]
-            } else if inputViewControllerOfInputSubCategory.incomeCategoryIndex != nil {
-                recieveSubImageName = self.subIncomeDisplayImages[indexPath.row]
-                recieveSubTitleName = self.subIncomeDisplayTitle[indexPath.row]
-            }
-
-            if inputViewControllerOfInputSubCategory.whichIsTheTransition == "InputViewから来たよ" {
-                let vc = self.presentingViewController as! InputViewController
-                vc.inputSubCategoryTitle.text = recieveSubTitleName
-                vc.inputSubCategoryIcon.setImage(recieveSubImageName, for: .normal)
-                self.presentingViewController?.dismiss(animated: true, completion: nil)
-            } else if inputViewControllerOfInputSubCategory.whichIsTheTransition == "InputCategorySemiModalViewから来たよ" {
-                let vc = self.presentingViewController?.presentingViewController as! InputViewController
-                vc.inputSubCategoryTitle.text = recieveSubTitleName
-                vc.inputSubCategoryIcon.setImage(recieveSubImageName, for: .normal)
-                self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
-            }
+        subCategoryDataToInputView(indexPath: indexPath)
+    }
+    
+    func subCategoryDataToInputView(indexPath: IndexPath) {
+        if inputViewControllerOfInputSubCategory.costCategoryIndex != nil {
+            recieveSubImageName = self.subCostDisplayImages[indexPath.row]
+            recieveSubTitleName = self.subCostDisplayTitle[indexPath.row]
+        } else if inputViewControllerOfInputSubCategory.incomeCategoryIndex != nil {
+            recieveSubImageName = self.subIncomeDisplayImages[indexPath.row]
+            recieveSubTitleName = self.subIncomeDisplayTitle[indexPath.row]
         }
+
+        if inputViewControllerOfInputSubCategory.whichIsTheTransition == "InputViewから来たよ" {
+            //InputViewから来れば1個戻るだけでいい
+            let vc = self.presentingViewController as! InputViewController
+            vc.inputSubCategoryTitle.text = recieveSubTitleName
+            vc.inputSubCategoryIcon.setImage(recieveSubImageName, for: .normal)
+            //保存ボタンが押せるようにサブアイコンをセットしてBool値をtrueにする
+            vc.inputSubCategoryIconIsEnabled = true
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        } else if inputViewControllerOfInputSubCategory.whichIsTheTransition == "InputCategorySemiModalViewから来たよ" {
+            //親カテゴリーを選択してくれば、2個戻らないといけない
+            let vc = self.presentingViewController?.presentingViewController as! InputViewController
+            vc.inputSubCategoryTitle.text = recieveSubTitleName
+            vc.inputSubCategoryIcon.setImage(recieveSubImageName, for: .normal)
+            //保存ボタンが押せるようにサブアイコンをセットしてBool値をtrueにする
+            vc.inputSubCategoryIconIsEnabled = true
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
+        
     }
 }
 class SubCategoryCollectionViewCell: UICollectionViewCell {
