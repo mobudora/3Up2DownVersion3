@@ -64,10 +64,10 @@ class InputCategorySemiModalViewController: UIViewController {
 
         if recieveWhitchIsCollectionCell == 1 {
             //HomeViewの収入からきたら押せなくする
-            costAndIncomeSegmentedControl.isEnabled = false
-        } else if recieveWhitchIsCollectionCell == 2 {
+            costAndIncomeSegmentedControl.setEnabled(false, forSegmentAt: 0)
+        } else if recieveWhitchIsCollectionCell == 2 || recieveWhitchIsCollectionCell == nil {
             //HomeViewの固定費からきたら押せなくする
-            costAndIncomeSegmentedControl.isEnabled = false
+            costAndIncomeSegmentedControl.setEnabled(false, forSegmentAt: 1)
             //固定費のsegmentのselectedSegmentIndexは0か1で判断しているから支出の0を再代入する
             recieveWhitchIsCollectionCell = 0
         }

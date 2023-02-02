@@ -10,9 +10,6 @@ import Firebase
 import PKHUD
 import GoogleMobileAds
 
-//やること
-//UserデフォルトではなくlivingExpensesUsageAmountArrayを配列に入れて行ってカウントと、表示を行う
-
 class HomeViewController: UIViewController {
     
     let yearArray: [String] = ["2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033"]
@@ -595,7 +592,6 @@ extension HomeViewController: PassIncomeAndFixedCollectionCellProtocol {
         // ここに画面遷移処理(NextViewControllerに遷移する処理)を記載
         let nextVc = storyboard.instantiateViewController(withIdentifier: "InputViewController") as! InputViewController
         nextVc.incomeAndFixedCellReciever = h1Label
-        print("🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥🟥\(h1Label)")
         if h1Label == "固定費名" {
             //Firestoreへ保存する固定費と他を区別するための名前
             nextVc.fixedCostReciever = "固定費"
