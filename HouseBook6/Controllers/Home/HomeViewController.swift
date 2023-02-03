@@ -79,7 +79,7 @@ class HomeViewController: UIViewController {
     
     @IBAction func investPlusButtonAction(_ sender: Any) {
         //投資の種類を追加する時の処理
-        
+        performSegue(withIdentifier: "InvestSettingStoryboard", sender: nil)
     }
     //生活費のボタン
     @IBOutlet weak var livingExpensesButton: UIButton!

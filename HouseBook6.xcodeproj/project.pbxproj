@@ -122,6 +122,8 @@
 		AB573541297A6FB2003F067C /* CopyUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB573540297A6FB2003F067C /* CopyUILabel.swift */; };
 		AB57355E2987879E003F067C /* InvestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB57355C2987879E003F067C /* InvestCollectionViewCell.swift */; };
 		AB57355F2987879E003F067C /* InvestCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB57355D2987879E003F067C /* InvestCollectionViewCell.xib */; };
+		AB573567298B9DC5003F067C /* InvestSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB573566298B9DC5003F067C /* InvestSettingViewController.swift */; };
+		AB57356B298B9DF3003F067C /* InvestSetting.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB57356A298B9DF3003F067C /* InvestSetting.storyboard */; };
 		AB7D8A6028E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7D8A5F28E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift */; };
 		AB7D8A6228E2E443007B2CCB /* UIViewController-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7D8A6128E2E443007B2CCB /* UIViewController-Extension.swift */; };
 /* End PBXBuildFile section */
@@ -242,6 +244,8 @@
 		AB573540297A6FB2003F067C /* CopyUILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyUILabel.swift; sourceTree = "<group>"; };
 		AB57355C2987879E003F067C /* InvestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestCollectionViewCell.swift; sourceTree = "<group>"; };
 		AB57355D2987879E003F067C /* InvestCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvestCollectionViewCell.xib; sourceTree = "<group>"; };
+		AB573566298B9DC5003F067C /* InvestSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestSettingViewController.swift; sourceTree = "<group>"; };
+		AB57356A298B9DF3003F067C /* InvestSetting.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = InvestSetting.storyboard; sourceTree = "<group>"; };
 		AB7D8A5F28E2E1BA007B2CCB /* AppTrackingTransparencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTrackingTransparencyModel.swift; sourceTree = "<group>"; };
 		AB7D8A6128E2E443007B2CCB /* UIViewController-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController-Extension.swift"; sourceTree = "<group>"; };
 		CAFF069EF96C52C2004E8D11 /* Pods-HouseBook6.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HouseBook6.release.xcconfig"; path = "Target Support Files/Pods-HouseBook6/Pods-HouseBook6.release.xcconfig"; sourceTree = "<group>"; };
@@ -398,6 +402,7 @@
 				86C4F12627F2D8B000E1AB43 /* incomePlusMinusTableViewCell.swift */,
 				86C4F12A27F2D92900E1AB43 /* livingExpensesCollectionViewCell.swift */,
 				AB57355C2987879E003F067C /* InvestCollectionViewCell.swift */,
+				AB573566298B9DC5003F067C /* InvestSettingViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -551,6 +556,7 @@
 			children = (
 				86C4F0F627F2D42500E1AB43 /* Main.storyboard */,
 				86C4F11227F2D5CB00E1AB43 /* Home.storyboard */,
+				AB57356A298B9DF3003F067C /* InvestSetting.storyboard */,
 				86C4F14E27F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.xib */,
 				86C4F12327F2D87000E1AB43 /* incomeTableViewCell.xib */,
 				86C4F12727F2D8B000E1AB43 /* incomePlusMinusTableViewCell.xib */,
@@ -843,6 +849,7 @@
 				86C4F15027F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.xib in Resources */,
 				86C4F11127F2D5B400E1AB43 /* Password.storyboard in Resources */,
 				86C4F11527F2D5F100E1AB43 /* DetailSetting.storyboard in Resources */,
+				AB57356B298B9DF3003F067C /* InvestSetting.storyboard in Resources */,
 				86C4F13527F2D9C800E1AB43 /* ContactTableViewCell.xib in Resources */,
 				86E642FD2845A4CA0025A8D8 /* DetailText.storyboard in Resources */,
 				42C48CC3283B49640007617C /* CategoryMoneyTableViewCell.xib in Resources */,
@@ -948,6 +955,7 @@
 				86C4F0F127F2D42500E1AB43 /* AppDelegate.swift in Sources */,
 				AB57347A294F2DDF003F067C /* CalendarDataManager.swift in Sources */,
 				86C4F14527F2DADF00E1AB43 /* CalendarViewController.swift in Sources */,
+				AB573567298B9DC5003F067C /* InvestSettingViewController.swift in Sources */,
 				42AAC2F32817E16E004B967C /* DateManager.swift in Sources */,
 				86C4F13B27F2DA6F00E1AB43 /* FirstLoginViewController.swift in Sources */,
 				428456A42835DC5E00FF7EF8 /* AddCollectionViewController.swift in Sources */,

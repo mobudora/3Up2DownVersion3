@@ -134,6 +134,7 @@
                                                 <buttonConfiguration key="configuration" style="plain" image="plus.square" catalog="system"/>
                                                 <connections>
                                                     <action selector="investPlusButtonAction:" destination="97q-vr-H67" eventType="touchUpInside" id="2Q4-0h-JaT"/>
+                                                    <segue destination="y5L-jX-VDw" kind="presentation" identifier="InvestSettingStoryboard" id="fZp-qG-XMx"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIV-v8-xCg">
@@ -349,7 +350,15 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sDE-46-qMu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2339" y="-488"/>
+            <point key="canvasLocation" x="2045" y="-488"/>
+        </scene>
+        <!--InvestSetting-->
+        <scene sceneID="15b-xG-tps">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="InvestSettingStoryboard" storyboardName="InvestSetting" id="y5L-jX-VDw" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ip7-2A-iJs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3537" y="-464"/>
         </scene>
         <!--DetailSetting-->
         <scene sceneID="PYH-ss-6Qb">
@@ -357,7 +366,7 @@
                 <viewControllerPlaceholder storyboardName="DetailSetting" id="fmZ-j5-AqP" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HLf-cw-gmf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3655" y="-488"/>
+            <point key="canvasLocation" x="3536" y="-567"/>
         </scene>
     </scenes>
     <resources>

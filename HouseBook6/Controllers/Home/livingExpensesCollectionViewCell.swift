@@ -9,17 +9,19 @@ import UIKit
 import Firebase
 
 class livingExpensesCollectionViewCell: UICollectionViewCell {
-
+    
+    private(set) var doneButtonInputAccessoryView: UIToolbar?
+    
     var recieveLivingExpensesUsageAmount: Int?
-
+    
     let calendarViewController = CalendarViewController.calendarViewControllerInstance
-
+    
     //FirestoreDBのインスタンス化
     let db = Firestore.firestore()
-
+    
     //UserDefaultsのインスタンス化
     var userDefaults = UserDefaults.standard
-
+    
     let colors = Colors()
     
     //生活費のヘッダー
@@ -30,7 +32,7 @@ class livingExpensesCollectionViewCell: UICollectionViewCell {
     
     //目標金額
     @IBOutlet weak var targetAmountTextField: UITextField!
-
+    
     //MARK: 目標金額をUserDefaultに保存する
     @IBAction func targetAmountActionTextField(_ sender: Any) {
         print("書き込まれたよ:\(targetAmountTextField.text)")
@@ -83,7 +85,7 @@ class livingExpensesCollectionViewCell: UICollectionViewCell {
             break
         }
     }
-
+    
     //使用済み金額
     @IBOutlet weak var usageAmountLabel: UILabel!
     //残高ラベル
@@ -94,6 +96,25 @@ class livingExpensesCollectionViewCell: UICollectionViewCell {
         print("使用金額が読み込まれるよ")
         //コレクションビューのデザイン
         baseCollectionViewSetUp()
+        setupDoneButtonInputAccessoryView()
+    }
+    
+    //Keyboardの拡張UIToolbarの完了ボタンをつけている
+    func setupDoneButtonInputAccessoryView() {
+        doneButtonInputAccessoryView = UIToolbar(frame: CGRect(origin: .zero,
+                                                               size: CGSize(width: 0,
+                                                                            height: 44)))
+        let spaceItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneItem = UIBarButtonItem(title: "完了", style: .done,
+                                       target: self,
+                                       action: #selector(didTapDoneButtonOnKeyboard))
+        doneItem.tintColor = UIColor.label
+        doneButtonInputAccessoryView?.items = [spaceItem, doneItem]
+        targetAmountTextField.inputAccessoryView = doneButtonInputAccessoryView
+    }
+    
+    @objc func didTapDoneButtonOnKeyboard() {
+        self.endEditing(true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -167,7 +188,7 @@ class livingExpensesCollectionViewCell: UICollectionViewCell {
         print("使用金額の取得に成功しました。")
         //ここ(targetAmountTextField)はUserDefaultsから読み込まれているから値はある
         guard let intTargetAmountLabel = Int(self.targetAmountTextField.text ?? "0") else { return recieveLivingExpensesUsageAmount ?? 0 }
-
+        
         let intUsageAmountLabel = Int(self.recieveLivingExpensesUsageAmount ?? 0)
         //MARK: 残高
         self.balanceLabel.text = String(intTargetAmountLabel - intUsageAmountLabel)
