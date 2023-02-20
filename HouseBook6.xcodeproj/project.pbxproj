@@ -400,9 +400,9 @@
 				86C4F14D27F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.swift */,
 				86C4F12227F2D87000E1AB43 /* incomeTableViewCell.swift */,
 				86C4F12627F2D8B000E1AB43 /* incomePlusMinusTableViewCell.swift */,
-				86C4F12A27F2D92900E1AB43 /* livingExpensesCollectionViewCell.swift */,
 				AB57355C2987879E003F067C /* InvestCollectionViewCell.swift */,
 				AB573566298B9DC5003F067C /* InvestSettingViewController.swift */,
+				86C4F12A27F2D92900E1AB43 /* livingExpensesCollectionViewCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -556,12 +556,12 @@
 			children = (
 				86C4F0F627F2D42500E1AB43 /* Main.storyboard */,
 				86C4F11227F2D5CB00E1AB43 /* Home.storyboard */,
-				AB57356A298B9DF3003F067C /* InvestSetting.storyboard */,
 				86C4F14E27F2EB3800E1AB43 /* incomeAndFixedCostCollectionViewCell.xib */,
 				86C4F12327F2D87000E1AB43 /* incomeTableViewCell.xib */,
 				86C4F12727F2D8B000E1AB43 /* incomePlusMinusTableViewCell.xib */,
-				86C4F12B27F2D92900E1AB43 /* livingExpensesCollectionViewCell.xib */,
 				AB57355D2987879E003F067C /* InvestCollectionViewCell.xib */,
+				AB57356A298B9DF3003F067C /* InvestSetting.storyboard */,
+				86C4F12B27F2D92900E1AB43 /* livingExpensesCollectionViewCell.xib */,
 			);
 			path = Home;
 			sourceTree = "<group>";

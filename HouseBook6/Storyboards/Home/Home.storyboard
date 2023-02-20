@@ -200,8 +200,8 @@
                                                     <outlet property="delegate" destination="97q-vr-H67" id="Go2-PR-XpW"/>
                                                 </connections>
                                             </collectionView>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="092-JP-lzf">
-                                                <rect key="frame" x="165" y="841" width="85.5" height="40"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="092-JP-lzf">
+                                                <rect key="frame" x="164.5" y="818" width="85.5" height="40"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="tjM-dG-S05"/>
                                                 </constraints>
@@ -303,6 +303,7 @@
                         <outlet property="incomeAndFixedCollectionHeightConstraint" destination="ROi-26-GIK" id="Lje-l1-aES"/>
                         <outlet property="incomeAndFixedCostCollection" destination="N89-rx-doe" id="cdx-XB-1mo"/>
                         <outlet property="investCollectionView" destination="x2a-yh-snT" id="Etw-Kh-6av"/>
+                        <outlet property="investCollectionViewHeight" destination="GVx-Qt-XKc" id="a8h-4Y-Oa5"/>
                         <outlet property="livingExpensesBackgroundView" destination="IO3-YZ-GnL" id="RGD-fC-UI4"/>
                         <outlet property="livingExpensesButton" destination="iIV-v8-xCg" id="MWY-Hi-S40"/>
                         <outlet property="livingExpensesCollection" destination="w8L-fo-Tvt" id="Uz6-5n-RnI"/>

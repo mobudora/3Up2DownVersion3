@@ -26,6 +26,6 @@ class InvestCollectionViewCell: UICollectionViewCell {
         layer.masksToBounds = false
         layer.borderWidth = 1
         layer.borderColor = colors.black.cgColor
-        self.anchor(width: UIScreen.main.bounds.width - 20, height: 80)
+        self.anchor(width: UIScreen.main.bounds.width - 20, height: 120)
     }
 }

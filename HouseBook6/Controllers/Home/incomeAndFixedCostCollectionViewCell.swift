@@ -15,8 +15,8 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
     let db = Firestore.firestore()
     
     //今のホーム画面のタイトル月
-    var currentHomeTitleMonth: Int?
-    var currentHomeTitleYear: Int?
+    var currentHomeTitleMonth: String?
+    var currentHomeTitleYear: String?
     
     let calendarViewController = CalendarViewController.calendarViewControllerInstance
     
@@ -98,8 +98,9 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
         calendarViewController.currentMonth.dateFormat = "MM"
         calendarViewController.currentYear.dateFormat = "yyyy"
         
-        currentHomeTitleMonth = Int(calendarViewController.currentMonth.string(from: calendarViewController.currentDate)) ?? 0
-        currentHomeTitleYear = Int(calendarViewController.currentYear.string(from: calendarViewController.currentDate)) ?? 0
+        currentHomeTitleMonth = calendarViewController.currentMonth.string(from: calendarViewController.currentDate)
+        currentHomeTitleYear = calendarViewController.currentYear.string(from: calendarViewController.currentDate)
+        print("🔶🔶🔶🔶🔶🔶\(currentHomeTitleMonth)")
         
         print("最初のTableViewのデータ取得行います。")
         getIncomeCollectionDataFromFirestore()
@@ -132,10 +133,10 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
                 guard let data = snapshot?.data() else { return }
                 print("🟩収入と固定費に使うdata\(data)")
                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                let incomeSuperCategory = IncomeFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? 0)
+                let incomeSuperCategory = IncomeFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? "0")
                 print("🔶self.currentHomeTitleMonth\(self.currentHomeTitleMonth)")
                 //受け取った固定費コレクション用に固定費親カテゴリー情報の整理
-                let fixedCostSuperCategory = FixedCostFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? 0)
+                let fixedCostSuperCategory = FixedCostFromFirestore.init(dic: data, month: self.currentHomeTitleMonth ?? "0")
                 
                 print("🔷incomeSuperCategory\(incomeSuperCategory)")
                 print("🔷fixedCostSuperCategory\(fixedCostSuperCategory)")
@@ -476,6 +477,13 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
 
     //Cellの削除
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        switch currentHomeTitleMonth {
+        case "1":
+            currentHomeTitleMonth = "01"
+        default:
+            break
+        }
 
         print("deleteされるよ")
         //nilチェック
@@ -490,10 +498,8 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
         case .delete:
             //収入コレクション
             if incomeLabel.text == "収入" {
-
                 //親カテゴリーの情報を削除
                 db.collection("\(currentHomeTitleYear)superCategoryIncomeAndExpenditure").document(uid).updateData([
-
                     // ???: selfがついていないincomeCollectionCellTitleは正しく読み込まれるが、selfがついている、incomeCollectionCellMoneyはnilになる。なぜか？→対応策としてとりあえず、配列Idを取得しないといけないからついでに格納されているお金を取得して削除している
                     //月の親カテゴリーを削除
                     "\(currentHomeTitleMonth)\(incomeCollectionCellTitle[indexPath.row])SumMoney": FieldValue.delete(),
@@ -753,7 +759,6 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                 incomeCollectionCellMoney.remove(at: indexPath.row)
                 incomeTableCellRowCount = incomeCollectionCellMoney.count
             } else { //固定費コレクション
-
                 //親カテゴリーの固定費情報を削除
                 db.collection("\(currentHomeTitleYear)superCategoryIncomeAndExpenditure").document(uid).updateData([
 
@@ -1177,7 +1182,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
-        //???: 以下の2つは何を表しているのか？
+            //???: 以下の2つは何を表しているのか？→editingStyleの記述しないといけないやつ
         case .insert, .none:
             // NOP
             break

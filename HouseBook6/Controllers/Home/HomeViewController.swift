@@ -77,6 +77,7 @@ class HomeViewController: UIViewController {
     //投資コレクション
     @IBOutlet weak var investCollectionView: UICollectionView!
     
+    @IBOutlet weak var investCollectionViewHeight: NSLayoutConstraint!
     @IBAction func investPlusButtonAction(_ sender: Any) {
         //投資の種類を追加する時の処理
         performSegue(withIdentifier: "InvestSettingStoryboard", sender: nil)
@@ -131,7 +132,7 @@ class HomeViewController: UIViewController {
         let savingAmountButtonHeight: CGFloat = 40
         let savingAmountBackgroundHeight: CGFloat = 64
         let investLabelHeight: CGFloat = 40
-        let investCollectionHeight: CGFloat = 100
+        let investCollectionHeight: CGFloat = CGFloat(130)
         //HomeViewの高さを画面サイズによって変える
         homeViewHeightConstraint.constant = CGFloat(sumMoneyButtonHeight + paddingHeight * paddingCount + sumMoneyBackgroundHeight + incomeAndFixedCostCollectionHeight + livingExpensesButtonHeight + livingExpensesBackgroundHeight +
         livingExpensesCollectionHeight + savingAmountButtonHeight + savingAmountBackgroundHeight + investLabelHeight + investCollectionHeight)
@@ -152,6 +153,9 @@ class HomeViewController: UIViewController {
         incomeAndFixedCostCollection.register(UINib(nibName: "incomeAndFixedCostCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "incomeAndFixedCostCell")
         //incomeAndFixedCostCollectionViewの高さを決める(ラベル*2+cell*初期3列+ margin)
         incomeAndFixedCollectionHeightConstraint.constant = incomeAndFixedCostCollectionHeight
+        
+        //investCollectionViewの高さをセット
+        investCollectionViewHeight.constant = investCollectionHeight
         
         //生活費(収入ー固定費)の背景Viewをセットアップ
         setUpLivingExpensesBackgroundContent()
