@@ -274,7 +274,7 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
             break
         }
     }
-
+    
     func fixedCollectionViewSetUp(superCategory: String, sumIncomeMoneyFromFirestore: Int, subCategoryIncomeArray: [String]) {
         print("\(superCategory)の取得に成功しました。\(String(describing: sumIncomeMoneyFromFirestore))")
         self.fixedCostCollectionCellTitle.append("\(superCategory)")
@@ -347,14 +347,14 @@ class incomeAndFixedCostCollectionViewCell: UICollectionViewCell {
         let sumMoneyLabelHeight = 44
         self.anchor(width: UIScreen.main.bounds.width / 2 - 20, height: CGFloat((incomeAndFixedCostLabelHeight + sumMoneyLabelHeight) + (44 * tableCountUp)))
     }
-
+    
 }
 extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableViewDelegate {
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
-      }
-
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //収入コレクション
         if incomeLabel.text == "収入" {
@@ -379,7 +379,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch indexPath.section {
-        //PlusMinusCellに対して
+            //PlusMinusCellに対して
         case 1:
             let plusMinusCell = tableView.dequeueReusableCell(withIdentifier: "incomeTableViewPlusMinusCustomCell", for: indexPath) as! incomePlusMinusTableViewCell
             if incomeLabel.text == "収入" {
@@ -390,7 +390,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                 plusMinusCell.incomeTableViewCellPlusButton.addTarget(self, action: #selector(fixedCostPlusCellButtonTapped), for: .touchUpInside)
             }
             return plusMinusCell
-        //CategoryTextCellに対して
+            //CategoryTextCellに対して
         default:
             print("TableView読み込まれたよ")
             let cell = incomeTableView.dequeueReusableCell(withIdentifier: "incomeCustomCell", for: indexPath) as! incomeTableViewCell
@@ -434,7 +434,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
             }
         }
     }
-
+    
     //収入コレクションのプラスボタンがクリックされたとき
     @objc func incomePlusCellButtonTapped() {
         plusMinusDelegate?.calcIncomeTableViewCell(calc: { (tableCellRowCount: Int) -> Int in
@@ -442,7 +442,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
         })
         delegate.goInputViewController(h1Label: "収入名")
     }
-
+    
     //固定費コレクションのプラスボタンがクリックされたとき
     @objc func fixedCostPlusCellButtonTapped() {
         plusMinusDelegate?.calcFixedCostTableViewCell(calc: { (tableCellRowCount: Int) -> Int in
@@ -450,7 +450,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
         })
         delegate.goInputViewController(h1Label: "固定費名")
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.section {
         case 1:
@@ -470,21 +470,13 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
             self.delegate.goInputViewController(h1Label: h1LabelReciver)
         }
     }
-
+    
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-
-    //Cellの削除
+    
+    //MARK: 収入と固定費の情報削除
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        
-        switch currentHomeTitleMonth {
-        case "1":
-            currentHomeTitleMonth = "01"
-        default:
-            break
-        }
-
         print("deleteされるよ")
         //nilチェック
         guard let uid = Auth.auth().currentUser?.uid else { return }
@@ -493,7 +485,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
         guard let currentHomeTitleYear = currentHomeTitleYear else { return }
         calendarViewController.currentDay.dateFormat = "dd"
         let day = calendarViewController.currentDay.string(from: calendarViewController.currentDate)
-
+        
         switch editingStyle {
         case .delete:
             //収入コレクション
@@ -501,250 +493,171 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                 //親カテゴリーの情報を削除
                 db.collection("\(currentHomeTitleYear)superCategoryIncomeAndExpenditure").document(uid).updateData([
                     // ???: selfがついていないincomeCollectionCellTitleは正しく読み込まれるが、selfがついている、incomeCollectionCellMoneyはnilになる。なぜか？→対応策としてとりあえず、配列Idを取得しないといけないからついでに格納されているお金を取得して削除している
+                    //MARK: 固定費親カテゴリーを削除する
                     //月の親カテゴリーを削除
                     "\(currentHomeTitleMonth)\(incomeCollectionCellTitle[indexPath.row])SumMoney": FieldValue.delete(),
                     //年の親カテゴリーから削除した月の親カテゴリーお金を引いていく
                     "\(currentHomeTitleYear)\(incomeCollectionCellTitle[indexPath.row])SumMoney": FieldValue.increment(Int64(-incomeCollectionCellMoney[indexPath.row])),
                     //サブカテゴリー固定費名前配列(サブカテゴリーの名前が格納されている配列)を削除する
                     "\(currentHomeTitleMonth)\(incomeCollectionCellTitle[indexPath.row])配列": FieldValue.delete()
-
+                    
                 ]) { err in
                     if let err = err {
                         print("収入Cellのデータ削除・更新に失敗しました: \(err)")
+                        
                     } else {
                         print("収入Cellのデータ削除・更新に成功しました")
+                        print("incomeCollectionCellTitle[indexPath.row]\(self.incomeCollectionCellTitle[indexPath.row])")
                     }
                 }
-
-                switch incomeCollectionCellTitle[indexPath.row] {
-                case "給料":
-                    //予め、salaryIncomeSubCategoryArrayに親カテゴリーが読み込まれたときにサブカテゴリー配列として持っておく
-                    for sabuCategoryIncomeName in salaryIncomeSubCategoryArray {
-                        //サブカテゴリーのdayId配列を削除するために取得する
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
-                            // エラー発生時
-                            if let err = err {
-                                print("FirestoreからのサブカテゴリーdaiId配列の取得に失敗しました: \(err)")
-                            } else {
-                                // コレクション内のドキュメントを取得
-                                guard let data = snapshot?.data() else { return }
-                                //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
-
-                                guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
-                                guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
-
-                                for daySubCategoryId in daySubCategoryAray {
-                                    //サブカテゴリーの情報の削除
-                                    print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                    print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
-                                    self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-
-                                        //日のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //dayId配列のまとめを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)dayId配列": FieldValue.delete(),
-                                        //個別のdayIdが付与されたフィールドを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)\(daySubCategoryId)": FieldValue.delete(),
-                                        //月のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //年のサブカテゴリーを引く
-                                        "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
-
-                                        ]) { err in
-                                        if let err = err {
-                                            print("給料サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
-                                        } else {
-                                            print("給料サブカテゴリーのデータ削除・更新に成功しました")
-                                        }
+                db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
+                    // エラー発生時
+                    if let err = err {
+                        print("Firestoreからの\(currentHomeTitleYear)サブカテゴリー収入と支出の取得に失敗しました: \(err)")
+                    } else {
+                        // コレクション内のドキュメントを取得
+                        guard let data = snapshot?.data() else { return }
+                        //MARK: 固定費サブカテゴリー(給料、ボーナスなど)を削除する
+                        switch self.incomeCollectionCellTitle[indexPath.row] {
+                        case "給料":
+                            print("🔶salaryIncomeSubCategoryArray\(self.salaryIncomeSubCategoryArray)")
+                            //予め、salaryIncomeSubCategoryArrayに親カテゴリーが読み込まれたときにサブカテゴリー配列として持っておく
+                            //サブカテゴリー(給料、ボーナス、その他)のそれぞれのcurrentHomeTitleYearSumMoneyを取得するためにFirestoreから読み込まなければならない
+                            for sabuCategoryIncomeName in self.salaryIncomeSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
+                                
+                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                
+                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                print("daySubCategoryMoney:\(daySubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    
+                                    //月のサブカテゴリーを削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリーを引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("給料サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("給料サブカテゴリーのデータ削除・更新に成功しました")
                                     }
                                 }
                             }
-                        }
-                    }
-                case "副業":
-                    for sabuCategoryIncomeName in sideBusinessIncomeSubCategoryArray {
-                        //サブカテゴリーのdayId配列を削除するために取得する
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
-                            // エラー発生時
-                            if let err = err {
-                                print("FirestoreからのサブカテゴリーdaiId配列の取得に失敗しました: \(err)")
-                            } else {
-                                // コレクション内のドキュメントを取得
-                                guard let data = snapshot?.data() else { return }
+                        case "副業":
+                            for sabuCategoryIncomeName in self.sideBusinessIncomeSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
-
-                                guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
-                                guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
-
-                                for daySubCategoryId in daySubCategoryAray {
-                                    //サブカテゴリーの情報の削除
-                                    print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                    print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
-                                    self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-
-                                        //日のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //dayId配列のまとめを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)dayId配列": FieldValue.delete(),
-                                        //個別のdayIdが付与されたフィールドを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)\(daySubCategoryId)": FieldValue.delete(),
-                                        //月のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //年のサブカテゴリーを引く
-                                        "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
-
-                                        ]) { err in
-                                        if let err = err {
-                                            print("副業サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
-                                        } else {
-                                            print("副業サブカテゴリーのデータ削除・更新に成功しました")
-                                        }
+                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                
+                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
+                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    
+                                    //月のサブカテゴリーを削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリーを引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("副業サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("副業サブカテゴリーのデータ削除・更新に成功しました")
                                     }
                                 }
                             }
-                        }
-                    }
-                case "臨時収入":
-                    for sabuCategoryIncomeName in extraordinaryIncomeSubCategoryArray {
-                        //サブカテゴリーのdayId配列を削除するために取得する
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
-                            // エラー発生時
-                            if let err = err {
-                                print("FirestoreからのサブカテゴリーdaiId配列の取得に失敗しました: \(err)")
-                            } else {
-                                // コレクション内のドキュメントを取得
-                                guard let data = snapshot?.data() else { return }
+                        case "臨時収入":
+                            for sabuCategoryIncomeName in self.extraordinaryIncomeSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
-
-                                guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
-                                guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
-
-                                for daySubCategoryId in daySubCategoryAray {
-                                    //サブカテゴリーの情報の削除
-                                    print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                    print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
-                                    self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-
-                                        //日のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //dayId配列のまとめを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)dayId配列": FieldValue.delete(),
-                                        //個別のdayIdが付与されたフィールドを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)\(daySubCategoryId)": FieldValue.delete(),
-                                        //月のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //年のサブカテゴリーを引く
-                                        "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
-
-                                        ]) { err in
-                                        if let err = err {
-                                            print("臨時収入サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
-                                        } else {
-                                            print("臨時収入サブカテゴリーのデータ削除・更新に成功しました")
-                                        }
+                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                
+                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
+                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    
+                                    //月のサブカテゴリーを削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリーを引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("臨時収入サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("臨時収入サブカテゴリーのデータ削除・更新に成功しました")
                                     }
                                 }
                             }
-                        }
-                    }
-                case "投資":
-                    for sabuCategoryIncomeName in investmentIncomeSubCategoryArray {
-                        //サブカテゴリーのdayId配列を削除するために取得する
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
-                            // エラー発生時
-                            if let err = err {
-                                print("FirestoreからのサブカテゴリーdaiId配列の取得に失敗しました: \(err)")
-                            } else {
-                                // コレクション内のドキュメントを取得
-                                guard let data = snapshot?.data() else { return }
+                        case "投資":
+                            for sabuCategoryIncomeName in self.investmentIncomeSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
-
-                                guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
-                                guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
-
-                                for daySubCategoryId in daySubCategoryAray {
-                                    //サブカテゴリーの情報の削除
-                                    print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                    print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
-                                    self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-
-                                        //日のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //dayId配列のまとめを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)dayId配列": FieldValue.delete(),
-                                        //個別のdayIdが付与されたフィールドを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)\(daySubCategoryId)": FieldValue.delete(),
-                                        //月のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //年のサブカテゴリーを引く
-                                        "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
-
-                                        ]) { err in
-                                        if let err = err {
-                                            print("投資サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
-                                        } else {
-                                            print("投資サブカテゴリーのデータ削除・更新に成功しました")
-                                        }
+                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                
+                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
+                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    
+                                    //月のサブカテゴリーを削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリーを引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("投資サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("投資サブカテゴリーのデータ削除・更新に成功しました")
                                     }
                                 }
                             }
-                        }
-                    }
-                case "賞":
-                    for sabuCategoryIncomeName in prizeIncomeSubCategoryArray {
-                        //サブカテゴリーのdayId配列を削除するために取得する
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
-                            // エラー発生時
-                            if let err = err {
-                                print("FirestoreからのサブカテゴリーdaiId配列の取得に失敗しました: \(err)")
-                            } else {
-                                // コレクション内のドキュメントを取得
-                                guard let data = snapshot?.data() else { return }
+                        case "賞":
+                            for sabuCategoryIncomeName in self.prizeIncomeSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = DaySubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
-                                let dayIdArray = DayIdArrayFromFireStore.init(dic: data, month: stringCurrentHomeTitleMonth, day: day, subCategoryName: sabuCategoryIncomeName)
-
-                                guard let daySubCategoryAray = dayIdArray.daySubCategoryIdArray else { return }
-                                guard let daySubCategoryMoney = daySubCategory.daySubCategoryMoney else { return }
-
-                                for daySubCategoryId in daySubCategoryAray {
-                                    //サブカテゴリーの情報の削除
-                                    print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                    print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
-                                    self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-
-                                        //日のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //dayId配列のまとめを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)dayId配列": FieldValue.delete(),
-                                        //個別のdayIdが付与されたフィールドを削除
-                                        "\(currentHomeTitleMonth)\(day)\(sabuCategoryIncomeName)\(daySubCategoryId)": FieldValue.delete(),
-                                        //月のサブカテゴリーを削除
-                                        "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
-                                        //年のサブカテゴリーを引く
-                                        "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
-
-                                        ]) { err in
-                                        if let err = err {
-                                            print("賞サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
-                                        } else {
-                                            print("賞サブカテゴリーのデータ削除・更新に成功しました")
-                                        }
+                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                
+                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
+                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    
+                                    //月のサブカテゴリーを削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリーを引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("賞サブカテゴリーのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("賞サブカテゴリーのデータ削除・更新に成功しました")
                                     }
                                 }
                             }
+                        default:
+                            break
                         }
                     }
-                default:
-                    break
                 }
                 //親カテゴリー固定費の金額==サブカテゴリー固定費の金額
                 let intIncomeCollectionCellMoney = Int(incomeCollectionCellMoney[indexPath.row])
@@ -761,15 +674,15 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
             } else { //固定費コレクション
                 //親カテゴリーの固定費情報を削除
                 db.collection("\(currentHomeTitleYear)superCategoryIncomeAndExpenditure").document(uid).updateData([
-
+                    
                     //月の固定費を削除
                     "\(currentHomeTitleMonth)\(fixedCostCollectionCellTitle[indexPath.row])固定費SumMoney": FieldValue.delete(),
                     //サブカテゴリー固定費名前配列を削除する
                     "\(currentHomeTitleMonth)\(fixedCostCollectionCellTitle[indexPath.row])固定費配列": FieldValue.delete(),
                     //年の固定費を削除
                     "\(currentHomeTitleYear)\(fixedCostCollectionCellTitle[indexPath.row])固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
-
+                    
+                    
                 ]) { err in
                     if let err = err {
                         print("固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -790,7 +703,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("食費サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -808,7 +721,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("日用品サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -826,7 +739,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("服飾サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -844,7 +757,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("健康サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -862,7 +775,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("交際サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -880,7 +793,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("趣味サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -898,7 +811,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("教養サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -916,7 +829,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("交通サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -934,7 +847,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("美容サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -952,7 +865,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("観光サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -970,7 +883,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("車サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -988,7 +901,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("バイクサブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1006,7 +919,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("通信サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1024,7 +937,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("水道代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1042,7 +955,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("ガス代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1060,7 +973,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("電気代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1078,7 +991,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("保険サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1096,7 +1009,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("税金サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1114,7 +1027,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("住宅サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1132,7 +1045,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("医療サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1150,7 +1063,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                             "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
                             //年のサブカテゴリー名前固定費を引く
                             "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-
+                            
                         ]) { err in
                             if let err = err {
                                 print("ペットサブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
@@ -1162,7 +1075,7 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                 default:
                     break
                 }
-
+                
                 //親カテゴリー固定費の金額==サブカテゴリー固定費の金額
                 let intfixedCostCollectionCellMoney = Int(fixedCostCollectionCellMoney[indexPath.row])
                 guard let intfixedCostSumText = Int(self.fixedCostSumText) else { return }
@@ -1173,12 +1086,12 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                 self.homeLivingExpensesUpdateDelegate?.livingExpensesLabelUpdate(incomeSumText: self.incomeSumText ?? "0", fixedCostSumText: self.fixedCostSumText ?? "0")
                 //固定費の総合計金額を更新
                 self.incomeSumMoneyLabel.text = self.fixedCostSumText
-
+                
                 //配列から消したものを取り除く
                 fixedCostCollectionCellMoney.remove(at: indexPath.row)
                 fixedCostTableCellRowCount = fixedCostCollectionCellMoney.count
             }
-
+            
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
@@ -1193,16 +1106,16 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
 }
 //収入と固定費テーブルビューのcell増減
 extension incomeAndFixedCostCollectionViewCell: PlusMinusProtocol {
-
+    
     //IncomeCollectionのCellの数の増減
     func calcIncomeTableViewCell(calc: (Int) -> Int) {
         //プラスかマイナスを受け取る
         incomeTableCellRowCount = calc(incomeTableCellRowCount)
     }
-
+    
     //FixedCostCollectionのCellの数の増減
     func calcFixedCostTableViewCell(calc: (Int) -> Int) {
         fixedCostTableCellRowCount = calc(fixedCostTableCellRowCount)
     }
-
+    
 }
