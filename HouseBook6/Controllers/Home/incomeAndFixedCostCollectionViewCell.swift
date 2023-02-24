@@ -483,8 +483,6 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
         guard let currentHomeTitleMonth = currentHomeTitleMonth else { return }
         let stringCurrentHomeTitleMonth = String(currentHomeTitleMonth)
         guard let currentHomeTitleYear = currentHomeTitleYear else { return }
-        calendarViewController.currentDay.dateFormat = "dd"
-        let day = calendarViewController.currentDay.string(from: calendarViewController.currentDate)
         
         switch editingStyle {
         case .delete:
@@ -527,16 +525,16 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 
-                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                let monthSubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
                                 
-                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
-                                print("daySubCategoryMoney:\(daySubCategoryMoney)")
+                                guard let monthSubCategoryMoney = monthSubCategory.monthSubCategoryMoney else { return }
+                                print("daySubCategoryMoney:\(monthSubCategoryMoney)")
                                 self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
                                     
                                     //月のサブカテゴリーを削除
                                     "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
                                     //年のサブカテゴリーを引く
-                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
                                     
                                 ]) { err in
                                     if let err = err {
@@ -551,19 +549,19 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                let monthSubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
                                 
-                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                guard let monthSubCategoryMoney = monthSubCategory.monthSubCategoryMoney else { return }
                                 
                                 //サブカテゴリーの情報の削除
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
                                 self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
                                     
                                     //月のサブカテゴリーを削除
                                     "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
                                     //年のサブカテゴリーを引く
-                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
                                     
                                 ]) { err in
                                     if let err = err {
@@ -578,19 +576,19 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                let monthSubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
                                 
-                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                guard let monthSubCategoryMoney = monthSubCategory.monthSubCategoryMoney else { return }
                                 
                                 //サブカテゴリーの情報の削除
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
                                 self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
                                     
                                     //月のサブカテゴリーを削除
                                     "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
                                     //年のサブカテゴリーを引く
-                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
                                     
                                 ]) { err in
                                     if let err = err {
@@ -605,19 +603,19 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                let monthSubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
                                 
-                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                guard let monthSubCategoryMoney = monthSubCategory.monthSubCategoryMoney else { return }
                                 
                                 //サブカテゴリーの情報の削除
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
                                 self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
                                     
                                     //月のサブカテゴリーを削除
                                     "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
                                     //年のサブカテゴリーを引く
-                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
                                     
                                 ]) { err in
                                     if let err = err {
@@ -632,19 +630,19 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                                 
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
                                 //受け取った収入コレクション用に収入親カテゴリー情報の整理
-                                let daySubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
+                                let monthSubCategory = MonthSubCategoryFromFireStore.init(dic: data, month: currentHomeTitleMonth, subCategoryName: sabuCategoryIncomeName)
                                 
-                                guard let daySubCategoryMoney = daySubCategory.monthSubCategoryMoney else { return }
+                                guard let monthSubCategoryMoney = monthSubCategory.monthSubCategoryMoney else { return }
                                 
                                 //サブカテゴリーの情報の削除
                                 print("sabuCategoryIncomeName: \(sabuCategoryIncomeName)")
-                                print("incomeCollectionCellMoney:\(daySubCategoryMoney)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
                                 self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
                                     
                                     //月のサブカテゴリーを削除
                                     "\(currentHomeTitleMonth)\(sabuCategoryIncomeName)SumMoney": FieldValue.delete(),
                                     //年のサブカテゴリーを引く
-                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-daySubCategoryMoney))
+                                    "\(currentHomeTitleYear)\(sabuCategoryIncomeName)SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
                                     
                                 ]) { err in
                                     if let err = err {
@@ -657,21 +655,27 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                         default:
                             break
                         }
+                        //親カテゴリー固定費の金額==サブカテゴリー固定費の金額
+                        let intIncomeCollectionCellMoney = Int(self.incomeCollectionCellMoney[indexPath.row])
+                        guard let intIncomeSumText = Int(self.incomeSumText) else { return }
+                        //今の収入の総合計金額ラベルテキストから削除する金額を引く
+                        self.incomeSumText = String(intIncomeSumText - intIncomeCollectionCellMoney)
+                        print("deleteした後のincomeSumText: \(self.incomeSumText)")
+                        //生活費(収入ー固定費)を更新するためのプロトコル
+                        self.homeLivingExpensesUpdateDelegate?.livingExpensesLabelUpdate(incomeSumText: self.incomeSumText ?? "0", fixedCostSumText: self.fixedCostSumText ?? "0")
+                        //固定費の総合計金額を更新(incomeSumMoneyLabelは名前がややこしいが、収入と固定費の総合計ラベル)
+                        self.incomeSumMoneyLabel.text = self.incomeSumText
+                        self.incomeCollectionCellMoney.remove(at: indexPath.row)
+                        self.incomeTableCellRowCount = self.incomeCollectionCellMoney.count
+                        
+                        tableView.beginUpdates()
+                        tableView.deleteRows(at: [indexPath], with: .automatic)
+                        tableView.endUpdates()
                     }
                 }
-                //親カテゴリー固定費の金額==サブカテゴリー固定費の金額
-                let intIncomeCollectionCellMoney = Int(incomeCollectionCellMoney[indexPath.row])
-                guard let intIncomeSumText = Int(self.incomeSumText) else { return }
-                //今の収入の総合計金額ラベルテキストから削除する金額を引く
-                self.incomeSumText = String(intIncomeSumText - intIncomeCollectionCellMoney)
-                print("deleteした後のincomeSumText: \(self.incomeSumText)")
-                //生活費(収入ー固定費)を更新するためのプロトコル
-                self.homeLivingExpensesUpdateDelegate?.livingExpensesLabelUpdate(incomeSumText: self.incomeSumText ?? "0", fixedCostSumText: self.fixedCostSumText ?? "0")
-                //固定費の総合計金額を更新(incomeSumMoneyLabelは名前がややこしいが、収入と固定費の総合計ラベル)
-                self.incomeSumMoneyLabel.text = self.incomeSumText
-                incomeCollectionCellMoney.remove(at: indexPath.row)
-                incomeTableCellRowCount = incomeCollectionCellMoney.count
-            } else { //固定費コレクション
+            }
+            else {
+                //MARK: 固定費コレクションの削除
                 //親カテゴリーの固定費情報を削除
                 db.collection("\(currentHomeTitleYear)superCategoryIncomeAndExpenditure").document(uid).updateData([
                     
@@ -690,411 +694,568 @@ extension incomeAndFixedCostCollectionViewCell: UITableViewDataSource , UITableV
                         print("固定費Cellのデータ削除・更新に成功しました")
                     }
                 }
-                //サブカテゴリーの固定費情報を削除
-                switch fixedCostCollectionCellTitle[indexPath.row] {
-                case "食費":
-                    //削除されるときにサブカテゴリーの固定費情報を消す→こうすることでデータの読み取りが最小限になる
-                    //予め、foodFixedCostSubCategoryArrayに親カテゴリー固定費が読み込まれたときにサブカテゴリー固定費配列として持っておく
-                    for sabuCategoryFixedCostName in foodFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("食費サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("食費サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).getDocument { snapshot, err in
+                    // エラー発生時
+                    if let err = err {
+                        print("Firestoreからの\(currentHomeTitleYear)サブカテゴリー収入と支出の取得に失敗しました: \(err)")
+                    } else {
+                        // コレクション内のドキュメントを取得
+                        guard let data = snapshot?.data() else { return }
+                        print("fixedCostCollectionCellTitle\(self.fixedCostCollectionCellTitle)")
+                        //サブカテゴリーの固定費情報を削除
+                        switch self.fixedCostCollectionCellTitle[indexPath.row] {
+                        case "食費":
+                            //削除されるときにサブカテゴリーの固定費情報を消す→こうすることでデータの読み取りが最小限になる
+                            //予め、foodFixedCostSubCategoryArrayに親カテゴリー固定費が読み込まれたときにサブカテゴリー固定費配列として持っておく
+                            for sabuCategoryFixedCostName in self.foodFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("食費サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("食費サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "日用品":
-                    for sabuCategoryFixedCostName in dailyGoodsFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("日用品サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("日用品サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "日用品":
+                            for sabuCategoryFixedCostName in self.dailyGoodsFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("日用品サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("日用品サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "服飾":
-                    for sabuCategoryFixedCostName in clothFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("服飾サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("服飾サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "服飾":
+                            for sabuCategoryFixedCostName in self.clothFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("服飾サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("服飾サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "健康":
-                    for sabuCategoryFixedCostName in healthFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("健康サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("健康サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "健康":
+                            for sabuCategoryFixedCostName in self.healthFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("健康サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("健康サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "交際":
-                    for sabuCategoryFixedCostName in datingFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("交際サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("交際サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "交際":
+                            for sabuCategoryFixedCostName in self.datingFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("交際サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("交際サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "趣味":
-                    for sabuCategoryFixedCostName in hobbiesFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("趣味サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("趣味サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "趣味":
+                            for sabuCategoryFixedCostName in self.hobbiesFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("趣味サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("趣味サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "教養":
-                    for sabuCategoryFixedCostName in liberalArtsFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("教養サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("教養サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "教養":
+                            for sabuCategoryFixedCostName in self.liberalArtsFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("教養サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("教養サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "交通":
-                    for sabuCategoryFixedCostName in transportationFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("交通サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("交通サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "交通":
+                            for sabuCategoryFixedCostName in self.transportationFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("交通サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("交通サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "美容":
-                    for sabuCategoryFixedCostName in cosmetologyFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("美容サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("美容サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "美容":
+                            for sabuCategoryFixedCostName in self.cosmetologyFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("美容サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("美容サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "観光":
-                    for sabuCategoryFixedCostName in sightseeingFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("観光サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("観光サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "観光":
+                            for sabuCategoryFixedCostName in self.sightseeingFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("観光サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("観光サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "車":
-                    for sabuCategoryFixedCostName in carFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("車サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("車サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "車":
+                            for sabuCategoryFixedCostName in self.carFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("車サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("車サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "バイク":
-                    for sabuCategoryFixedCostName in motorcycleFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("バイクサブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("バイクサブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "バイク":
+                            for sabuCategoryFixedCostName in self.motorcycleFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("バイクサブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("バイクサブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "通信":
-                    for sabuCategoryFixedCostName in netWorkFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("通信サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("通信サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "通信":
+                            for sabuCategoryFixedCostName in self.netWorkFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("通信サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("通信サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "水道代":
-                    for sabuCategoryFixedCostName in waterFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("水道代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("水道代サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "水道代":
+                            for sabuCategoryFixedCostName in self.waterFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("水道代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("水道代サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "ガス代":
-                    for sabuCategoryFixedCostName in gasFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("ガス代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("ガス代サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "ガス代":
+                            for sabuCategoryFixedCostName in self.gasFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("ガス代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("ガス代サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "電気代":
-                    for sabuCategoryFixedCostName in electricityFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("電気代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("電気代サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "電気代":
+                            for sabuCategoryFixedCostName in self.electricityFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("電気代サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("電気代サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "保険":
-                    for sabuCategoryFixedCostName in insuranceFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("保険サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("保険サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "保険":
+                            for sabuCategoryFixedCostName in self.insuranceFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("保険サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("保険サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "税金":
-                    for sabuCategoryFixedCostName in taxFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("税金サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("税金サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "税金":
+                            for sabuCategoryFixedCostName in self.taxFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("税金サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("税金サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "住宅":
-                    for sabuCategoryFixedCostName in housingFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("住宅サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("住宅サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "住宅":
+                            for sabuCategoryFixedCostName in self.housingFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("住宅サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("住宅サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "医療":
-                    for sabuCategoryFixedCostName in medicalFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("医療サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("医療サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "医療":
+                            for sabuCategoryFixedCostName in self.medicalFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("医療サブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("医療サブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
-                        }
-                    }
-                case "ペット":
-                    for sabuCategoryFixedCostName in petFixedCostSubCategoryArray {
-                        //固定費サブカテゴリーの削除
-                        print("sabuCategoryFixedCostName: \(sabuCategoryFixedCostName)")
-                        db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
-                            //月のサブカテゴリー名前固定費を削除
-                            "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
-                            //年のサブカテゴリー名前固定費を引く
-                            "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-fixedCostCollectionCellMoney[indexPath.row]))
-                            
-                        ]) { err in
-                            if let err = err {
-                                print("ペットサブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
-                            } else {
-                                print("ペットサブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                        case "ペット":
+                            for sabuCategoryFixedCostName in self.petFixedCostSubCategoryArray {
+                                
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                //currentHomeTitleYearサブカテゴリーの金額を取得してcurrentHomeTitleYearサブカテゴリー固定費SumMoneyから引くために取得する
+                                let monthSubCategory = MonthFixedSubCategoryFromFireStore(dic: data, month: currentHomeTitleMonth, fixedsubCategoryName: sabuCategoryFixedCostName)
+                                guard let monthSubCategoryMoney = monthSubCategory.monthFixedSubCategoryMoney else { return }
+                                
+                                //サブカテゴリーの情報の削除
+                                print("sabuCategoryIncomeName: \(sabuCategoryFixedCostName)")
+                                print("incomeCollectionCellMoney:\(monthSubCategoryMoney)")
+                                self.db.collection("\(currentHomeTitleYear)subCategoryIncomeAndExpenditure").document(uid).updateData([
+                                    //月のサブカテゴリー名前固定費を削除
+                                    "\(currentHomeTitleMonth)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.delete(),
+                                    //年のサブカテゴリー名前固定費を引く
+                                    "\(currentHomeTitleYear)\(sabuCategoryFixedCostName)固定費SumMoney": FieldValue.increment(Int64(-monthSubCategoryMoney))
+                                    
+                                ]) { err in
+                                    if let err = err {
+                                        print("ペットサブカテゴリー固定費Cellのデータ削除・更新に失敗しました: \(err)")
+                                    } else {
+                                        print("ペットサブカテゴリー固定費Cellのデータ削除・更新に成功しました")
+                                    }
+                                }
                             }
+                        default:
+                            break
                         }
+                        
+                        //親カテゴリー固定費の金額==サブカテゴリー固定費の金額
+                        let intfixedCostCollectionCellMoney = Int(self.fixedCostCollectionCellMoney[indexPath.row])
+                        guard let intfixedCostSumText = Int(self.fixedCostSumText) else { return }
+                        //今の固定費の総合計金額から保存してある固定費を引く
+                        self.fixedCostSumText = String(intfixedCostSumText - intfixedCostCollectionCellMoney)
+                        print("deleteした後のfixedCostSumText: \(self.fixedCostSumText)")
+                        //生活費(収入ー固定費)を更新するためのプロトコル
+                        self.homeLivingExpensesUpdateDelegate?.livingExpensesLabelUpdate(incomeSumText: self.incomeSumText ?? "0", fixedCostSumText: self.fixedCostSumText ?? "0")
+                        //固定費の総合計金額を更新
+                        self.incomeSumMoneyLabel.text = self.fixedCostSumText
+                        
+                        //配列から消したものを取り除く
+                        self.fixedCostCollectionCellMoney.remove(at: indexPath.row)
+                        self.fixedCostTableCellRowCount = self.fixedCostCollectionCellMoney.count
+                        
+                        tableView.beginUpdates()
+                        tableView.deleteRows(at: [indexPath], with: .automatic)
+                        tableView.endUpdates()
                     }
-                default:
-                    break
                 }
-                
-                //親カテゴリー固定費の金額==サブカテゴリー固定費の金額
-                let intfixedCostCollectionCellMoney = Int(fixedCostCollectionCellMoney[indexPath.row])
-                guard let intfixedCostSumText = Int(self.fixedCostSumText) else { return }
-                //今の固定費の総合計金額から保存してある固定費を引く
-                self.fixedCostSumText = String(intfixedCostSumText - intfixedCostCollectionCellMoney)
-                print("deleteした後のfixedCostSumText: \(self.fixedCostSumText)")
-                //生活費(収入ー固定費)を更新するためのプロトコル
-                self.homeLivingExpensesUpdateDelegate?.livingExpensesLabelUpdate(incomeSumText: self.incomeSumText ?? "0", fixedCostSumText: self.fixedCostSumText ?? "0")
-                //固定費の総合計金額を更新
-                self.incomeSumMoneyLabel.text = self.fixedCostSumText
-                
-                //配列から消したものを取り除く
-                fixedCostCollectionCellMoney.remove(at: indexPath.row)
-                fixedCostTableCellRowCount = fixedCostCollectionCellMoney.count
             }
-            
-            tableView.beginUpdates()
-            tableView.deleteRows(at: [indexPath], with: .automatic)
-            tableView.endUpdates()
             //???: 以下の2つは何を表しているのか？→editingStyleの記述しないといけないやつ
         case .insert, .none:
             // NOP

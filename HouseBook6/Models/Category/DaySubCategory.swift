@@ -31,7 +31,7 @@ struct DayIdArrayFromFireStore {
     }
 }
 
-//サブカテゴリーのその月のsumMoneyを取得する
+//収入サブカテゴリーのその月のsumMoneyを取得する
 struct MonthSubCategoryFromFireStore {
 
     let monthSubCategoryMoney: Int!
@@ -39,6 +39,16 @@ struct MonthSubCategoryFromFireStore {
     //ここで受け取った情報を上記の変数に代入する
     init(dic: [String: Any], month: String, subCategoryName: String){
         self.monthSubCategoryMoney = dic["\(month)\(subCategoryName)SumMoney"] as! Int?
+    }
+}
+
+struct MonthFixedSubCategoryFromFireStore {
+    
+    let monthFixedSubCategoryMoney: Int!
+
+    //ここで受け取った情報を上記の変数に代入する
+    init(dic: [String: Any], month: String, fixedsubCategoryName: String){
+        self.monthFixedSubCategoryMoney = dic["\(month)\(fixedsubCategoryName)固定費SumMoney"] as! Int?
     }
 }
 
