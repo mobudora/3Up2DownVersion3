@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '15.5'
 
 target 'HouseBook6' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -14,6 +14,6 @@ target 'HouseBook6' do
   pod 'Nuke'
   pod 'FSCalendar'
   pod 'CalculateCalendarLogic'
-  pod 'Charts'
+  pod 'DGCharts'
   pod 'Google-Mobile-Ads-SDK'
 end

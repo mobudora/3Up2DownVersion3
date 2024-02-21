@@ -110,8 +110,9 @@ class DetailSettingViewController: UIViewController, UITableViewDelegate, UITabl
                 do {
                     print("🟩とおたよ")
                     try Auth.auth().signOut()
+                    //???: パスワードを消したかどうかここで判断する
                     if passwordNumber == [] {
-                        
+                        performSegue(withIdentifier: "goTopViewStoryboard", sender: self)
                     } else {
                         performSegue(withIdentifier: "goTopViewStoryboard", sender: self)
                     }
