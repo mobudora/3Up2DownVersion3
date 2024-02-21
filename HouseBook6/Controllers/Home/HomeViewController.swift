@@ -209,7 +209,7 @@ class HomeViewController: UIViewController {
                 print("🟥Firestoreから読み取った生活費の月の合計を配列に代入してHomeViewに反映させる")
                 
                 //生活費のデータ取得
-                // ???: if文がしつこい
+                // TODO: if文がしつこい
                 if let foodMonthSumMoneyFromFirestore = livingExpensesMonthSuperCategory.foodMonthSuperCategoryFromFirestore {
                     self.livingExpensesCollectionViewSetUp(superCategory: "食費", sumLivingExpensesMoneyFromFirestore: foodMonthSumMoneyFromFirestore)
                 }

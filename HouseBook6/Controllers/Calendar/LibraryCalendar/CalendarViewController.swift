@@ -21,9 +21,21 @@ class CalendarViewController: UIViewController {
     let dateManager = DateManager()
 
     let currentDate = Date()
-    let currentMonth = DateFormatter()
-    let currentYear = DateFormatter()
-    let currentDay = DateFormatter()
+    let currentMonth: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .gregorian)
+            return formatter
+    }()
+    let currentYear: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .gregorian)
+            return formatter
+    }()
+    let currentDay: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .gregorian)
+            return formatter
+    }()
 
     var sabun: Int!
     
@@ -185,6 +197,7 @@ extension CalendarViewController: FSCalendarDelegate, FSCalendarDataSource, FSCa
     //今日の日付を取得
     func dateFormatter(day: Date) -> String {
         let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
         formatter.dateFormat = "yyyy/MM/dd"
         return formatter.string(from: day)
     }
